@@ -1,4 +1,4 @@
-package com.edu.alterjuicechat.ui.adapters
+package com.edu.alterjuicechat.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -37,6 +37,7 @@ class ChatFragment : Fragment() {
 
     private fun setChatTitle(title: String){
 
+
     }
 
     override fun onCreateView(
@@ -47,7 +48,6 @@ class ChatFragment : Fragment() {
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance(userId: String, userName: String) =
             ChatFragment().apply {

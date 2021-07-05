@@ -2,12 +2,10 @@ package com.edu.alterjuicechat.ui.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.edu.alterjuicechat.databinding.ChatsListItemBinding
 
 class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
-    class ViewHolder : RecyclerView.ViewHolder(){
-
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         TODO("Not yet implemented")
@@ -20,4 +18,6 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
         TODO("Not yet implemented")
     }
+
+    inner class ViewHolder(val binding: ChatsListItemBinding) : RecyclerView.ViewHolder(binding.root)
 }
