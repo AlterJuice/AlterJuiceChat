@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/chat_item_height"
+    android:paddingHorizontal="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="10dp"
+    tools:background="@color/chat_item_background"
     tools:context=".ui.ChatsListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/chatTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/chatLastMessageText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_below="@id/chatTitle"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@id/chatLastMessageDate"
+        android:ellipsize="end"
+        android:maxLength="100"
+        tools:text="@tools:sample/lorem/random" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/chatLastMessageDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/hello_blank_fragment"
+        tools:text="@tools:sample/date/hhmm" />
+
+
+</RelativeLayout>

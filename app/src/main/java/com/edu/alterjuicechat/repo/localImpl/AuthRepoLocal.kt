@@ -1,4 +1,6 @@
-package com.edu.alterjuicechat.repo
+package com.edu.alterjuicechat.repo.localImpl
+
+import com.edu.alterjuicechat.repo.interfaces.AuthRepo
 
 class AuthRepoLocal: AuthRepo {
     override fun passwordIsValid(password: String): Boolean {

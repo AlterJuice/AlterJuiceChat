@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.edu.alterjuicechat.R
-import com.edu.alterjuicechat.repo.AuthRepoLocal
+import com.edu.alterjuicechat.repo.localImpl.AuthRepoLocal
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

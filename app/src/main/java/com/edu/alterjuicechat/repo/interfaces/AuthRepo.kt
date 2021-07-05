@@ -1,4 +1,4 @@
-package com.edu.alterjuicechat.repo
+package com.edu.alterjuicechat.repo.interfaces
 
 interface AuthRepo {
 
