@@ -1,4 +1,4 @@
-package com.edu.alterjuicechat.data.network.model
+package com.edu.alterjuicechat.data.network.model.dto
 
 data class BaseDto(val action: Action, val payload: String) {
 
