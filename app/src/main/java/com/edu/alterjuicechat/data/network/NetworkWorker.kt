@@ -1,24 +1,15 @@
 package com.edu.alterjuicechat.data.network
 
-import android.content.res.Resources
-import android.util.Log
 import com.edu.alterjuicechat.data.network.model.dto.BaseDto
-import com.edu.alterjuicechat.data.network.model.dto.ConnectDto
-import com.edu.alterjuicechat.data.network.model.dto.Payload
-import com.edu.alterjuicechat.data.network.model.dto.SendMessageDto
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
-import java.lang.Exception
-import java.net.DatagramSocket
 import java.net.Socket
-
 
 
 class NetworkWorker(private val ip: String, private val port: Int) : Thread() {
@@ -43,7 +34,8 @@ class NetworkWorker(private val ip: String, private val port: Int) : Thread() {
 
     override fun run() {
         try {
-            clientSocket = Socket("", port)
+
+            clientSocket = Socket(ip, port)
             clientSocket.keepAlive = true
             ioOut = PrintWriter(clientSocket.getOutputStream(), true)
             ioIn = BufferedReader(InputStreamReader(clientSocket.getInputStream()))

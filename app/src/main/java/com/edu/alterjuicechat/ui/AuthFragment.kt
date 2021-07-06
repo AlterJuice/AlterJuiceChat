@@ -1,6 +1,7 @@
 package com.edu.alterjuicechat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.qualifier.named
+import java.net.DatagramPacket
+import java.net.DatagramSocket
 
 
 class AuthFragment : Fragment() {
@@ -22,7 +25,7 @@ class AuthFragment : Fragment() {
     private val authRepo: AuthRepo = get()
     private val viewModel by sharedViewModel<ChatViewModel>(named("1"))
 
-
+    private lateinit var t: Thread
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (authRepo.userIsLoggedIn()){
@@ -32,6 +35,19 @@ class AuthFragment : Fragment() {
 
         viewModel.sendMessage("RECEIVER VM", "MESSAGEE")
         viewModel.getUsers()
+
+
+        t = Thread {
+            Log.d("T thread", "opening")
+            val messageStr = "message"
+            val datagramSocket = DatagramSocket(8888)
+            val packet = DatagramPacket(messageStr.toByteArray(), messageStr.length)
+            datagramSocket.broadcast = true
+            Log.d("data", "Data: "+packet.data.asUByteArray().toString())
+            datagramSocket.receive(packet)
+            Log.d("MainActivity", "____"+datagramSocket.localAddress.toString())
+        }
+        t.start()
 
         // worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
     }
