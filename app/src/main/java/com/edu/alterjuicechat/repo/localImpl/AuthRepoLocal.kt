@@ -13,7 +13,7 @@ class AuthRepoLocal: AuthRepo {
 //        TODO("Not yet implemented")
     }
 
-    override fun registerUser(name: String) {
+    override fun authorizeUser(name: String) {
         TODO("Not yet implemented")
     }
 }
