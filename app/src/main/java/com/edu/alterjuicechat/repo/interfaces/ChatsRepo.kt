@@ -1,6 +1,9 @@
 package com.edu.alterjuicechat.repo.interfaces
 
+import com.edu.alterjuicechat.data.network.model.dto.UserDto
+
 interface ChatsRepo {
 
-    fun saveMessage(id: String, text: String)
+    fun getChats(): List<UserDto>
+
 }
