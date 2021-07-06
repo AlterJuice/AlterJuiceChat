@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.R
-import com.edu.alterjuicechat.data.network.model.User
+import com.edu.alterjuicechat.data.network.model.dto.UserDto
 import com.edu.alterjuicechat.repo.interfaces.MessagesRepo
 import org.koin.android.ext.android.get
 
@@ -17,7 +17,7 @@ class ChatFragment : Fragment() {
     private val messagesRepo: MessagesRepo = get()
 
     private val user by lazy {
-        User(arguments?.getString(Consts.FRAGMENT_PARAM_USER_ID)?: "",
+        UserDto(arguments?.getString(Consts.FRAGMENT_PARAM_USER_ID)?: "",
             arguments?.getString(Consts.FRAGMENT_PARAM_USER_NAME)?: "")
     }
 

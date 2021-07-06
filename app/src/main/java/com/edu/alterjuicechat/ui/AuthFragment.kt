@@ -9,16 +9,18 @@ import androidx.fragment.app.Fragment
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.data.network.NetworkWorker
 import com.edu.alterjuicechat.repo.interfaces.AuthRepo
+import com.edu.alterjuicechat.viewmodels.ChatViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.qualifier.named
 
 
 class AuthFragment : Fragment() {
 
     private val authRepo: AuthRepo = get()
-
-    private lateinit var worker: NetworkWorker
+    private val viewModel by sharedViewModel<ChatViewModel>(named("1"))
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,15 +30,14 @@ class AuthFragment : Fragment() {
             onDestroy()
         }
 
-        worker = NetworkWorker("192.168.88.75", 6666)
+        viewModel.sendMessage("RECEIVER VM", "MESSAGEE")
+        viewModel.getUsers()
 
-        worker.connectToServer()
-        worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
+        // worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        worker.interrupt()
     }
 
     override fun onCreateView(
@@ -51,7 +52,8 @@ class AuthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.buttonSendMessage).setOnClickListener {
-            worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
+            viewModel.sendMessage("RECEIVER VM", "MESSAGEE")
+            // worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
         }
     }
 

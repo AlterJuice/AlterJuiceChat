@@ -1,98 +1,116 @@
 package com.edu.alterjuicechat.data.network
 
-import com.edu.alterjuicechat.data.network.model.BaseDto
-import com.edu.alterjuicechat.data.network.model.ConnectDto
-import com.edu.alterjuicechat.data.network.model.Payload
-import com.edu.alterjuicechat.data.network.model.SendMessageDto
+import android.content.res.Resources
+import android.util.Log
+import com.edu.alterjuicechat.data.network.model.dto.BaseDto
+import com.edu.alterjuicechat.data.network.model.dto.ConnectDto
+import com.edu.alterjuicechat.data.network.model.dto.Payload
+import com.edu.alterjuicechat.data.network.model.dto.SendMessageDto
 import com.google.gson.Gson
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
+import java.lang.Exception
+import java.net.DatagramSocket
 import java.net.Socket
 
-class NetworkWorker(val ip: String, val port: Int) : Thread() {
+
+
+class NetworkWorker(private val ip: String, private val port: Int) : Thread() {
+
+    val BaseDto.toJson: String
+        get() = gsonManager.toJson(this)
 
     private lateinit var clientSocket: Socket
-    private lateinit var ioOut: PrintWriter
-    private lateinit var ioIn: BufferedReader
+    private var ioOut: PrintWriter? = null
+    private var ioIn: BufferedReader? = null
 
     private val gsonManager: Gson = Gson()
 
     private lateinit var job: Job
 
+    private lateinit var jobPingPong: Job
+    private val generator = GeneratorDto(gsonManager)
+
     private val flow: MutableSharedFlow<BaseDto> = MutableSharedFlow()
+    private val channel = Channel<BaseDto>()
+    val sharedFlow = flow.asSharedFlow()
 
     override fun run() {
+        try {
+            clientSocket = Socket("", port)
+            clientSocket.keepAlive = true
+            ioOut = PrintWriter(clientSocket.getOutputStream(), true)
+            ioIn = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
 
-
-    }
-
-    private fun connect(id: String, name: String) {
-        val payload = ConnectDto(id, name)
-        val action = generateAction(BaseDto.Action.CONNECT, payload)
-        // sendActionToServer(action)
-        flow.tryEmit(action)
-    }
-
-    fun connectToServer() {
-
-    }
-
-    fun sendMessage(id: String, receiver: String, message: String) {
-        val payload = SendMessageDto(id, receiver, message)
-        val action = generateAction(BaseDto.Action.SEND_MESSAGE, payload)
-        // flow.emit(action)
-        sendActionToServer(action)
-    }
-
-    private fun generateAction(action: BaseDto.Action, payload: Payload): BaseDto {
-        return BaseDto(action, objectToJson(payload))
-    }
-
-    private fun sendActionToServer(baseDto: BaseDto) {
-        MainScope().launch {
-            withContext(Dispatchers.IO) {
-                ioOut.println(objectToJson(baseDto))
-            }
-        }
-    }
-
-    private fun objectToJson(obj: Any): String {
-        return gsonManager.toJson(obj)
-    }
-
-    override fun start() {
-        super.start()
-        job = MainScope().launch {
-            withContext(Dispatchers.IO){
-                clientSocket = Socket(ip, port)
-                ioOut = PrintWriter(clientSocket.getOutputStream(), true)
-                ioIn = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
-                flow.collect(){
-                    ioOut.println(objectToJson(it))
-                    // sendActionToServer(it)
+            jobPingPong = MainScope().launch {
+                withContext(Dispatchers.IO){
+                    while (true){
+                        ioOut?.println(generator.generatePing("IdPing").toJson)
+                        delay(2000)
+                    }
                 }
             }
+        } catch (e: Exception){
+            e.printStackTrace()
         }
+
+//        jobPingPong.start()
         // job = MainScope().launch {
-        //     withContext(Dispatchers.IO) {
-        //         clientSocket = Socket(ip, port)
-        //         ioOut = PrintWriter(clientSocket.getOutputStream(), true)
-        //         ioIn = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
+        //     withContext(Dispatchers.IO){
+        //         flow.collect(){
+        //             ioOut.println(objectToJson(it))
+        //             // sendActionToServer(it)
+        //         }
         //     }
         // }
-
-
     }
+
+    suspend fun connect(id: String, name: String){
+        val action = generator.generateConnect(id, name)
+        sendToServer(action)
+        flow.emit(action)
+    }
+
+    suspend fun getUsers(id: String){
+        val action = generator.generateGetUsers(id)
+        sendToServer(action)
+        flow.emit(action)
+    }
+
+
+
+
+    suspend fun sendMessage(id: String, receiver: String, message: String) {
+        val action = generator.generateSendMessage(id, receiver, message)
+        sendToServer(action)
+        flow.emit(action)
+    }
+
+    private fun sendToServer(action: BaseDto){
+        ioOut?.println(generator.objectToJson(action))
+    }
+
+//    private fun sendActionToServer(baseDto: BaseDto) {
+//        MainScope().launch {
+//            withContext(Dispatchers.IO) {
+//                ioOut.println(objectToJson(baseDto))
+//            }
+//         }
+//    }
+
+
 
     override fun interrupt() {
         super.interrupt()
-        ioIn.close()
-        ioOut.close()
+        ioIn?.close()
+        ioOut?.close()
+        jobPingPong.cancel()
         clientSocket.close()
     }
 }
