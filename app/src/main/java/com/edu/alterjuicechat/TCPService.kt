@@ -22,7 +22,7 @@ class TCPService : Service() {
 
     private val isWorking = AtomicBoolean(true)
     private val runnable = Runnable {
-        val socket: Socket = Socket(Consts.TCP_IP, Consts.TCP_PORT)
+        val socket: Socket = Socket("", Consts.TCP_PORT)
         try {
             serverSocket = ServerSocket(Consts.TCP_PORT)
             while (isWorking.get()) {

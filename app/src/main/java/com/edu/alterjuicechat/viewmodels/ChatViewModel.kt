@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 class ChatViewModel  (
     // private val messagesRepoDecorator: MessagesRepo,
-                      private val network: NetworkWorker
+    val network: NetworkWorker
 ) : ViewModel() {
     private var counter = 0
     private val liveMessages: MutableLiveData<List<MessageDto>> = MutableLiveData()
