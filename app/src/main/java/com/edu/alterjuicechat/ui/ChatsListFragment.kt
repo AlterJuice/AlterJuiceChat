@@ -19,7 +19,7 @@ class ChatsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_chats_list, container, false)
+        return inflater.inflate(R.layout.chats_list, container, false)
     }
 
     companion object {

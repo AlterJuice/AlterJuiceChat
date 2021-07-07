@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.edu.alterjuicechat.R
+import com.edu.alterjuicechat.databinding.FragmentAuthBinding
 import com.edu.alterjuicechat.repo.interfaces.AuthRepo
 import com.edu.alterjuicechat.viewmodels.AuthViewModel
 import com.google.gson.Gson
@@ -26,6 +27,7 @@ class AuthFragment : Fragment() {
 
     private val authRepo: AuthRepo = get()
     private val viewModel by sharedViewModel<AuthViewModel>(named("1"))
+    private lateinit var binding: FragmentAuthBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,22 +38,23 @@ class AuthFragment : Fragment() {
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-
-        return inflater.inflate(R.layout.fragment_auth, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentAuthBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<Button>(R.id.buttonSendMessage).setOnClickListener {
+        binding.buttonSendMessage.setOnClickListener {
             // worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
         }
+        binding.buttonOpenChatTest.setOnClickListener {
+            with(requireActivity() as MainActivity) {
+                replaceFragment(ChatFragment.newInstance("UserID", "UserName"), "Chat", true)
+            }
+        }
 
-        view.findViewById<Button>(R.id.buttonConnect).setOnClickListener {
+        binding.buttonConnect.setOnClickListener {
             val button: View = it
             button.isEnabled = false
             MainScope().launch {
