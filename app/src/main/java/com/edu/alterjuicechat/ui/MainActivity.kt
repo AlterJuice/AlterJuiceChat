@@ -3,14 +3,11 @@ package com.edu.alterjuicechat.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.edu.alterjuicechat.EchoServer
 import com.edu.alterjuicechat.R
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var t2: EchoServer
 
-    lateinit var t: Thread
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,12 +25,6 @@ class MainActivity : AppCompatActivity() {
                     addToBackStack(tag)
             }
             .commit()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        t2.interrupt()
-
     }
 
 }
