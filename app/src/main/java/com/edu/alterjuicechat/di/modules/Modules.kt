@@ -2,6 +2,7 @@ package com.edu.alterjuicechat.di.modules
 
 import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.data.network.NetworkWorker
+import com.edu.alterjuicechat.viewmodels.AuthViewModel
 import com.edu.alterjuicechat.viewmodels.ChatViewModel
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidApplication
@@ -24,9 +25,11 @@ object Modules {
 
     private val viewModelsModule = module {
         viewModel(named("1")) {
-            ChatViewModel(get())
+            AuthViewModel(get())
         }
     }
+
+
 
 
 

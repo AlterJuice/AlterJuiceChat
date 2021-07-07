@@ -37,6 +37,9 @@ class NetworkWorker(private val gson: Gson) : Thread() {
     private var sessionId: String? = null
 
 
+    fun getT(){
+
+    }
 
     override fun run() {
         try {
@@ -206,6 +209,4 @@ class NetworkWorker(private val gson: Gson) : Thread() {
         sendToServer(action)
         flow.emit(action)
     }
-
-
 }

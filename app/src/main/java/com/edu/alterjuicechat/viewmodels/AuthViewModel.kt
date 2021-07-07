@@ -6,8 +6,8 @@ import com.edu.alterjuicechat.data.network.NetworkWorker
 class AuthViewModel(private val networkWorker: NetworkWorker) : ViewModel() {
 
 
-    fun connect(){
-        networkWorker
+    fun getTcpIp(): String{
+        return networkWorker.getIpFromUdp()
     }
 
 
