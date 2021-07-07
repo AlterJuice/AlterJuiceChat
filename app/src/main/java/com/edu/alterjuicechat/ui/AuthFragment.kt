@@ -7,20 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.R
-import com.edu.alterjuicechat.data.network.model.dto.UdpDto
 import com.edu.alterjuicechat.repo.interfaces.AuthRepo
 import com.edu.alterjuicechat.viewmodels.ChatViewModel
 import com.google.gson.Gson
-import com.google.gson.JsonObject
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.qualifier.named
-import java.lang.Exception
-import java.net.DatagramPacket
-import java.net.DatagramSocket
-import java.net.InetAddress
 
 
 class AuthFragment : Fragment() {
@@ -73,8 +69,22 @@ class AuthFragment : Fragment() {
             viewModel.sendMessage("RECEIVER VM", "MESSAGEE")
             // worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
         }
+        
         view.findViewById<Button>(R.id.buttonConnect).setOnClickListener {
-            onConnectClick()
+            val button: View = it
+            button.isEnabled = false
+            val x = Flowable.just("Welp")
+                .map { viewModel.network.getIpFromUdp() }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn { "Error" }
+                .subscribe({
+                    (button as Button).text = "Go next: $it"
+                    button.isEnabled = true
+                }, {
+                    Log.d("An error occurred: ", it.toString())
+                })
+            // onConnectClick()
         }
     }
 

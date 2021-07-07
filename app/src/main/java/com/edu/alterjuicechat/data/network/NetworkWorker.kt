@@ -25,8 +25,6 @@ class NetworkWorker(private val gson: Gson) : Thread() {
     private lateinit var reader: BufferedReader
 
 
-    private lateinit var job: Job
-
     private var sharedTcpIp: String? = null
 
     private lateinit var jobPingPong: Job
@@ -44,6 +42,7 @@ class NetworkWorker(private val gson: Gson) : Thread() {
         try {
             updateSharedTcpIp()
             connectWithTcp()
+            sendToServer(generator.generateConnect(sessionId!!, "AlterJuice"))
             jobPingPong = MainScope().launch {
                 withContext(Dispatchers.IO){
                     while (true){
@@ -62,6 +61,7 @@ class NetworkWorker(private val gson: Gson) : Thread() {
     private fun updateSharedTcpIp(){
         sharedTcpIp = getIpFromUdp()
     }
+
     private fun updateSessionId(){
 
     }
@@ -89,68 +89,76 @@ class NetworkWorker(private val gson: Gson) : Thread() {
                 continue
             }
         }
-        sendToServer(generator.generateConnect(sessionId!!, "AlterJuice"))
+
     }
 
     private fun tcpSocketIsReady(): Boolean{
         return this::clientSocket.isInitialized
                 && !clientSocket.isClosed
-                && !ioIsClosed && sessionId != null
+                && !ioIsClosed
+                && sessionId != null
     }
 
     private fun getSessionId(): String{
-        if (!tcpSocketIsReady()){
+        if (ioIsClosed || sessionId == null){
             connectWithTcp()
         }
         return sessionId!!
     }
 
-    private fun getSharedTcpIp(): String{
+    private fun getSharedTcpIp(): String?{
         if (sharedTcpIp == null){
-            updateSharedTcpIp()
+            sharedTcpIp = getIpFromUdp()
         }
-        return sharedTcpIp as String
+        return sharedTcpIp
     }
 
     private fun getSocket(): Socket{
-        if (sharedTcpIp == null)
-            updateSharedTcpIp()
         if (!tcpSocketIsReady())
             connectWithTcp()
         return clientSocket
     }
 
     private fun getWriter(): PrintWriter {
-        if (!tcpSocketIsReady())
+        if (ioIsClosed)
             connectWithTcp()
         return writer
     }
 
-    private fun getReader(): BufferedReader? {
-        if (!tcpSocketIsReady())
+    private fun getReader(): BufferedReader {
+        if (ioIsClosed)
             connectWithTcp()
         return reader
     }
 
     private fun sendToServer(action: BaseDto){
-        getWriter()?.println(action.toJson)
+        getWriter().println(action.toJson)
+    }
+
+    fun getIpFromUdpCoroutine(): String{
+        var ip = ""
+        MainScope().launch {
+            withContext(Dispatchers.IO){
+                ip = getIpFromUdp()
+            }
+        }
+        return ip
     }
 
 
-    private fun getIpFromUdp(): String{
+    fun getIpFromUdp(): String{
         // 10.0.2.2
         // 255.255.255.255
         var attempts = 0
         val messageToSend = "Send ip'des".toByteArray()
         var resultTcpIp: String? = null
+        val datagramSocket = DatagramSocket().apply { soTimeout = 5000 }
+        val sendPacket = DatagramPacket(messageToSend, messageToSend.size,
+            InetAddress.getByName(Consts.UDP_ADDRESS), Consts.UDP_PORT)
+        val receiveBuffer = ByteArray(256)
+        val receivePacket = DatagramPacket(receiveBuffer, receiveBuffer.size)
         while (resultTcpIp == null){
             println("Trying to connect with UDP to ${Consts.UDP_ADDRESS}:${Consts.UDP_PORT}; Attempt #${++attempts}")
-            val datagramSocket = DatagramSocket().apply { soTimeout = 5000 }
-            val sendPacket = DatagramPacket(messageToSend, messageToSend.size,
-                InetAddress.getByName(Consts.UDP_ADDRESS), Consts.UDP_PORT)
-            val receiveBuffer = ByteArray(256)
-            val receivePacket = DatagramPacket(receiveBuffer, receiveBuffer.size)
-
             try {
                 datagramSocket.send(sendPacket)
                 datagramSocket.receive(receivePacket)
@@ -159,11 +167,8 @@ class NetworkWorker(private val gson: Gson) : Thread() {
             }catch (timeout: SocketTimeoutException){
                 println("Datagram_Socket_timeout error")
                 sleep(2000)
-                continue
-            }/*finally {
-                datagramSocket.close()
-                println("DatagramSocketIsClosed")
-            }*/
+                // continue
+            }
         }
         return resultTcpIp
     }
