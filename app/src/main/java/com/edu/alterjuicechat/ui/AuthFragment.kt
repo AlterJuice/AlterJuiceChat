@@ -7,23 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.R
-import com.edu.alterjuicechat.data.network.NetworkWorker
+import com.edu.alterjuicechat.data.network.model.dto.UdpDto
 import com.edu.alterjuicechat.repo.interfaces.AuthRepo
 import com.edu.alterjuicechat.viewmodels.ChatViewModel
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.qualifier.named
+import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
+import java.net.InetAddress
 
 
 class AuthFragment : Fragment() {
 
     private val authRepo: AuthRepo = get()
     private val viewModel by sharedViewModel<ChatViewModel>(named("1"))
+
+    private val gson: Gson = get()
+
 
     private lateinit var t: Thread
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,27 +39,23 @@ class AuthFragment : Fragment() {
             onDestroy()
         }
 
-        viewModel.sendMessage("RECEIVER VM", "MESSAGEE")
-        viewModel.getUsers()
+
+        // viewModel.sendMessage("RECEIVER VM", "MESSAGEE")
+        // viewModel.getUsers()
 
 
-        t = Thread {
-            Log.d("T thread", "opening")
-            val messageStr = "message"
-            val datagramSocket = DatagramSocket(8888)
-            val packet = DatagramPacket(messageStr.toByteArray(), messageStr.length)
-            datagramSocket.broadcast = true
-            Log.d("data", "Data: "+packet.data.asUByteArray().toString())
-            datagramSocket.receive(packet)
-            Log.d("MainActivity", "____"+datagramSocket.localAddress.toString())
-        }
-        t.start()
 
         // worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        t.interrupt()
+    }
+
+    fun onConnectClick(){
+        viewModel.network.start()
+
     }
 
     override fun onCreateView(
@@ -70,6 +72,9 @@ class AuthFragment : Fragment() {
         view.findViewById<Button>(R.id.buttonSendMessage).setOnClickListener {
             viewModel.sendMessage("RECEIVER VM", "MESSAGEE")
             // worker.sendMessage("ID", "RECEIVER", "MESSAGEEE")
+        }
+        view.findViewById<Button>(R.id.buttonConnect).setOnClickListener {
+            onConnectClick()
         }
     }
 
