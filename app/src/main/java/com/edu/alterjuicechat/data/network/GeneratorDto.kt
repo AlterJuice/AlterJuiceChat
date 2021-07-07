@@ -5,9 +5,12 @@ import com.google.gson.Gson
 
 class GeneratorDto(private val gson: Gson) {
 
+    val Payload.toJson: String
+        get() = gson.toJson(this)
 
-    fun generatePing(pingId: String): BaseDto{
-        return generateAction(BaseDto.Action.PING, PingDto(pingId))
+
+    fun generatePing(id: String): BaseDto{
+        return generateAction(BaseDto.Action.PING, PingDto(id))
     }
     fun generateSendMessage(messageId: String, receiver: String, message: String): BaseDto{
         return generateAction(BaseDto.Action.SEND_MESSAGE, SendMessageDto(messageId, receiver, message))
@@ -22,10 +25,6 @@ class GeneratorDto(private val gson: Gson) {
     }
 
     private fun generateAction(action: BaseDto.Action, payload: Payload): BaseDto {
-        return BaseDto(action, objectToJson(payload))
-    }
-
-    fun objectToJson(obj: Any): String {
-        return gson.toJson(obj)
+        return BaseDto(action, payload.toJson)
     }
 }

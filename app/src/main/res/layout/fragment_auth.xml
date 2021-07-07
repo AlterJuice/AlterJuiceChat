@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.AuthFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +16,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SendMessage"/>
+
+
+    <Button
+        android:layout_gravity="end"
+        android:id="@+id/buttonConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"/>
+
 
 
 </FrameLayout>
