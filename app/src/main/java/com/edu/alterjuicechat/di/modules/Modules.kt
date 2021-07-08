@@ -39,6 +39,8 @@ object Modules {
         viewModel(named(Consts.VIEW_MODEL_NAME_CHAT_LIST)) { (sessionID: String) ->
             ChatListViewModel(get(), sessionID)
         }
+
+        viewModel(named(Consts.VIEW_MODEL_NAME_CHAT)) { ChatViewModel(get()) }
     }
 
     val allModules = listOf(repoModule, viewModelsModule)

@@ -5,6 +5,7 @@ object Consts {
     const val BLANK_USERNAME_PLACEHOLDER = "Who is it?"
     const val VIEW_MODEL_NAME_AUTH = "AuthViewModel"
     const val VIEW_MODEL_NAME_CHAT_LIST = "ChatListViewModel"
+    const val VIEW_MODEL_NAME_CHAT = "ChatViewModel"
     const val PROFILE_PREFERENCES = "profile_preferences"
     const val PROFILE_KEY_NAME = "name"
     const val APP_PACKAGE = "com.edu.alterjuicechat"

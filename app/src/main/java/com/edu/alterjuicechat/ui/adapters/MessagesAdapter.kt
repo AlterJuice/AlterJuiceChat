@@ -32,10 +32,7 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.MessageHolder>() {
         }
     }
 
-    private val messages: ArrayList<Message> = ArrayList()
-    private var messageIsMine = true
-
-
+    private val collection: ArrayList<Message> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
         val binding: MessagesListItemBinding = MessagesListItemBinding.inflate(
@@ -44,23 +41,26 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.MessageHolder>() {
     }
 
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {
-        holder.bind(messages.get(position))
+        holder.bind(collection[position])
     }
 
     override fun getItemCount(): Int {
-        return messages.size
+        return collection.size
     }
 
     fun addItem(message: Message){
-        messages.add(message)
-        notifyItemInserted(messages.size)
+        collection.add(message)
+        notifyItemInserted(collection.size)
+
+    }
+    fun setItems(messages: List<MessageDto>, sessionID: String){
+        collection.clear()
+        messages.forEach {
+            addItem(Message(it.message, Date().time, it.from.id == sessionID))
+        }
 
     }
 
-    fun addItem(messageText: String, messageDateLong: Long){
-        addItem(Message(messageText, messageDateLong, messageIsMine))
-        messageIsMine = !messageIsMine
-    }
 
     inner class MessageHolder(private val binding: MessagesListItemBinding): RecyclerView.ViewHolder(binding.root){
 
