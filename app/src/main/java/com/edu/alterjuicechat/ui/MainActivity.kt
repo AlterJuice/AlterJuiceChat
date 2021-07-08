@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // startService(Intent(this, TCPService::class.java))
-        replaceFragment(AuthFragment.newInstance())
+        replaceFragment(StartFragment())
 
     }
 

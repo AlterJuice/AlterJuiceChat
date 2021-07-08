@@ -2,6 +2,8 @@ package com.edu.alterjuicechat
 
 object Consts {
 
+    const val PROFILE_PREFERENCES = "profile_preferences"
+    const val PROFILE_KEY_NAME = "name"
     const val APP_PACKAGE = "com.edu.alterjuicechat"
     const val ACTION_NOTIFICATION_CLICK = "NOTIFICATION_CLICKED"
     const val FRAGMENT_PARAM_USER_ID = "user_id"
