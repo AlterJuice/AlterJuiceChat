@@ -7,4 +7,6 @@
     <string name="your_username">Your username</string>
     <string name="alterjuice_chat">AlterJuice chat</string>
     <string name="found_server_on">Found server on %s</string>
+    <string name="toast_searching_the_server">Searching the server. Please wait</string>
+    <string name="toast_create_username">Create your username for chatting</string>
 </resources>

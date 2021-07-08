@@ -7,6 +7,7 @@ import com.edu.alterjuicechat.data.network.NetworkWorker
 import com.edu.alterjuicechat.data.network.TCPWorker
 import com.edu.alterjuicechat.data.network.UDPWorker
 import com.edu.alterjuicechat.viewmodels.AuthViewModel
+import com.edu.alterjuicechat.viewmodels.ChatListViewModel
 import com.edu.alterjuicechat.viewmodels.ChatViewModel
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidApplication
@@ -19,9 +20,7 @@ object Modules {
     private val repoModule = module {
         // get context via androidApplication() or just get() extension function
 
-
         single { androidContext().getSharedPreferences(Consts.PROFILE_PREFERENCES, MODE_PRIVATE) }
-
 
         single { RepoModule.provideAuthRepo() }
         single { RepoModule.provideChatsRepo() }
@@ -35,14 +34,12 @@ object Modules {
     }
 
     private val viewModelsModule = module {
-        viewModel(named("1")) {
-            AuthViewModel()
+        viewModel(named(Consts.VIEW_MODEL_NAME_AUTH)) { AuthViewModel(get(), get(), get()) }
+
+        viewModel(named(Consts.VIEW_MODEL_NAME_CHAT_LIST)) { (sessionID: String) ->
+            ChatListViewModel(get(), sessionID)
         }
     }
-
-
-
-
 
     val allModules = listOf(repoModule, viewModelsModule)
 

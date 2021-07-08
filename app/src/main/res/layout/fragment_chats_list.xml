@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:elevation="10dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="start"
+                android:paddingHorizontal="16dp"
+                android:text="@string/app_name" />
+
+            <ImageView
+                android:id="@+id/buttonUpdateChats"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:padding="3dp"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_round_sync_24"
+                />
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        android:id="@+id/includedChatsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/chats_list"
+        android:layout_below="@id/appToolbar"
+        />
+
+
+</RelativeLayout>

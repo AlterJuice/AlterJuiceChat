@@ -3,6 +3,7 @@ package com.edu.alterjuicechat.data.network
 import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.data.network.model.dto.BaseDto
 import com.edu.alterjuicechat.data.network.model.dto.ConnectedDto
+import com.edu.alterjuicechat.data.network.model.dto.UsersReceivedDto
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -41,8 +42,15 @@ class TCPWorker(private val gson: Gson) {
         return connectWithIdAndUsername(sessionId, userName)
     }
     private fun connectWithIdAndUsername(sessionID: String, username: String): String{
-
         return sessionID
+    }
+
+    fun getUsers(id: String): UsersReceivedDto{
+        val action = generator.generateGetUsers(id)
+        sendToServer(action)
+        val line = reader.readLine()
+        println(line)
+        return gson.fromJson(gson.fromJson(line, BaseDto::class.java).payload, UsersReceivedDto::class.java)
     }
 
     fun connect(id: String, name: String){

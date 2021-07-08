@@ -23,20 +23,12 @@ class ChatFragment : Fragment() {
 
     private val user by lazy {
         UserDto(arguments?.getString(Consts.FRAGMENT_PARAM_USER_ID)?: "",
-            arguments?.getString(Consts.FRAGMENT_PARAM_USER_NAME)?: "")
+            arguments?.getString(Consts.FRAGMENT_PARAM_USER_NAME)?: Consts.BLANK_USERNAME_PLACEHOLDER)
     }
 
-    private val messagesAdapter by lazy{
-        MessagesAdapter()
-    }
+    private val messagesAdapter by lazy{ MessagesAdapter() }
+    private val chatTitle by lazy{ arguments?.getString(Consts.FRAGMENT_PARAM_CHAT_TITLE)?: Consts.BLANK_TITLE_PLACEHOLDER }
 
-    private val chatTitle by lazy{
-        arguments?.getString(Consts.FRAGMENT_PARAM_CHAT_TITLE)?: "No title"
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,12 +66,13 @@ class ChatFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(userId: String, userName: String) =
+        fun newInstance(sessionID: String, userId: String, userName: String) =
             ChatFragment().apply {
                 arguments = Bundle().apply {
                     putString(Consts.FRAGMENT_PARAM_CHAT_TITLE, userName)
                     putString(Consts.FRAGMENT_PARAM_USER_NAME, userName)
                     putString(Consts.FRAGMENT_PARAM_USER_ID, userId)
+                    putString(Consts.FRAGMENT_PARAM_SESSION_ID, userId)
                 }
             }
     }

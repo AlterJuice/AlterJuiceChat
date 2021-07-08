@@ -1,12 +1,16 @@
 package com.edu.alterjuicechat
 
 object Consts {
-
+    const val BLANK_TITLE_PLACEHOLDER = "No title"
+    const val BLANK_USERNAME_PLACEHOLDER = "Who is it?"
+    const val VIEW_MODEL_NAME_AUTH = "AuthViewModel"
+    const val VIEW_MODEL_NAME_CHAT_LIST = "ChatListViewModel"
     const val PROFILE_PREFERENCES = "profile_preferences"
     const val PROFILE_KEY_NAME = "name"
     const val APP_PACKAGE = "com.edu.alterjuicechat"
     const val ACTION_NOTIFICATION_CLICK = "NOTIFICATION_CLICKED"
-    const val FRAGMENT_PARAM_USER_ID = "user_id"
+    const val FRAGMENT_PARAM_SESSION_ID = "sessionID"
+    const val FRAGMENT_PARAM_USER_ID = "userID"
     const val FRAGMENT_PARAM_USER_NAME = "user_name"
     const val FRAGMENT_PARAM_CHAT_TITLE = "chat_title"
 

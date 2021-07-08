@@ -7,6 +7,7 @@ import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketTimeoutException
+import java.util.*
 
 class UDPWorker(private val gson: Gson) {
 
@@ -15,7 +16,7 @@ class UDPWorker(private val gson: Gson) {
         // 10.0.2.2
         // 255.255.255.255
         var attempts = 0
-        val messageToSend = "Send ip'des".toByteArray()
+        val messageToSend = "Send ip'des (${Date()})".toByteArray()
         var resultTcpIp: String? = null
         val datagramSocket = DatagramSocket().apply { soTimeout = 5000 }
         val sendPacket = DatagramPacket(messageToSend, messageToSend.size,
@@ -35,6 +36,7 @@ class UDPWorker(private val gson: Gson) {
                 // continue
             }
         }
+        println("UDP Connected! TCP IP: $resultTcpIp;")
         return resultTcpIp
     }
 }

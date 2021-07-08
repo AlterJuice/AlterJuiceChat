@@ -6,7 +6,8 @@
     android:paddingHorizontal="10dp"
     android:paddingTop="5dp"
     android:paddingBottom="10dp"
-    tools:background="@color/chat_item_background"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@color/chat_item_background"
     tools:context=".ui.ChatsListFragment">
 
     <TextView
@@ -26,6 +27,7 @@
         android:layout_toStartOf="@id/chatLastMessageDate"
         android:ellipsize="end"
         android:maxLength="100"
+        android:textStyle="italic"
         tools:text="@tools:sample/lorem/random" />
 
     <TextView
@@ -34,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="@string/hello_blank_fragment"
+        android:text="hh:mm"
         tools:text="@tools:sample/date/hhmm" />
 
 

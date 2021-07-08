@@ -8,20 +8,21 @@ class GeneratorDto(private val gson: Gson) {
     val Payload.toJson: String
         get() = gson.toJson(this)
 
+    /* ID is SessionID got from first TCP socket connection. */
 
     fun generatePing(id: String): BaseDto{
         return generateAction(BaseDto.Action.PING, PingDto(id))
     }
-    fun generateSendMessage(messageId: String, receiver: String, message: String): BaseDto{
-        return generateAction(BaseDto.Action.SEND_MESSAGE, SendMessageDto(messageId, receiver, message))
+    fun generateSendMessage(id: String, receiver: String, message: String): BaseDto{
+        return generateAction(BaseDto.Action.SEND_MESSAGE, SendMessageDto(id, receiver, message))
     }
 
-    fun generateConnect(connectId: String, connectName: String): BaseDto{
-        return generateAction(BaseDto.Action.CONNECT, ConnectDto(connectId, connectName))
+    fun generateConnect(id: String, connectName: String): BaseDto{
+        return generateAction(BaseDto.Action.CONNECT, ConnectDto(id, connectName))
     }
 
-    fun generateGetUsers(getUsersId: String): BaseDto{
-        return generateAction(BaseDto.Action.GET_USERS, GetUsersDto(getUsersId))
+    fun generateGetUsers(id: String): BaseDto{
+        return generateAction(BaseDto.Action.GET_USERS, GetUsersDto(id))
     }
 
     private fun generateAction(action: BaseDto.Action, payload: Payload): BaseDto {
