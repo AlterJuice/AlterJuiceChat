@@ -25,7 +25,7 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.MessageHolder>() {
         }
 
         fun getDateStr(): String{
-            return "Date: $messageDateLong"
+            return "Date: ${Date(messageDateLong*1000)}"
         }
         fun getMessageStr():String{
             return messageText
