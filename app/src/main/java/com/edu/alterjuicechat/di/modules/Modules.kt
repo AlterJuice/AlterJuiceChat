@@ -103,7 +103,7 @@ object Modules {
             ChatListViewModel(get(named(NAME_CHAT_LIST_REPO_DECORATOR)), sessionID)
         }
         viewModel { (sessionID: String, receiverID: String) ->
-            ChatViewModel(get(named(NAME_CHAT_REPO_DECORATOR)), sessionID, receiverID) }
+            ChatViewModel(get(named(NAME_CHAT_REPO_DECORATOR)), get(), sessionID, receiverID) }
         viewModel { AuthViewModel(get(named(NAME_AUTH_REPO_DECORATOR))) }
     }
 

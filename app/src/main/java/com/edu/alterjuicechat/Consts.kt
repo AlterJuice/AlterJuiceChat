@@ -23,7 +23,7 @@ object Consts {
 
     const val UDP_ADDRESS_FOR_EMULATOR = "10.0.2.2"
     const val UDP_ADDRESS_FOR_DEVICES = "255.255.255.255"
-    const val UDP_ADDRESS = UDP_ADDRESS_FOR_DEVICES
+    const val UDP_ADDRESS = UDP_ADDRESS_FOR_EMULATOR
     // TODO("Change UDP_ADDRESS to UDP_ADDRESS_FOR_EMULATOR before build APK for devices
     //  and vice verse - use UDP_ADDRESS_FOR_EMULATOR for emulator app launches")
     const val UDP_PORT = 8888
