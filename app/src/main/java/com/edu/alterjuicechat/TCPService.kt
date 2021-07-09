@@ -5,52 +5,24 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.IBinder
-import android.util.Log
-import java.io.*
+import com.edu.alterjuicechat.data.network.TCPWorker
+import org.koin.android.ext.android.get
 import java.net.ServerSocket
-import java.net.Socket
 import java.util.concurrent.atomic.AtomicBoolean
 
 class TCPService : Service() {
     // OnCreate and OnStartCommand: https://stackoverflow.com/a/14182844
     // Using AtomicBool: https://stackoverflow.com/a/4501314
-
+    private val tcpWorker: TCPWorker = get()
     private val importance = NotificationManager.IMPORTANCE_HIGH
 
 
     private var serverSocket: ServerSocket? = null
 
     private val isWorking = AtomicBoolean(true)
-    private val runnable = Runnable {
-        val socket: Socket = Socket("", Consts.TCP_PORT)
-        try {
-            serverSocket = ServerSocket(Consts.TCP_PORT)
-            while (isWorking.get()) {
-                if (serverSocket != null) {
-                    // socket = serverSocket!!.accept()
-                    val dataOutputStream = PrintWriter(socket.getOutputStream(), true)
-                    val dataInputStream = BufferedReader(InputStreamReader(socket.getInputStream()))
-
-                    // Use threads for each client to communicate with them simultaneously
-                    val t: Thread = TCPHandler(dataInputStream, dataOutputStream)
-                    t.start()
-                } else {
-                    Log.e("TCPService", "Couldn't create ServerSocket!")
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            try {
-                socket.close()
-            } catch (ex: IOException) {
-                ex.printStackTrace()
-            }
-        }
-    }
 
     override fun onCreate() {
         createNotification()
-        Thread(runnable).start()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

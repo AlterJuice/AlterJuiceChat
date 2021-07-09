@@ -28,7 +28,7 @@ class ChatFragment : Fragment() {
         arguments?.getString(Consts.FRAGMENT_PARAM_SESSION_ID)
     }
 
-    private val messagesAdapter by lazy{ MessagesAdapter() }
+    private val messagesAdapter by lazy{ MessagesAdapter(sessionID!!) }
     private val chatTitle by lazy{ arguments?.getString(Consts.FRAGMENT_PARAM_CHAT_TITLE)?: Consts.BLANK_TITLE_PLACEHOLDER }
 
 
@@ -51,7 +51,7 @@ class ChatFragment : Fragment() {
         }
         vm.messages.observe(viewLifecycleOwner, {
             println("NewMessages: $it")
-            messagesAdapter.setItems(it, sessionID!!)
+            messagesAdapter.setItems(it)
             messagesAdapter.notifyDataSetChanged()
             binding.includedMessagesList.messagesList.scrollToPosition(messagesAdapter.itemCount-1)
             binding.chatInputMessage.text.clear()

@@ -16,6 +16,12 @@ class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
     private val vm by viewModel<AuthViewModel>()
 
+    private fun openChatListFragment(sessionID: String, username: String){
+        with(requireActivity() as MainActivity) {
+            replaceFragment(ChatListFragment.newInstance(sessionID, username), "Chat", false)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,9 +54,7 @@ class AuthFragment : Fragment() {
         if (sessionID.isNotEmpty()) {
             showUIProgressIsLoading(false)
             val username = vm.getSavedUsername()
-            with(requireActivity() as MainActivity) {
-                replaceFragment(ChatListFragment.newInstance(sessionID, username), "Chat", false)
-            }
+            openChatListFragment(sessionID, username)
             vm.connect()
             setUIViewsEnabled(true)
         }
@@ -64,8 +68,8 @@ class AuthFragment : Fragment() {
         }
     }
 
-    private fun showTCPInfoText(tcpIp: String){
-        with(binding.foundTcpIpText){
+    private fun showTCPInfoText(tcpIp: String) {
+        with(binding.foundTcpIpText) {
             visibility = View.VISIBLE
             text = getString(R.string.found_server_on, tcpIp)
         }
