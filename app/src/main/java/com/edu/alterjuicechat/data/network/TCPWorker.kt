@@ -61,7 +61,6 @@ class TCPWorker(private val gson: Gson) {
                 val line = reader.readLine()
                 val response = gson.fromJson(line, BaseDto::class.java)
                 eventFlow.emit(response)
-
             }
         }
     }
@@ -93,7 +92,8 @@ class TCPWorker(private val gson: Gson) {
 
     }
 
-    private fun connectWithIdAndUsername(sessionID: String, username: String): String{
+    private suspend fun connectWithIdAndUsername(sessionID: String, username: String): String{
+        connect(sessionID, username)
         return sessionID
     }
 
