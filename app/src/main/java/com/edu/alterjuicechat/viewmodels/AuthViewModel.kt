@@ -1,62 +1,75 @@
 package com.edu.alterjuicechat.viewmodels
 
-import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.alterjuicechat.Consts
-import com.edu.alterjuicechat.data.network.NetworkWorker
-import com.edu.alterjuicechat.data.network.TCPWorker
-import com.edu.alterjuicechat.data.network.UDPWorker
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import javax.security.auth.callback.Callback
+import com.edu.alterjuicechat.repo.AuthRepo
+import kotlinx.coroutines.*
 
 class AuthViewModel(
-    private val profilePreferences: SharedPreferences,
-    private val tcpWorker: TCPWorker,
-    private val udpWorker: UDPWorker
+    private val authRepoDecorator: AuthRepo
 ) : ViewModel() {
+    private val privateTcpIP: MutableLiveData<String> = MutableLiveData()
+    private val privateSessionID: MutableLiveData<String> = MutableLiveData()
+    val liveTcpIP: LiveData<String> = privateTcpIP
+    val liveSessionID: LiveData<String> = privateSessionID
 
 
-    fun getSavedUsername(): String{
-        return profilePreferences.getString(Consts.PROFILE_KEY_NAME, "")!!
-    }
+    fun getSavedUsername(): String = authRepoDecorator.getSavedUsername()
+    fun saveUsername(username: String) = authRepoDecorator.saveUsername(username)
 
-    fun saveUsername(username: String){
-        profilePreferences.edit().putString(Consts.PROFILE_KEY_NAME, username).apply()
+    fun connect(){
+        val sessionID = liveSessionID.value as String
+        val username = getSavedUsername()
+        connect(sessionID, username)
     }
 
     fun connect(sessionID: String, username: String){
-        viewModelScope.launch {
-            flow {
-                emit(tcpWorker.connect(sessionID, username))
-            }.flowOn(Dispatchers.IO).collect()
+        viewModelScope.launch(Dispatchers.IO){
+            if (sessionID.isNotBlank() && username.isNotBlank()){
+                authRepoDecorator.connect(sessionID, username)
+            }
         }
     }
 
-    fun flowGetTCPIpFromUDP(runnable: (String) -> Unit){
-        viewModelScope.launch {
-            flow { emit(udpWorker.getTcpIp()) }
-                .flowOn(Dispatchers.IO)
-                .collect {
-                    withContext(Dispatchers.Main){
-                        runnable(it)
-                    }
-                }
+    fun disconnect(code: Int){
+        disconnect(liveSessionID.value!!, code)
+    }
+
+    fun disconnect(sessionID: String, code: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            if (sessionID.isNotBlank()){
+                authRepoDecorator.disconnect(sessionID, code)
+            }
         }
     }
 
-    fun flowGetSessionIDFromTCP(tcpIp: String, username: String, runnable: (String) -> Unit) {
-        viewModelScope.launch {
-            flow { emit(tcpWorker.connectWithTcp(tcpIp, username)) }
-                .flowOn(Dispatchers.IO)
-                .collect {
-                    withContext(Dispatchers.Main){
-                        runnable(it)
-                    }
-                }
+    fun flowGetTCPIpFromUDP(){
+        viewModelScope.launch(Dispatchers.IO){
+            val ip = authRepoDecorator.getTcpIP()
+            withContext(Dispatchers.Main){
+                privateTcpIP.value = ip
+            }
         }
     }
+
+    fun flowGetSessionIDFromTCP(tcpIP: String, username: String) {
+        viewModelScope.launch(Dispatchers.IO){
+            val sessionID = authRepoDecorator.getSessionID(tcpIP, username)
+            withContext(Dispatchers.Main){
+                privateSessionID.value = sessionID
+            }
+        }
+    }
+
+    // viewModelScope.launch {
+    //     flow { emit(udpWorker.getTcpIp()) }
+    //         .flowOn(Dispatchers.IO)
+    //         .collect {
+    //             withContext(Dispatchers.Main){
+    //                 runnable(it)
+    //             }
+    //         }
+    // }
 }

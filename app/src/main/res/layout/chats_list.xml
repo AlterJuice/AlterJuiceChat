@@ -7,5 +7,5 @@
     android:layout_height="match_parent"
     android:background="@color/chat_background"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.ChatsListFragment"
+    tools:context=".ui.ChatListFragment"
     tools:listitem="@layout/chats_list_item" />

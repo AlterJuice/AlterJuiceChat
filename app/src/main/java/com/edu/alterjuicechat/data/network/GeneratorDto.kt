@@ -21,6 +21,10 @@ class GeneratorDto(private val gson: Gson) {
         return generateAction(BaseDto.Action.CONNECT, ConnectDto(id, connectName))
     }
 
+    fun generateDisconnect(id: String, code: Int): BaseDto{
+        return generateAction(BaseDto.Action.DISCONNECT, DisconnectDto(id, code))
+    }
+
     fun generateGetUsers(id: String): BaseDto{
         return generateAction(BaseDto.Action.GET_USERS, GetUsersDto(id))
     }

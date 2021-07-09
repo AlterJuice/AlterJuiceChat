@@ -3,6 +3,7 @@ package com.edu.alterjuicechat.data.network
 import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.data.network.model.dto.UdpDto
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
@@ -12,7 +13,7 @@ import java.util.*
 class UDPWorker(private val gson: Gson) {
 
 
-    fun getTcpIp(): String{
+    suspend fun getTcpIp(): String{
         // 10.0.2.2
         // 255.255.255.255
         var attempts = 0
@@ -32,7 +33,7 @@ class UDPWorker(private val gson: Gson) {
                 resultTcpIp = gson.fromJson(str, UdpDto::class.java).ip
             }catch (timeout: SocketTimeoutException){
                 println("Datagram_Socket_timeout error")
-                Thread.sleep(2000)
+                delay(2000)
                 // continue
             }
         }

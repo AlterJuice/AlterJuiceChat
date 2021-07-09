@@ -14,15 +14,14 @@ import com.edu.alterjuicechat.ui.adapters.ChatAdapter
 import com.edu.alterjuicechat.viewmodels.ChatListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
 
 
-class ChatsListFragment : Fragment() {
+class ChatListFragment : Fragment() {
 
     private val sessionID by lazy { arguments?.getString(Consts.FRAGMENT_PARAM_SESSION_ID) }
     private val username by lazy { arguments?.getString(Consts.PROFILE_KEY_NAME, Consts.BLANK_USERNAME_PLACEHOLDER) }
 
-    private val vm by viewModel<ChatListViewModel>(named(Consts.VIEW_MODEL_NAME_CHAT_LIST)){
+    private val vm by viewModel<ChatListViewModel>(){
         parametersOf(sessionID)
     }
     private val chatsAdapter by lazy { ChatAdapter(::onChatClick) }
@@ -47,8 +46,6 @@ class ChatsListFragment : Fragment() {
             vm.loadUsers()
             Toast.makeText(context, "Users updated!", Toast.LENGTH_SHORT).show()
         }
-        // How to send Connect Action
-        // vm.connect(username!!)
         // Moving connect request to auth fragment before ChatListFragment::newInstance call
         vm.users.observe(viewLifecycleOwner, {
             chatsAdapter.setChats(it)
@@ -66,7 +63,7 @@ class ChatsListFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(sessionID: String, username: String) =
-            ChatsListFragment().apply {
+            ChatListFragment().apply {
                 arguments = Bundle().apply {
                     putString(Consts.FRAGMENT_PARAM_SESSION_ID, sessionID)
                     putString(Consts.PROFILE_KEY_NAME, username)

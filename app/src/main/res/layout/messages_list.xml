@@ -8,5 +8,5 @@
     android:background="@color/chat_background"
     android:paddingHorizontal="10dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.ChatsListFragment"
+    tools:context=".ui.ChatListFragment"
     tools:listitem="@layout/messages_list_item" />

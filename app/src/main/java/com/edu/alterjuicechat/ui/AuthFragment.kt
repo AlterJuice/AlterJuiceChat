@@ -1,41 +1,66 @@
 package com.edu.alterjuicechat.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.edu.alterjuicechat.Consts
+import androidx.fragment.app.Fragment
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.databinding.FragmentAuthBinding
 import com.edu.alterjuicechat.viewmodels.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.named
 
 
 class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
-    private val vm by viewModel<AuthViewModel>(named(Consts.VIEW_MODEL_NAME_AUTH))
+    private val vm by viewModel<AuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAuthBinding.inflate(inflater, container, false)
-        binding.appStartMessaging.setOnClickListener(::onConnectClick)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.appStartMessaging.setOnClickListener(::onConnectClick)
+        vm.liveTcpIP.observe(viewLifecycleOwner, {
+            processStepWithTcpIP(it)
+        })
+        vm.liveSessionID.observe(viewLifecycleOwner, {
+            processStepWithSessionID(it)
+        })
+        // processNextStepWithIp(arguments?.getString())
+        // onLogInClick()
     }
 
     private fun onConnectClick(v: View){
         Toast.makeText(context, getString(R.string.toast_searching_the_server), Toast.LENGTH_LONG).show()
         showUIProgressIsLoading(true)
         setStartMessagingEnabled(false)
-        vm.flowGetTCPIpFromUDP {
+        vm.flowGetTCPIpFromUDP()
+    }
+
+    private fun processStepWithSessionID(sessionID: String){
+        if (sessionID.isNotEmpty()) {
             showUIProgressIsLoading(false)
-            showTCPInfoText(it)
-            // setStartMessagingEnabled(true)
-            processNextStepWithIp(tcpIp = it)
+            val username = vm.getSavedUsername()
+            with(requireActivity() as MainActivity) {
+                replaceFragment(ChatListFragment.newInstance(sessionID, username), "Chat", false)
+            }
+            vm.connect()
+            setUIViewsEnabled(true)
+        }
+    }
+
+    private fun processStepWithTcpIP(tcpIP: String){
+        if (tcpIP.isNotEmpty()) {
+            showUIProgressIsLoading(false)
+            showTCPInfoText(tcpIP)
+            processNextStepWithIp(tcpIP)
         }
     }
 
@@ -67,7 +92,6 @@ class AuthFragment : Fragment() {
         binding.mainProgressBar.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
     }
 
-
     private fun onLogInClick(tcpIp: String){
         val inputUsernameText = binding.inputUsername.text.toString()
         if (inputUsernameText.isBlank()){
@@ -75,15 +99,8 @@ class AuthFragment : Fragment() {
             return
         }
         setUIViewsEnabled(false)
-        vm.saveUsername(inputUsernameText)
         showUIProgressIsLoading(true)
-        vm.flowGetSessionIDFromTCP(tcpIp, inputUsernameText) {
-            showUIProgressIsLoading(false)
-            with(requireActivity() as MainActivity) {
-                replaceFragment(ChatsListFragment.newInstance(it, inputUsernameText), "Chat", false)
-            }
-            vm.connect(it, inputUsernameText)
-            setUIViewsEnabled(true)
-        }
+        vm.saveUsername(inputUsernameText)
+        vm.flowGetSessionIDFromTCP(tcpIp, inputUsernameText)
     }
 }

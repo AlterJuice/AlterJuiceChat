@@ -12,9 +12,7 @@ class App : Application(){
         super.onCreate()
         startKoin{
             androidContext(this@App)
-            modules(Modules.allModules
-               //      + module{ getSharedPreferences(Consts.PROFILE_PREFERENCES, MODE_PRIVATE) }
-        )
+            modules(Modules.allModules)
         }
     }
 }
