@@ -30,4 +30,17 @@
 <!--        <item name="colorControlHighlight">@color/blue_grey_700_dark</item>-->
 
     </style>
+    <style name="MessageStyle">
+        <item name="android:id">@id/messageCard</item>
+        <item name="elevation">4dp</item>
+        <item name="android:layout_marginVertical">5dp</item>
+        <item name="android:layout_marginHorizontal">5dp</item>
+        <item name="android:background">@drawable/shape_rounded</item>
+        <item name="android:backgroundTint">?colorPrimary</item>
+        <item name="android:padding">10dp</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintWidth_percent">0.8</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
 </resources>

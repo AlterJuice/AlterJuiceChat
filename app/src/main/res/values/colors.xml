@@ -10,6 +10,7 @@
 
     <color name="chat_background">#E3F2FD</color>
     <color name="chat_item_background">#90CAF9</color>
-    <color name="message_background_mine">#60b4f4</color>
-    <color name="message_background_not_mine">#AED581</color>
+
+    <color name="message_item_mine_background_color">#60b4f4</color>
+    <color name="message_item_not_mine_background_color">#AED581</color>
 </resources>

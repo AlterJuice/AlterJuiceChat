@@ -6,17 +6,17 @@ object Consts {
     const val PROFILE_PREFERENCES = "profile_preferences"
     const val PROFILE_KEY_NAME = "name"
     const val APP_PACKAGE = "com.edu.alterjuicechat"
-    const val ACTION_NOTIFICATION_CLICK = "NOTIFICATION_CLICKED"
+    // const val ACTION_NOTIFICATION_CLICK = "NOTIFICATION_CLICKED"
     const val FRAGMENT_PARAM_SESSION_ID = "sessionID"
     const val FRAGMENT_PARAM_TCP_IP = "tcpIP"
     const val FRAGMENT_PARAM_USER_ID = "userID"
     const val FRAGMENT_PARAM_USER_NAME = "user_name"
     const val FRAGMENT_PARAM_CHAT_TITLE = "chat_title"
 
-    const val CHANNEL_ID = "channelId"
-    const val CHANNEL_NAME = "channelName"
-    const val CHANNEL_DESCRIPTION = "channelDescription"
-    const val NOTIFICATION_ID = 123123
+    // const val CHANNEL_ID = "channelId"
+    // const val CHANNEL_NAME = "channelName"
+    // const val CHANNEL_DESCRIPTION = "channelDescription"
+    // const val NOTIFICATION_ID = 123123
 
     // Why emulators are not receiving packets over udp: use another ip
     // https://stackoverflow.com/a/41981731
@@ -28,5 +28,14 @@ object Consts {
     //  and vice verse - use UDP_ADDRESS_FOR_EMULATOR for emulator app launches")
     const val UDP_PORT = 8888
     const val TCP_PORT = 6666
+
+
+    const val PING_DELAY = 2000L
+    const val TCP_TIMEOUT = 5000
+    const val UDP_TIMEOUT = 5000
+    const val UDP_DELAY = 2000L
+    const val TCP_CONNECTING_DELAY = 1000L
+    const val UDP_PACKET_SIZE = 256
+
 
 }
