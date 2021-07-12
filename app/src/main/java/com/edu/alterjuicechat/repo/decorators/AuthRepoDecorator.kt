@@ -1,13 +1,16 @@
 package com.edu.alterjuicechat.repo.decorators
 
+import com.edu.alterjuicechat.data.network.DataStore
 import com.edu.alterjuicechat.repo.AuthRepo
 
 class AuthRepoDecorator(
+    private val dataStore: DataStore,
     private val localAuthRepo: AuthRepo,
     private val remoteAuthRepo: AuthRepo
-): AuthRepo {
+) : AuthRepo {
     override fun saveUsername(username: String) {
         localAuthRepo.saveUsername(username)
+        dataStore.mutableUsername.postValue(username)
     }
 
     override fun getSavedUsername(): String {
@@ -22,12 +25,13 @@ class AuthRepoDecorator(
         remoteAuthRepo.disconnect(sessionID, code)
     }
 
-    override suspend fun getSessionID(tcpIP: String, username: String): String {
-        return remoteAuthRepo.getSessionID(tcpIP, username)
+    override suspend fun requestSessionID() {
+        return remoteAuthRepo.requestSessionID()
     }
 
-    override suspend fun getTcpIP(): String {
-        return remoteAuthRepo.getTcpIP()
+    override suspend fun requestTcpIP() {
+        remoteAuthRepo.requestTcpIP()
     }
+
 
 }

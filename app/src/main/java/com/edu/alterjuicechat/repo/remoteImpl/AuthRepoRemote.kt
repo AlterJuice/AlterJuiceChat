@@ -4,10 +4,10 @@ import com.edu.alterjuicechat.data.network.TCPWorker
 import com.edu.alterjuicechat.data.network.UDPWorker
 import com.edu.alterjuicechat.repo.AuthRepo
 
-class AuthRepoRemote (
+class AuthRepoRemote(
     private val tcpWorker: TCPWorker,
     private val udpWorker: UDPWorker
-        ): AuthRepo {
+) : AuthRepo {
 
     override fun saveUsername(username: String) {
         throw UnsupportedOperationException("Remote auth repo cannot perform saveUsername request")
@@ -25,12 +25,13 @@ class AuthRepoRemote (
         tcpWorker.disconnect(sessionID, code)
     }
 
-    override suspend fun getSessionID(tcpIP: String, username: String): String {
-        return tcpWorker.connectWithTcp(tcpIP, username)
+    override suspend fun requestSessionID() {
+        tcpWorker.connectWithTcp()
     }
 
-    override suspend fun getTcpIP(): String {
-        return udpWorker.getTcpIp()
+    override suspend fun requestTcpIP() {
+        udpWorker.requestTcpIP()
     }
+
 
 }

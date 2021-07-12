@@ -6,7 +6,7 @@ import com.edu.alterjuicechat.repo.AuthRepo
 
 class AuthRepoLocal(
     private val profilePrefs: SharedPreferences,
-    ) : AuthRepo {
+) : AuthRepo {
 
     override fun saveUsername(username: String) {
         profilePrefs.edit().putString(Consts.PROFILE_KEY_NAME, username).apply()
@@ -24,11 +24,12 @@ class AuthRepoLocal(
         throw UnsupportedOperationException("Local auth repo cannot perform disconnect request")
     }
 
-    override suspend fun getSessionID(tcpIP: String, username: String): String {
+    override suspend fun requestSessionID() {
         throw UnsupportedOperationException("Local auth repo cannot perform getSessionID request")
     }
 
-    override suspend fun getTcpIP(): String {
+    override suspend fun requestTcpIP() {
         throw UnsupportedOperationException("Local auth repo cannot perform getTcpIP request")
     }
+
 }

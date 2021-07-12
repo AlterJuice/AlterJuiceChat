@@ -46,12 +46,15 @@ class ChatFragment : Fragment() {
         binding.includedMessagesList.messagesList.apply {
             adapter = messagesAdapter
             if (layoutManager == null)
-                layoutManager = LinearLayoutManager(context)
+                //
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         }
         vm.messages.observe(viewLifecycleOwner, {
-            println("NewMessages: $it")
             messagesAdapter.setItems(it)
             messagesAdapter.notifyDataSetChanged()
+
+            // Do not forget to remove line and swap to ListAdapter
+            // *******************************************************************************
             binding.includedMessagesList.messagesList.scrollToPosition(messagesAdapter.itemCount-1)
             binding.chatInputMessage.text.clear()
         })

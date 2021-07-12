@@ -5,9 +5,6 @@ import com.google.gson.Gson
 
 class GeneratorDto(private val gson: Gson) {
 
-    val Payload.toJson: String
-        get() = gson.toJson(this)
-
     /* ID is SessionID got from first TCP socket connection. */
 
     fun generatePing(id: String): BaseDto{
@@ -30,6 +27,6 @@ class GeneratorDto(private val gson: Gson) {
     }
 
     private fun generateAction(action: BaseDto.Action, payload: Payload): BaseDto {
-        return BaseDto(action, payload.toJson)
+        return BaseDto(action, payload.toJson(gson))
     }
 }

@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.edu.alterjuicechat.data.network.DataStore
 import com.edu.alterjuicechat.repo.AuthRepo
 import kotlinx.coroutines.*
 
 class AuthViewModel(
-    private val authRepoDecorator: AuthRepo
+    private val authRepoDecorator: AuthRepo,
+    dataStore: DataStore
 ) : ViewModel() {
     private val privateTcpIP: MutableLiveData<String> = MutableLiveData()
-    private val privateSessionID: MutableLiveData<String> = MutableLiveData()
-    val liveTcpIP: LiveData<String> = privateTcpIP
-    val liveSessionID: LiveData<String> = privateSessionID
+    val liveTcpIP: LiveData<String> = dataStore.mutableTcpIP
+    val liveSessionID: LiveData<String> = dataStore.mutableSessionID
 
 
     fun getSavedUsername(): String = authRepoDecorator.getSavedUsername()
@@ -45,21 +46,14 @@ class AuthViewModel(
         }
     }
 
-    fun flowGetTCPIpFromUDP(){
+    fun requestTcpIPFromUdp(){
         viewModelScope.launch(Dispatchers.IO){
-            val ip = authRepoDecorator.getTcpIP()
-            withContext(Dispatchers.Main){
-                privateTcpIP.value = ip
-            }
+            authRepoDecorator.requestTcpIP()
         }
     }
-
-    fun flowGetSessionIDFromTCP(tcpIP: String, username: String) {
+    fun requestSessionIDFromTCP(){
         viewModelScope.launch(Dispatchers.IO){
-            val sessionID = authRepoDecorator.getSessionID(tcpIP, username)
-            withContext(Dispatchers.Main){
-                privateSessionID.value = sessionID
-            }
+            authRepoDecorator.requestSessionID()
         }
     }
 

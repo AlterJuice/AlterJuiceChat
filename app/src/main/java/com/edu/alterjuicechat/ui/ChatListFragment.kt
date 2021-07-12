@@ -49,7 +49,7 @@ class ChatListFragment : Fragment() {
         // Moving connect request to auth fragment before ChatListFragment::newInstance call
         vm.users.observe(viewLifecycleOwner, {
             chatsAdapter.setChats(it)
-            chatsAdapter.addItem("", "TestChat")
+            chatsAdapter.addItem("CustomID", "TestChat")
         })
         vm.loadUsers()
     }

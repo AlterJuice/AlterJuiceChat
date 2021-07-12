@@ -16,6 +16,9 @@ class ParserDto(private val gson: Gson){
     }
     fun parseConnected(baseDtoConnectedPayload: String): ConnectedDto{
         return gson.fromJson(baseDtoConnectedPayload, ConnectedDto::class.java)
+    }
+    fun parseBaseDto(responsePayload: String): BaseDto{
+        return gson.fromJson(responsePayload, BaseDto::class.java)
 
     }
 }

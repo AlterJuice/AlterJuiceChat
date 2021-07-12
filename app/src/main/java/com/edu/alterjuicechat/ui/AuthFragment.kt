@@ -47,7 +47,7 @@ class AuthFragment : Fragment() {
         Toast.makeText(context, getString(R.string.toast_searching_the_server), Toast.LENGTH_LONG).show()
         showUIProgressIsLoading(true)
         setStartMessagingEnabled(false)
-        vm.flowGetTCPIpFromUDP()
+        vm.requestTcpIPFromUdp()
     }
 
     private fun processStepWithSessionID(sessionID: String){
@@ -105,6 +105,6 @@ class AuthFragment : Fragment() {
         setUIViewsEnabled(false)
         showUIProgressIsLoading(true)
         vm.saveUsername(inputUsernameText)
-        vm.flowGetSessionIDFromTCP(tcpIp, inputUsernameText)
+        vm.requestSessionIDFromTCP()
     }
 }
