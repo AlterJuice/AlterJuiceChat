@@ -4,6 +4,6 @@ import com.google.gson.Gson
 
 interface Payload
 
-fun Payload.toJson(): String{
-    return Gson().toJson(this)
+fun Payload.toJson(gson: Gson): String{
+    return gson.toJson(this)
 }
