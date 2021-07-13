@@ -23,17 +23,17 @@ object Consts {
 
     const val UDP_ADDRESS_FOR_EMULATOR = "10.0.2.2"
     const val UDP_ADDRESS_FOR_DEVICES = "255.255.255.255"
-    const val UDP_ADDRESS = UDP_ADDRESS_FOR_EMULATOR
+    val UDP_ADDRESS_BOTH = listOf(UDP_ADDRESS_FOR_EMULATOR, UDP_ADDRESS_FOR_DEVICES)
+    const val UDP_ADDRESS = UDP_ADDRESS_FOR_DEVICES
     // TODO("Change UDP_ADDRESS to UDP_ADDRESS_FOR_EMULATOR before build APK for devices
     //  and vice verse - use UDP_ADDRESS_FOR_EMULATOR for emulator app launches")
     const val UDP_PORT = 8888
     const val TCP_PORT = 6666
 
-
     const val PING_DELAY = 2000L
     const val TCP_TIMEOUT = 5000
-    const val UDP_TIMEOUT = 5000
-    const val UDP_DELAY = 2000L
+    const val UDP_TIMEOUT = 3000
+    const val UDP_DELAY = 0L
     const val TCP_CONNECTING_DELAY = 1000L
     const val UDP_PACKET_SIZE = 256
 
