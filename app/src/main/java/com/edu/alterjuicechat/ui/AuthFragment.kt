@@ -40,6 +40,7 @@ class AuthFragment : Fragment() {
                 }
                 binding.inputSignInField.visibility = View.VISIBLE
                 binding.inputUsername.setText(thisUserName)
+                binding.buttonSignIn.setOnClickListener { onLogInClick() }
             }
         })
         vm.liveSessionID.observe(viewLifecycleOwner, {
@@ -80,5 +81,17 @@ class AuthFragment : Fragment() {
 
     private fun showUIProgressIsLoading(isVisible: Boolean){
         binding.mainProgressBar.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun onLogInClick(){
+        val inputUsernameText = binding.inputUsername.text.toString()
+        if (inputUsernameText.isBlank()){
+            Toast.makeText(context, getString(R.string.toast_create_username), Toast.LENGTH_SHORT).show()
+            return
+        }
+        setUIViewsEnabled(false)
+        showUIProgressIsLoading(true)
+        vm.saveUsername(inputUsernameText)
+        vm.requestSessionIDFromTCP()
     }
 }
