@@ -51,10 +51,11 @@ class ChatAdapter(private val onChatClick: (UserDto) -> Unit) :
 
     class UserDifferenceCallback : DiffUtil.ItemCallback<Chat>() {
         override fun areContentsTheSame(oldItem: Chat, newItem: Chat): Boolean {
-            return oldItem.lastMessage == newItem.lastMessage
-                    && oldItem.countUnreadMessages == newItem.countUnreadMessages
-                    && oldItem.username == newItem.username
-                    && oldItem.userID == newItem.userID
+            return false
+            // return oldItem.lastMessage == newItem.lastMessage
+            //         && oldItem.countUnreadMessages == newItem.countUnreadMessages
+            //         && oldItem.username == newItem.username
+            //         && oldItem.userID == newItem.userID
         }
 
         override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean {

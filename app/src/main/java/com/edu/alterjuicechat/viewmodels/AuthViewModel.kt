@@ -25,12 +25,6 @@ class AuthViewModel(
         }
     }
 
-    fun disconnect(code: Int){
-        viewModelScope.launch(Dispatchers.IO){
-            authRepoDecorator.disconnect(code)
-        }
-    }
-
     fun requestTcpIPFromUdp(){
         viewModelScope.launch(Dispatchers.IO){
             authRepoDecorator.requestTcpIP()
@@ -42,13 +36,4 @@ class AuthViewModel(
         }
     }
 
-    // viewModelScope.launch {
-    //     flow { emit(udpWorker.getTcpIp()) }
-    //         .flowOn(Dispatchers.IO)
-    //         .collect {
-    //             withContext(Dispatchers.Main){
-    //                 runnable(it)
-    //             }
-    //         }
-    // }
 }

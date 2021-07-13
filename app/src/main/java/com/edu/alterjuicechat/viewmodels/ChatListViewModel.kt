@@ -17,7 +17,6 @@ class ChatListViewModel(
     dataStore: DataStore
 ) : ViewModel() {
     val users: LiveData<List<Chat>> = dataStore.mutableUsers
-    private var job: Job? = null
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

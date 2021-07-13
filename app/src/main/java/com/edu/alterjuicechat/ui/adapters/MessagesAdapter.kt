@@ -40,12 +40,11 @@ class MessagesAdapter(private val mySessionID: String) : ListAdapter<Message, Me
 
     class MessageDifferenceCallback : DiffUtil.ItemCallback<Message>() {
         override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return areItemsTheSame(oldItem, newItem)
+            return oldItem == newItem
         }
 
         override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return oldItem.text ==  newItem.text && oldItem.fromID == newItem.fromID
-                    && oldItem.date.time == newItem.date.time
+            return oldItem == newItem
         }
     }
 

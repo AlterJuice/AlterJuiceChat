@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.data.network.model.dto.UserDto
@@ -38,6 +39,7 @@ class ChatListFragment : BaseFragment() {
         with(binding.chatsList){
             adapter = chatsAdapter
             layoutManager = LinearLayoutManager(context)
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
         binding.buttonUpdateChats.setOnClickListener {
             vm.loadUsers()
