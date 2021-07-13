@@ -52,7 +52,6 @@ class ChatFragment : Fragment() {
         binding.includedMessagesList.messagesList.apply {
             adapter = messagesAdapter
             if (layoutManager == null)
-                //
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         }
         vm.messages.observe(viewLifecycleOwner, {
@@ -62,16 +61,16 @@ class ChatFragment : Fragment() {
             // Do not forget to remove line and swap to ListAdapter
             // *******************************************************************************
             binding.includedMessagesList.messagesList.scrollToPosition(messagesAdapter.itemCount-1)
-            binding.chatInputMessage.text.clear()
+            binding.textInputMessage.text.clear()
         })
         vm.clearUnreadCounter(user.id)
-        binding.chatInputSendButton.setOnClickListener {
+        binding.inputSendButton.setOnClickListener {
             performSendMessage()
         }
     }
 
     private fun performSendMessage(){
-        val msgText = binding.chatInputMessage.text.toString()
+        val msgText = binding.textInputMessage.text.toString()
         if (msgText.isNotBlank()) {
             vm.sendMessage(msgText)
         }

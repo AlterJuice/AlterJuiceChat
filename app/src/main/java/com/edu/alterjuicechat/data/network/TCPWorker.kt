@@ -32,7 +32,6 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     private val eventFlow = MutableSharedFlow<String>()
 
 
-
     suspend fun connectWithTcp(){
         val tcpIp: String = getTcpIP()
         var attempts = 0
@@ -67,8 +66,6 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
         }
     }
 
-
-
     private suspend fun runUpdatesReceiver(){
         receivingJob = scope.launch(Dispatchers.IO) {
             while(true) {
@@ -88,7 +85,6 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     private fun getTcpIP(): String{
         return dataStore.mutableTcpIP.value!!
     }
-
 
 
     suspend fun launchEventCollector(){

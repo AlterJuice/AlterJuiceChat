@@ -9,4 +9,5 @@
     <string name="found_server_on">Found server on %s</string>
     <string name="toast_searching_the_server">Searching the server. Please wait</string>
     <string name="toast_create_username">Create your username for chatting</string>
+    <string name="send_message_hint">Send message…</string>
 </resources>

@@ -48,7 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="hh:mm"
         tools:text="@tools:sample/date/hhmm" />
 
 

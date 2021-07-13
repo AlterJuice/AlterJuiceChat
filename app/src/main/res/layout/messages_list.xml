@@ -9,4 +9,4 @@
     android:paddingHorizontal="10dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:context=".ui.ChatListFragment"
-    tools:listitem="@layout/messages_list_item" />
+    tools:listitem="@layout/message_item_mine" />

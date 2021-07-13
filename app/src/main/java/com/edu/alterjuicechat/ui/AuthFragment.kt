@@ -16,11 +16,6 @@ class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
     private val vm by viewModel<AuthViewModel>()
 
-    private fun openChatListFragment(sessionID: String, username: String){
-        with(requireActivity() as MainActivity) {
-            replaceFragment(ChatListFragment.newInstance(sessionID, username), "Chat", false)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,55 +27,46 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.appStartMessaging.setOnClickListener(::onConnectClick)
+        binding.appStartMessaging.setOnClickListener{ onStartClick()}
+
         vm.liveTcpIP.observe(viewLifecycleOwner, {
-            processStepWithTcpIP(it)
+            // it is new TCP IP
+            if (it.isNotEmpty()) {
+                showUIProgressIsLoading(false)
+                val thisUserName = vm.getSavedUsername()
+                binding.foundTcpIpText.apply {
+                    visibility = View.VISIBLE
+                    text = getString(R.string.found_server_on, it)
+                }
+                binding.inputSignInField.visibility = View.VISIBLE
+                binding.inputUsername.setText(thisUserName)
+            }
         })
         vm.liveSessionID.observe(viewLifecycleOwner, {
-            processStepWithSessionID(it)
+            // it is new SessionID
+            if (it.isNotEmpty()) {
+                showUIProgressIsLoading(false)
+                val username = vm.getSavedUsername()
+                openChatListFragment(it, username)
+                vm.connect()
+                setUIViewsEnabled(true)
+            }
         })
-        // processNextStepWithIp(arguments?.getString())
-        // onLogInClick()
     }
 
-    private fun onConnectClick(v: View){
+    private fun onStartClick(){
         Toast.makeText(context, getString(R.string.toast_searching_the_server), Toast.LENGTH_LONG).show()
         showUIProgressIsLoading(true)
         setStartMessagingEnabled(false)
         vm.requestTcpIPFromUdp()
     }
 
-    private fun processStepWithSessionID(sessionID: String){
-        if (sessionID.isNotEmpty()) {
-            showUIProgressIsLoading(false)
-            val username = vm.getSavedUsername()
-            openChatListFragment(sessionID, username)
-            vm.connect()
-            setUIViewsEnabled(true)
+    private fun openChatListFragment(sessionID: String, username: String){
+        with(requireActivity() as MainActivity) {
+            replaceFragment(ChatListFragment.newInstance(sessionID, username), "Chat", false)
         }
     }
 
-    private fun processStepWithTcpIP(tcpIP: String){
-        if (tcpIP.isNotEmpty()) {
-            showUIProgressIsLoading(false)
-            showTCPInfoText(tcpIP)
-            processNextStepWithIp(tcpIP)
-        }
-    }
-
-    private fun showTCPInfoText(tcpIp: String) {
-        with(binding.foundTcpIpText) {
-            visibility = View.VISIBLE
-            text = getString(R.string.found_server_on, tcpIp)
-        }
-    }
-
-    private fun processNextStepWithIp(tcpIp: String){
-        val thisUserName = vm.getSavedUsername()
-        binding.inputSignInField.visibility = View.VISIBLE
-        binding.inputUsername.setText(thisUserName)
-        binding.buttonSignIn.setOnClickListener { onLogInClick(tcpIp) }
-    }
 
     private fun setStartMessagingEnabled(enabled: Boolean){
         binding.appStartMessaging.isEnabled = enabled
@@ -94,17 +80,5 @@ class AuthFragment : Fragment() {
 
     private fun showUIProgressIsLoading(isVisible: Boolean){
         binding.mainProgressBar.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
-    }
-
-    private fun onLogInClick(tcpIp: String){
-        val inputUsernameText = binding.inputUsername.text.toString()
-        if (inputUsernameText.isBlank()){
-            Toast.makeText(context, getString(R.string.toast_create_username), Toast.LENGTH_SHORT).show()
-            return
-        }
-        setUIViewsEnabled(false)
-        showUIProgressIsLoading(true)
-        vm.saveUsername(inputUsernameText)
-        vm.requestSessionIDFromTCP()
     }
 }

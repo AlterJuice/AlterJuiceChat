@@ -38,7 +38,7 @@ class ChatListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.includedChatsList.messagesList){
+        with(binding.includedChatsList.chatsList){
             adapter = chatsAdapter
             layoutManager = LinearLayoutManager(context)
         }

@@ -8,7 +8,7 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/chatHeader"
+        android:id="@+id/chatAppBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:elevation="10dp"
@@ -32,39 +32,37 @@
         layout="@layout/messages_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/chatInputFooter"
-        android:layout_below="@id/chatHeader" />
+        android:layout_above="@id/linearInputFooter"
+        android:layout_below="@id/chatAppBar" />
 
-    <RelativeLayout
-        android:id="@+id/chatInputFooter"
+    <LinearLayout
+        android:id="@+id/linearInputFooter"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_empty"
-
-        android:backgroundTint="?colorPrimaryDark">
+        android:backgroundTint="?colorPrimaryDark"
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/chatInputMessage"
-            android:layout_width="match_parent"
+            android:id="@+id/textInputMessage"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_toStartOf="@id/chatInputSendButton"
+            android:layout_weight="1"
             android:background="@null"
-            android:hint="Send message..."
-            android:paddingHorizontal="10dp"
-            />
+            android:hint="@string/send_message_hint"
+            android:inputType="text|textAutoComplete|textAutoCorrect"
+            android:paddingHorizontal="10dp" />
 
         <ImageView
-            android:id="@+id/chatInputSendButton"
+            android:id="@+id/inputSendButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:padding="5dp"
             android:src="@drawable/ic_round_send_24"
             app:tint="?colorSecondaryVariant" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
