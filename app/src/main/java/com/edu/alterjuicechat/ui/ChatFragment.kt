@@ -56,11 +56,6 @@ class ChatFragment : Fragment() {
         }
         vm.messages.observe(viewLifecycleOwner, {
             messagesAdapter.setItems(it)
-            messagesAdapter.notifyDataSetChanged()
-
-            // Do not forget to remove line and swap to ListAdapter
-            // *******************************************************************************
-            binding.includedMessagesList.messagesList.scrollToPosition(messagesAdapter.itemCount-1)
             binding.textInputMessage.text.clear()
         })
         vm.clearUnreadCounter(user.id)

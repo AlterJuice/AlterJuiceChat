@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.edu.alterjuicechat.Consts
+import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.data.network.model.dto.UserDto
 import com.edu.alterjuicechat.databinding.FragmentChatsListBinding
 import com.edu.alterjuicechat.ui.adapters.ChatAdapter
@@ -18,15 +19,12 @@ import org.koin.core.parameter.parametersOf
 
 
 class ChatListFragment : Fragment() {
-
-    private val sessionID by lazy { arguments?.getString(Consts.FRAGMENT_PARAM_SESSION_ID) }
-    private val username by lazy { arguments?.getString(Consts.PROFILE_KEY_NAME, Consts.BLANK_USERNAME_PLACEHOLDER) }
-
+    private lateinit var binding: FragmentChatsListBinding
     private val vm by viewModel<ChatListViewModel>(){
         parametersOf(sessionID)
     }
+    private val sessionID by lazy { arguments?.getString(Consts.FRAGMENT_PARAM_SESSION_ID) }
     private val chatsAdapter by lazy { ChatAdapter(::onChatClick) }
-    private lateinit var binding: FragmentChatsListBinding
 
 
     override fun onCreateView(
@@ -50,7 +48,7 @@ class ChatListFragment : Fragment() {
         }
         binding.buttonUpdateChats.setOnClickListener {
             vm.loadUsers()
-            Toast.makeText(context, "Users updated!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.toast_users_updated, Toast.LENGTH_SHORT).show()
         }
         // Moving connect request to auth fragment before ChatListFragment::newInstance call
         vm.users.observe(viewLifecycleOwner, {
@@ -62,8 +60,8 @@ class ChatListFragment : Fragment() {
     }
 
     private fun onChatClick(userDto: UserDto){
-        with(requireActivity() as MainActivity){
-            replaceFragment(ChatFragment.newInstance(sessionID!!, userDto.id, userDto.name), "PrivateChat", true)
+        with(requireActivity() as BaseActivity){
+            replaceFragment(ChatFragment.newInstance(sessionID!!, userDto.id, userDto.name), Consts.FRAGMENT_TAG_PRIVATE_CHAT, true)
         }
     }
 

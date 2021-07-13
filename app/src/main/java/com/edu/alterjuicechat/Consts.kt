@@ -13,6 +13,9 @@ object Consts {
     const val FRAGMENT_PARAM_USER_NAME = "user_name"
     const val FRAGMENT_PARAM_CHAT_TITLE = "chat_title"
 
+    const val FRAGMENT_TAG_PRIVATE_CHAT = "Tag:PrivateChat"
+    const val FRAGMENT_TAG_CHAT_LIST = "Tag:ChatList"
+
     // const val CHANNEL_ID = "channelId"
     // const val CHANNEL_NAME = "channelName"
     // const val CHANNEL_DESCRIPTION = "channelDescription"
