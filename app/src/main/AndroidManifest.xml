@@ -15,20 +15,6 @@
         android:theme="@style/Theme.AlterJuiceChat"
         android:usesCleartextTraffic="true">
 
-<!--        <service
-            android:name=".TCPService"
-            android:enabled="true"
-            android:exported="false"/>-->
-
-        <receiver
-            android:name=".TCPBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.edu.alterjuicechat.NOTIFICATION_CLICKED" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

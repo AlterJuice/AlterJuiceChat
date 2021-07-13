@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108"
+    android:autoMirrored="true">
+  <group android:scaleX="3.612162"
+      android:scaleY="3.612162"
+      android:translateX="17.878378"
+      android:translateY="28.714865">
+
+    <path
+        android:fillColor="@color/message_item_mine_background_color"
+        android:pathData="M 16 5 l -9 0 c -1 0 -1 0 -1 -1 c 0 -1 0 -1 1 -1 l 9 0 c 1 0 1 0 1 1 c 0 1 3 1 -1 1 Z"/>
+    <path android:fillColor="@color/message_item_not_mine_background_color"
+        android:pathData="M 13 8 l -9 0 c -1 0 -1 0 -1 -1 c 0 -1 0 -1 1 -1 l 9 0 c 1 0 1 0 1 1 c 0 1 0 1 -1 1 Z "
+        />
+    <path android:fillColor="@color/message_item_not_mine_background_color"
+        android:pathData="M 9 11 l -5 0 c -4 0 -1 0 -1 -1 c 0 -1 0 -1 1 -1 l 5 0 c 1 0 1 0 1 1 c 0 1 0 1 -1 1 Z"
+        />
+    <path android:fillColor="@color/message_item_mine_background_color"
+      android:pathData="M 17.5 7.5 l 0 3 c 0 0.5 0 0.5 -0.5 0.5 l -2 0 c -0.5 0 -0.5 0 -0.5 -0.5 l 0 -1 c 0 -0.5 0 -0.5 0.5 -0.5 c 0.5 0 0.5 0 0.5 0.5 c 0 0.5 0 0.5 0.5 0.5 c 0.5 0 0.5 0 0.5 -0.5 l 0 -2 c 0 -0.5 0 -0.5 0.5 -0.5 c 0.5 0 0.5 0 0.5 0.5 Z" />
+  </group>
+</vector>
