@@ -22,14 +22,15 @@ class UDPWorker(private val gson: Gson, private val dataStore: DataStore) {
         val messageToSend = "Send ip'des (${Date()})".toByteArray()
         var resultTcpIp: String? = null
         val datagramSocket = DatagramSocket().apply { soTimeout = Consts.UDP_TIMEOUT }
-        val sendPacket = DatagramPacket(messageToSend, messageToSend.size,
-            InetAddress.getByName(Consts.UDP_ADDRESS), Consts.UDP_PORT)
         val receiveBuffer = ByteArray(Consts.UDP_PACKET_SIZE)
         val receivePacket = DatagramPacket(receiveBuffer, receiveBuffer.size)
-
+        var udpAddress = Consts.UDP_ADDRESS
         while (resultTcpIp == null){
-            Log.i("UDPWorker@requestTcpIP","Trying to connect with UDP to ${Consts.UDP_ADDRESS}:${Consts.UDP_PORT}; Attempt #${++attempts}")
+            udpAddress = Consts.UDP_ADDRESS_BOTH[attempts % 2]
+            Log.i("UDPWorker@requestTcpIP","Trying to connect with UDP to ${udpAddress}:${Consts.UDP_PORT}; Attempt #${++attempts}")
             try {
+                val sendPacket = DatagramPacket(messageToSend, messageToSend.size,
+                    InetAddress.getByName(udpAddress), Consts.UDP_PORT)
                 datagramSocket.send(sendPacket)
                 datagramSocket.receive(receivePacket)
                 val str = String(receivePacket.data, 0, receivePacket.length)
