@@ -31,8 +31,8 @@ class UDPWorker(private val gson: Gson, private val dataStore: DataStore) {
                 val sendPacket = DatagramPacket(messageToSend, messageToSend.size, InetAddress.getByName(udpAddress), Consts.UDP_PORT)
                 datagramSocket.send(sendPacket)
                 datagramSocket.receive(receivePacket)
-                val str = String(receivePacket.data, 0, receivePacket.length)
-                resultTcpIp = gson.fromJson(str, UdpDto::class.java).ip
+                val udpPayloadStr = String(receivePacket.data, 0, receivePacket.length)
+                resultTcpIp = ParserDto(gson).parseUdp(udpPayloadStr).ip
                 dataStore.mutableTcpIP.postValue(resultTcpIp)
                 Log.i("UDPWorker@requestTcpIP","UDP Connected! TCP IP: $resultTcpIp;")
             }catch (timeout: SocketTimeoutException){

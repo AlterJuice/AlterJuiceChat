@@ -7,9 +7,8 @@ class ParserDto(private val gson: Gson){
     fun parseMessage(baseDtoMessagePayload: String): MessageDto{
         return gson.fromJson(baseDtoMessagePayload, MessageDto::class.java)
     }
-
-    fun parseUsersReceived(baseDtoUsersReceivedPayload: String): UsersReceivedDto{
-        return gson.fromJson(baseDtoUsersReceivedPayload, UsersReceivedDto::class.java)
+    fun parseUdp(payload: String): UdpDto{
+        return gson.fromJson(payload, UdpDto::class.java)
     }
     fun parseUsersList(baseDtoUsersListPayload: String): List<UserDto>{
         return gson.fromJson(baseDtoUsersListPayload, UsersReceivedDto::class.java).users
