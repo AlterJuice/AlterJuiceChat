@@ -36,6 +36,7 @@ object Consts {
     const val UDP_DELAY = 0L
     const val TCP_CONNECTING_DELAY = 1000L
     const val UDP_PACKET_SIZE = 256
+    const val USERS_LOOP_UPDATER_DELAY = 5000L
 
 
 }

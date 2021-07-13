@@ -1,6 +1,7 @@
 package com.edu.alterjuicechat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,11 @@ class ChatListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroy() {
+        vm.stopUsersLoopUpdater()
+        super.onDestroy()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding.includedChatsList.chatsList){
@@ -50,8 +56,9 @@ class ChatListFragment : Fragment() {
         vm.users.observe(viewLifecycleOwner, {
             chatsAdapter.setChats(it)
             chatsAdapter.addItem("CustomID", "TestChat")
+            Log.d("ChatListFragment", "Users updated!")
         })
-        vm.loadUsers()
+        vm.startUsersLoopUpdater()
     }
 
     private fun onChatClick(userDto: UserDto){
