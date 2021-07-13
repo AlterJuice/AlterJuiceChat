@@ -1,8 +1,6 @@
 package com.edu.alterjuicechat.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.data.network.TCPWorker
 import kotlinx.coroutines.Dispatchers

@@ -1,7 +1,7 @@
 package com.edu.alterjuicechat.data.network
 
 import com.edu.alterjuicechat.Consts
-import com.edu.alterjuicechat.data.network.model.dto.*
+import com.edu.alterjuicechat.data.network.model.dto.BaseDto
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow

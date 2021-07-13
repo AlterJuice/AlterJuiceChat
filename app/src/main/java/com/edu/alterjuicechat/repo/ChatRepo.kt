@@ -1,7 +1,6 @@
 package com.edu.alterjuicechat.repo
 
 import androidx.lifecycle.MutableLiveData
-import com.edu.alterjuicechat.data.network.model.dto.MessageDto
 import com.edu.alterjuicechat.ui.adapters.items.Message
 
 interface ChatRepo {

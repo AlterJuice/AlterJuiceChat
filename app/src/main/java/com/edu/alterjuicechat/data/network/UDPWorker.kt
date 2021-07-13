@@ -5,7 +5,6 @@ import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.data.network.model.dto.UdpDto
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
-import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress

@@ -1,7 +1,6 @@
 package com.edu.alterjuicechat.repo.decorators
 
 import androidx.lifecycle.MutableLiveData
-import com.edu.alterjuicechat.data.network.model.dto.MessageDto
 import com.edu.alterjuicechat.repo.ChatRepo
 import com.edu.alterjuicechat.ui.adapters.items.Message
 

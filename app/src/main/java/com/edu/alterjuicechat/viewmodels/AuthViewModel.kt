@@ -1,12 +1,12 @@
 package com.edu.alterjuicechat.viewmodels
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.alterjuicechat.data.network.DataStore
 import com.edu.alterjuicechat.repo.AuthRepo
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val authRepoDecorator: AuthRepo,

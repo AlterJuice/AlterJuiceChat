@@ -1,6 +1,5 @@
 package com.edu.alterjuicechat.ui.adapters.items
 
-import com.edu.alterjuicechat.data.network.model.dto.UserDto
 import java.text.SimpleDateFormat
 import java.util.*
 
