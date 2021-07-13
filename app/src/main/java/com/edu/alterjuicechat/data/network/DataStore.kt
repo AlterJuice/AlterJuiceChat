@@ -41,9 +41,10 @@ class DataStore {
     }
 
     fun processNewMessage(messageDto: MessageDto) {
+        // called from Main Context
         val msgList = getMutableMessagesByID(messageDto.from.id).value
         val message = Message(messageDto.from.id, messageDto.message, Date())
-        messages[messageDto.from.id]!!.value = ((msgList ?: listOf()) + message)
+        messages[messageDto.from.id]?.value = ((msgList ?: listOf()) + message)
         countUnreadMessages[messageDto.from.id] = (countUnreadMessages[messageDto.from.id] ?: 0) + 1
         updateLastMessage(messageDto.from.id, message)
     }
@@ -51,13 +52,13 @@ class DataStore {
     fun processSendMessage(sessionID: String, receiverID: String, message: String) {
         val msgList = getMutableMessagesByID(receiverID).value
         val newMsg = Message(sessionID, message, Date())
-        messages[receiverID]!!.postValue((msgList ?: listOf()) + newMsg)
+        messages[receiverID]?.postValue((msgList ?: listOf()) + newMsg)
         updateLastMessage(receiverID, newMsg)
     }
 
     private fun updateLastMessage(chatID: String, message: Message) {
         lastMessages[chatID] = message
-        processUsers(mutableUsers.value!!)
+        mutableUsers.value?.let { processUsers(it) }
     }
 
     fun getMutableMessagesByID(userID: String): MutableLiveData<List<Message>> {

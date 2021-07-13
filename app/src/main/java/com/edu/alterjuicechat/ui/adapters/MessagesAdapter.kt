@@ -10,13 +10,13 @@ import com.edu.alterjuicechat.databinding.MessageItemMineBinding
 import com.edu.alterjuicechat.databinding.MessageItemNotMineBinding
 import com.edu.alterjuicechat.ui.adapters.items.Message
 
+private const val VIEW_TYPE_MESSAGE_IS_MINE = 0
+private const val VIEW_TYPE_MESSAGE_IS_NOT_MINE = 1
 
 class MessagesAdapter(private val mySessionID: String) : ListAdapter<Message, MessagesAdapter.BaseMessageViewHolder<ViewBinding>>(MessageDifferenceCallback()){
-    private val collection: ArrayList<Message> = ArrayList()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMessageViewHolder<ViewBinding> {
 
-        return if (viewType == 0){
+        return if (viewType == VIEW_TYPE_MESSAGE_IS_MINE){
             MineMessagesHolder(MessageItemMineBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false))
         }else{
@@ -28,21 +28,14 @@ class MessagesAdapter(private val mySessionID: String) : ListAdapter<Message, Me
 
     override fun getItemViewType(position: Int): Int {
         // (collection[position].from.id == mySessionID).compareTo(true)
-        return if (collection[position].fromID == mySessionID) 0 else 1
+        if (getItem(position).fromID == mySessionID)
+            return VIEW_TYPE_MESSAGE_IS_MINE
+        return VIEW_TYPE_MESSAGE_IS_NOT_MINE
     }
 
-    override fun getItemCount(): Int {
-        return collection.size
-    }
-
-    fun setItems(messages: List<Message>) {
-        collection.clear()
-        collection.addAll(messages)
-        notifyDataSetChanged()
-    }
 
     override fun onBindViewHolder(holder: BaseMessageViewHolder<ViewBinding>, position: Int) {
-        holder.bind(collection[position])
+        holder.bind(getItem(position))
     }
 
     class MessageDifferenceCallback : DiffUtil.ItemCallback<Message>() {

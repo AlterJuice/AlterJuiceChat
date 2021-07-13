@@ -10,7 +10,6 @@ import com.edu.alterjuicechat.repo.AuthRepo
 import com.edu.alterjuicechat.repo.ChatListRepo
 import com.edu.alterjuicechat.repo.ChatRepo
 import com.edu.alterjuicechat.repo.decorators.AuthRepoDecorator
-import com.edu.alterjuicechat.repo.decorators.ChatListRepoDecorator
 import com.edu.alterjuicechat.repo.decorators.ChatRepoDecorator
 import com.edu.alterjuicechat.repo.localImpl.AuthRepoLocal
 import com.edu.alterjuicechat.repo.localImpl.ChatRepoLocal
@@ -57,7 +56,6 @@ object Modules {
     private fun getAuthRepoDecorator(dataStore: DataStore, localAuthRepo: AuthRepo, remoteAuthRepo: AuthRepo): AuthRepo = AuthRepoDecorator(dataStore, localAuthRepo, remoteAuthRepo)
 
     private fun getChatListRepoRemote(tcpWorker: TCPWorker): ChatListRepo = ChatListRepoRemote(tcpWorker)
-    private fun getChatListRepoDecorator(remoteChatListRepo: ChatListRepo): ChatListRepo = ChatListRepoDecorator(remoteChatListRepo)
 
     private fun getChatRepoLocal(dataStore: DataStore): ChatRepo = ChatRepoLocal(dataStore)
     private fun getChatRepoRemote(tcpWorker: TCPWorker): ChatRepo = ChatRepoRemote(tcpWorker)
@@ -79,7 +77,7 @@ object Modules {
 
     private val chatListRepoModule = module {
         single(named(NAME_CHAT_LIST_REPO_DECORATOR)) {
-            getChatListRepoDecorator(getChatListRepoRemote(get()))
+            getChatListRepoRemote(get())
         }
     }
 

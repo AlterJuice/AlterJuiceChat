@@ -9,14 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.edu.alterjuicechat.data.network.model.dto.UserDto
 import com.edu.alterjuicechat.databinding.ChatsListItemBinding
 import com.edu.alterjuicechat.ui.adapters.items.Chat
-import com.edu.alterjuicechat.ui.adapters.items.Message
 
 class ChatAdapter(private val onChatClick: (UserDto) -> Unit) :
     ListAdapter<Chat, ChatAdapter.ChatHolder>(UserDifferenceCallback()) {
-
-
-    private val chats: ArrayList<Chat> = ArrayList()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatHolder {
         val binding: ChatsListItemBinding = ChatsListItemBinding.inflate(
@@ -26,27 +21,9 @@ class ChatAdapter(private val onChatClick: (UserDto) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ChatHolder, position: Int) {
-        holder.bind(onChatClick, chats[position])
+        holder.bind(onChatClick, getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return chats.size
-    }
-
-    fun addItem(chatItem: Chat) {
-        chats.add(chatItem)
-        notifyItemInserted(chats.size)
-    }
-
-    fun addItem(userID: String, username: String, lastMessage: Message = Message(userID)) {
-        addItem(Chat(username, userID, lastMessage))
-    }
-
-    fun setChats(users: List<Chat>) {
-        chats.clear()
-        chats.addAll(users)
-        notifyDataSetChanged()
-    }
 
     class ChatHolder(private val binding: ChatsListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

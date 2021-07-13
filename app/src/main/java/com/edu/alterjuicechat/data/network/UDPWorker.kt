@@ -2,7 +2,6 @@ package com.edu.alterjuicechat.data.network
 
 import android.util.Log
 import com.edu.alterjuicechat.Consts
-import com.edu.alterjuicechat.data.network.model.dto.UdpDto
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import java.net.DatagramPacket

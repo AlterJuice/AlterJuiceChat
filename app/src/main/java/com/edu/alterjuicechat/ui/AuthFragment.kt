@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.databinding.FragmentAuthBinding
@@ -13,7 +12,7 @@ import com.edu.alterjuicechat.viewmodels.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class AuthFragment : Fragment() {
+class AuthFragment : BaseFragment() {
     private lateinit var binding: FragmentAuthBinding
     private val vm by viewModel<AuthViewModel>()
 
@@ -64,9 +63,7 @@ class AuthFragment : Fragment() {
     }
 
     private fun openChatListFragment(sessionID: String, username: String){
-        with(requireActivity() as BaseActivity) {
-            replaceFragment(ChatListFragment.newInstance(sessionID, username), Consts.FRAGMENT_TAG_CHAT_LIST, false)
-        }
+        replaceFragment(ChatListFragment.newInstance(sessionID, username), Consts.FRAGMENT_TAG_CHAT_LIST, false)
     }
 
 

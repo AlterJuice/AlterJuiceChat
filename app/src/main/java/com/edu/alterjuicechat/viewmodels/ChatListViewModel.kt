@@ -19,13 +19,8 @@ class ChatListViewModel(
     val users: LiveData<List<Chat>> = dataStore.mutableUsers
     private var job: Job? = null
 
-    fun loadUsers(){
+    init {
         viewModelScope.launch(Dispatchers.IO) {
-            chatListRepoDecorator.requestUsers()
-        }
-    }
-    fun startUsersLoopUpdater(){
-        job = viewModelScope.launch(Dispatchers.IO) {
             while (true){
                 chatListRepoDecorator.requestUsers()
                 delay(Consts.USERS_LOOP_UPDATER_DELAY)
@@ -33,7 +28,10 @@ class ChatListViewModel(
         }
     }
 
-    fun stopUsersLoopUpdater(){
-        job?.cancel()
+    fun loadUsers(){
+        viewModelScope.launch(Dispatchers.IO) {
+            chatListRepoDecorator.requestUsers()
+        }
     }
+
 }

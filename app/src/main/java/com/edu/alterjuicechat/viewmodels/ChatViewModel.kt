@@ -21,7 +21,7 @@ class ChatViewModel  (
         }
     }
 
-    fun clearUnreadCounter(userID: String){
-        chatRepoDecorator.clearUnreadCounter(userID)
+    fun clearUnreadCounter(){
+        chatRepoDecorator.clearUnreadCounter(receiverID)
     }
 }

@@ -27,13 +27,16 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <include
-        android:id="@+id/includedMessagesList"
-        layout="@layout/messages_list"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/linearInputFooter"
-        android:layout_below="@id/chatAppBar" />
+        android:layout_below="@id/chatAppBar"
+        android:background="@color/chat_background"
+        android:paddingHorizontal="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/message_item_mine" />
 
     <LinearLayout
         android:id="@+id/linearInputFooter"

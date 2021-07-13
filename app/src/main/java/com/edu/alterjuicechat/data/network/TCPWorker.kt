@@ -73,14 +73,14 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     }
 
     private fun getSessionID(): String{
-        return dataStore.mutableSessionID.value!!
+        return dataStore.mutableSessionID.value as String
     }
     private fun getUsername(): String{
-        return dataStore.mutableUsername.value!!
+        return dataStore.mutableUsername.value as String
     }
 
     private fun getTcpIP(): String{
-        return dataStore.mutableTcpIP.value!!
+        return dataStore.mutableTcpIP.value as String
     }
 
 

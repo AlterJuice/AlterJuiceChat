@@ -1,10 +1,10 @@
 package com.edu.alterjuicechat.ui
 
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.data.network.TCPWorker
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 
@@ -18,7 +18,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        MainScope().launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO){
             tcpWorker.disconnect(1)
             tcpWorker.stopAll()
         }
