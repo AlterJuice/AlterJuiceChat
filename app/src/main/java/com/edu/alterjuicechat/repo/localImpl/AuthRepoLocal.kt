@@ -16,11 +16,11 @@ class AuthRepoLocal(
         return profilePrefs.getString(Consts.PROFILE_KEY_NAME, "")!!
     }
 
-    override suspend fun connect(sessionID: String, username: String) {
+    override suspend fun connect() {
         throw UnsupportedOperationException("Local auth repo cannot perform connect request")
     }
 
-    override suspend fun disconnect(sessionID: String, code: Int) {
+    override suspend fun disconnect(code: Int) {
         throw UnsupportedOperationException("Local auth repo cannot perform disconnect request")
     }
 

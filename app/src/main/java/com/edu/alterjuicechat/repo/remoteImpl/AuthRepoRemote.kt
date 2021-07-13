@@ -17,12 +17,12 @@ class AuthRepoRemote(
         throw UnsupportedOperationException("Remote auth repo cannot perform getUsername request")
     }
 
-    override suspend fun connect(sessionID: String, username: String) {
-        tcpWorker.connect(sessionID, username)
+    override suspend fun connect() {
+        tcpWorker.connect()
     }
 
-    override suspend fun disconnect(sessionID: String, code: Int) {
-        tcpWorker.disconnect(sessionID, code)
+    override suspend fun disconnect(code: Int) {
+        tcpWorker.disconnect(code)
     }
 
     override suspend fun requestSessionID() {

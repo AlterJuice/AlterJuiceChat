@@ -17,12 +17,12 @@ class AuthRepoDecorator(
         return localAuthRepo.getSavedUsername()
     }
 
-    override suspend fun connect(sessionID: String, username: String) {
-        remoteAuthRepo.connect(sessionID, username)
+    override suspend fun connect() {
+        remoteAuthRepo.connect()
     }
 
-    override suspend fun disconnect(sessionID: String, code: Int) {
-        remoteAuthRepo.disconnect(sessionID, code)
+    override suspend fun disconnect(code: Int) {
+        remoteAuthRepo.disconnect(code)
     }
 
     override suspend fun requestSessionID() {

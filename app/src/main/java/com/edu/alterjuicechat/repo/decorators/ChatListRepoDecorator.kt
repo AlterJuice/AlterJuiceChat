@@ -1,10 +1,8 @@
 package com.edu.alterjuicechat.repo.decorators
 
-import com.edu.alterjuicechat.data.network.DataStore
 import com.edu.alterjuicechat.repo.ChatListRepo
 
 class ChatListRepoDecorator(
-    private val dataStore: DataStore,
     private val remoteChatListRepo: ChatListRepo
 ) : ChatListRepo {
 

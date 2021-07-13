@@ -136,22 +136,24 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
         stopEventListener()
     }
 
-    private suspend fun connectWithIdAndUsername(sessionID: String, username: String): String{
-        connect(sessionID, username)
-        return sessionID
-    }
-
     suspend fun requestUsers() {
         val action = generator.generateGetUsers(getSessionID())
         sendToServer(action)
     }
 
-    suspend fun connect(id: String, name: String){
-        val action = generator.generateConnect(id, name)
+    suspend fun connect(){
+        val sessionID = getSessionID()
+        val name = getUsername()
+        connect(sessionID, name)
+    }
+    private suspend fun connect(sessionID: String, username: String){
+        val action = generator.generateConnect(sessionID, username)
         sendToServer(action)
     }
-    suspend fun disconnect(id: String, code: Int){
-        val action = generator.generateDisconnect(id, code)
+
+    suspend fun disconnect(code: Int){
+        val sessionID = getSessionID()
+        val action = generator.generateDisconnect(sessionID, code)
         sendToServer(action)
     }
 

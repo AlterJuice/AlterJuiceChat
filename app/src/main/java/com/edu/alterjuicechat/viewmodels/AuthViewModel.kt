@@ -12,7 +12,6 @@ class AuthViewModel(
     private val authRepoDecorator: AuthRepo,
     dataStore: DataStore
 ) : ViewModel() {
-    private val privateTcpIP: MutableLiveData<String> = MutableLiveData()
     val liveTcpIP: LiveData<String> = dataStore.mutableTcpIP
     val liveSessionID: LiveData<String> = dataStore.mutableSessionID
 
@@ -21,28 +20,14 @@ class AuthViewModel(
     fun saveUsername(username: String) = authRepoDecorator.saveUsername(username)
 
     fun connect(){
-        val sessionID = liveSessionID.value as String
-        val username = getSavedUsername()
-        connect(sessionID, username)
-    }
-
-    fun connect(sessionID: String, username: String){
         viewModelScope.launch(Dispatchers.IO){
-            if (sessionID.isNotBlank() && username.isNotBlank()){
-                authRepoDecorator.connect(sessionID, username)
-            }
+            authRepoDecorator.connect()
         }
     }
 
     fun disconnect(code: Int){
-        disconnect(liveSessionID.value!!, code)
-    }
-
-    fun disconnect(sessionID: String, code: Int){
         viewModelScope.launch(Dispatchers.IO){
-            if (sessionID.isNotBlank()){
-                authRepoDecorator.disconnect(sessionID, code)
-            }
+            authRepoDecorator.disconnect(code)
         }
     }
 

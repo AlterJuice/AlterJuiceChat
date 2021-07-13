@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.alterjuicechat.data.network.DataStore
+import com.edu.alterjuicechat.data.network.model.Chat
 import com.edu.alterjuicechat.data.network.model.dto.UserDto
 import com.edu.alterjuicechat.repo.ChatListRepo
 import com.edu.alterjuicechat.ui.adapters.ChatAdapter
@@ -15,7 +16,7 @@ class ChatListViewModel(
     private val chatListRepoDecorator: ChatListRepo,
     dataStore: DataStore
 ) : ViewModel() {
-    val users: LiveData<List<ChatAdapter.ChatItem>> = dataStore.mutableUsers
+    val users: LiveData<List<Chat>> = dataStore.mutableUsers
 
     fun loadUsers(){
         viewModelScope.launch(Dispatchers.IO) {
