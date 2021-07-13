@@ -38,6 +38,7 @@ class DataStore {
 
     fun clearUnreadCounter(userID: String) {
         countUnreadMessages[userID] = 0
+        mutableUsers.value?.let { processUsers(it) }
     }
 
     fun processNewMessage(messageDto: MessageDto) {
