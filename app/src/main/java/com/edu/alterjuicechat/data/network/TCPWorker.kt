@@ -24,9 +24,6 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     private var eventCollectorJob: Job? = null
     private var pingPongJob: Job? = null
 
-    private lateinit var tcpIp: String
-
-
     private val job = SupervisorJob()
     private val scope = CoroutineScope(job + Dispatchers.Default)
     private val eventFlow = MutableSharedFlow<String>()
@@ -97,7 +94,6 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
                         dataStore.processRawUsers(parser.parseUsersList(baseDto.payload))
                     }
                     BaseDto.Action.PONG -> {}
-                    // BaseDto.Action.CONNECT -> TODO()
                     BaseDto.Action.CONNECTED -> {
                         val sessionID = parser.parseConnected(baseDto.payload).id
                         withContext(Dispatchers.Main) {
@@ -107,7 +103,6 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
                         launchPingPong(sessionID)
                         connect(sessionID, getUsername())
                     }
-                    // BaseDto.Action.SEND_MESSAGE -> TODO()
                     BaseDto.Action.NEW_MESSAGE -> {
                         withContext(Dispatchers.Main) {
                             dataStore.processNewMessage(parser.parseMessage(baseDto.payload))
@@ -119,17 +114,12 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
         }
     }
 
-    private fun stopReceiver(){
+    fun stopAll(){
         receivingJob?.cancel()
-    }
-
-    private fun stopEventListener(){
         eventCollectorJob?.cancel()
-    }
-
-    private fun stopAll(){
-        stopReceiver()
-        stopEventListener()
+        pingPongJob?.cancel()
+        reader.close()
+        writer.close()
     }
 
     suspend fun requestUsers() {
