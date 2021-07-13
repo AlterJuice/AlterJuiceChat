@@ -3,6 +3,7 @@ package com.edu.alterjuicechat.repo.decorators
 import androidx.lifecycle.MutableLiveData
 import com.edu.alterjuicechat.data.network.model.dto.MessageDto
 import com.edu.alterjuicechat.repo.ChatRepo
+import com.edu.alterjuicechat.ui.adapters.items.Message
 
 class ChatRepoDecorator
     (
@@ -17,8 +18,12 @@ class ChatRepoDecorator
         return remoteChatRepo.sendMessage(sessionID, receiverID, message)
     }
 
-    override fun getMessagesByID(userID: String): MutableLiveData<List<MessageDto>> {
+    override fun getMessagesByID(userID: String): MutableLiveData<List<Message>> {
         return localChatRepoDecorator.getMessagesByID(userID)
+    }
+
+    override fun clearUnreadCounter(userID: String) {
+        localChatRepoDecorator.clearUnreadCounter(userID)
     }
 
 

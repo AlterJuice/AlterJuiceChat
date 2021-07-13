@@ -58,6 +58,7 @@ class ChatFragment : Fragment() {
             binding.includedMessagesList.messagesList.scrollToPosition(messagesAdapter.itemCount-1)
             binding.chatInputMessage.text.clear()
         })
+        vm.clearUnreadCounter(user.id)
         binding.chatInputSendButton.setOnClickListener {
             performSendMessage()
         }

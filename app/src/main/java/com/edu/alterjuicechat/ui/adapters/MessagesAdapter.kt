@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.edu.alterjuicechat.data.network.model.dto.MessageDto
 import com.edu.alterjuicechat.databinding.MessageItemMineBinding
 import com.edu.alterjuicechat.databinding.MessageItemNotMineBinding
+import com.edu.alterjuicechat.ui.adapters.items.Message
 
 
 class MessagesAdapter(private val mySessionID: String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val maxMessageSize = 1400f
 
-    private val collection: ArrayList<MessageDto> = ArrayList()
+    private val collection: ArrayList<Message> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 0){
@@ -24,7 +25,7 @@ class MessagesAdapter(private val mySessionID: String) :
 
     override fun getItemViewType(position: Int): Int {
         // (collection[position].from.id == mySessionID).compareTo(true)
-        return if (collection[position].from.id == mySessionID) 0 else 1
+        return if (collection[position].fromID == mySessionID) 0 else 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -39,32 +40,32 @@ class MessagesAdapter(private val mySessionID: String) :
         return collection.size
     }
 
-    fun addItem(message: MessageDto) {
+    fun addItem(message: Message) {
         collection.add(message)
         notifyItemInserted(collection.size)
     }
 
-    fun setItems(messages: List<MessageDto>) {
+    fun setItems(messages: List<Message>) {
         collection.clear()
         collection.addAll(messages)
         notifyDataSetChanged()
     }
 
     interface MessagesViewHolder {
-        fun bind(message: MessageDto)
+        fun bind(message: Message)
     }
 
     class MineMessagesHolder(private val binding: MessageItemMineBinding) :
         RecyclerView.ViewHolder(binding.root), MessagesViewHolder {
-        override fun bind(message: MessageDto) {
-            binding.messageText.text = message.message
+        override fun bind(message: Message) {
+            binding.messageText.text = message.text
         }
     }
 
     class NotMineMessagesHolder(private val binding: MessageItemNotMineBinding) :
         RecyclerView.ViewHolder(binding.root), MessagesViewHolder {
-        override fun bind(message: MessageDto) {
-            binding.messageText.text = message.message
+        override fun bind(message: Message) {
+            binding.messageText.text = message.text
         }
 
     }
