@@ -13,4 +13,11 @@ class Message(
     fun getFormattedDate(): String {
         return SimpleDateFormat("k:mm").format(date)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Message){
+            return fromID==other.fromID && text == other.text && date.time == other.date.time
+        }
+        return false
+    }
 }

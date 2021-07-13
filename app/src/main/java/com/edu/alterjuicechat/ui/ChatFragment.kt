@@ -31,6 +31,12 @@ class ChatFragment : Fragment() {
     private val messagesAdapter by lazy{ MessagesAdapter(sessionID!!) }
     private val chatTitle by lazy{ arguments?.getString(Consts.FRAGMENT_PARAM_CHAT_TITLE)?: Consts.BLANK_TITLE_PLACEHOLDER }
 
+    override fun onDestroy() {
+        // Setting unread counter to 0 when exiting chat fragment
+        vm.clearUnreadCounter(user.id)
+        super.onDestroy()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

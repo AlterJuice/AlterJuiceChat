@@ -14,4 +14,5 @@ class Chat(
     fun getFormattedDate(): String{
         return lastMessage.getFormattedDate()
     }
+
 }
