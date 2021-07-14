@@ -76,6 +76,8 @@
             tools:visibility="visible" />
 
         <EditText
+            android:visibility="gone"
+            tools:visibility="visible"
             android:id="@+id/textInputUsername"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -87,6 +89,8 @@
             app:layout_constraintTop_toBottomOf="@id/foundTcpIpText" />
 
         <Button
+            android:visibility="gone"
+            tools:visibility="visible"
             android:id="@+id/buttonSignIn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

@@ -47,6 +47,7 @@ class AuthFragment : BaseFragment() {
                     text = getString(R.string.found_server_on, it)
                 }
                 binding.buttonSignIn.visibility = View.VISIBLE
+                binding.textInputUsername.visibility = View.VISIBLE
                 binding.textInputUsername.setText(thisUserName)
                 binding.buttonSignIn.setOnClickListener { onLogInClick() }
             }
