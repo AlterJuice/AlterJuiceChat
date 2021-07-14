@@ -36,18 +36,20 @@ class AuthFragment : BaseFragment() {
         animationDrawable.start()
 
 
-        binding.appStartMessaging.setOnClickListener{ onStartClick()}
+        binding.appStartMessaging.setOnClickListener { onStartClick() }
         vm.liveTcpIP.observe(viewLifecycleOwner, {
             // it is new TCP IP
             if (it.isNotEmpty()) {
                 showUIProgressIsLoading(false)
-                val thisUserName = vm.getSavedUsername()
-                binding.foundTcpIpText.apply {
+                with(binding.mainAuthForm) {
+                    alpha = 0f
+                    scaleX = 0.7f
+                    scaleY = 0.7f
                     visibility = View.VISIBLE
-                    text = getString(R.string.found_server_on, it)
+                    animate().setDuration(500).scaleX(1f).scaleY(1f).alpha(1f).start()
                 }
-                binding.buttonSignIn.visibility = View.VISIBLE
-                binding.textInputUsername.visibility = View.VISIBLE
+                val thisUserName = vm.getSavedUsername()
+                binding.foundTcpIpText.text = getString(R.string.found_server_on, it)
                 binding.textInputUsername.setText(thisUserName)
                 binding.buttonSignIn.setOnClickListener { onLogInClick() }
             }
@@ -64,36 +66,44 @@ class AuthFragment : BaseFragment() {
         })
     }
 
-    private fun onStartClick(){
+    private fun onStartClick() {
+        setStartMessagingEnabled(false)
+        binding.appStartMessaging.animate().scaleY(0f).scaleX(0f).setDuration(300).start()
         Toast.makeText(context, getString(R.string.toast_searching_the_server), Toast.LENGTH_LONG).show()
         showUIProgressIsLoading(true)
-        setStartMessagingEnabled(false)
         vm.requestTcpIPFromUdp()
     }
 
-    private fun openChatListFragment(sessionID: String, username: String){
-        replaceFragment(ChatListFragment.newInstance(sessionID, username), Consts.FRAGMENT_TAG_CHAT_LIST, false)
+    private fun openChatListFragment(sessionID: String, username: String) {
+        replaceFragment(
+            ChatListFragment.newInstance(sessionID, username),
+            Consts.FRAGMENT_TAG_CHAT_LIST,
+            false
+        )
     }
 
 
-    private fun setStartMessagingEnabled(enabled: Boolean){
+    private fun setStartMessagingEnabled(enabled: Boolean) {
+        val scale = if (enabled) 1f else 0f
+        binding.appStartMessaging.animate().scaleY(scale).scaleX(scale).setDuration(300).start()
         binding.appStartMessaging.isEnabled = enabled
     }
 
-    private fun setUIViewsEnabled(enabled: Boolean){
+    private fun setUIViewsEnabled(enabled: Boolean) {
         setStartMessagingEnabled(enabled)
         binding.buttonSignIn.isEnabled = enabled
         binding.textInputUsername.isEnabled = enabled
     }
 
-    private fun showUIProgressIsLoading(isVisible: Boolean){
+    private fun showUIProgressIsLoading(isVisible: Boolean) {
         binding.mainProgressBar.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
     }
 
-    private fun onLogInClick(){
+    private fun onLogInClick() {
         val inputUsernameText = binding.textInputUsername.text.toString()
-        if (inputUsernameText.isBlank()){
-            Toast.makeText(context, getString(R.string.toast_create_username), Toast.LENGTH_SHORT).show()
+        if (inputUsernameText.isBlank()) {
+            Toast.makeText(context, getString(R.string.toast_create_username), Toast.LENGTH_SHORT)
+                .show()
             return
         }
         setUIViewsEnabled(false)
