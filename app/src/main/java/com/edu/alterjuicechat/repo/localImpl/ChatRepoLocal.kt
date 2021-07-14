@@ -1,7 +1,7 @@
 package com.edu.alterjuicechat.repo.localImpl
 
 import androidx.lifecycle.MutableLiveData
-import com.edu.alterjuicechat.data.network.DataStore
+import com.edu.alterjuicechat.repo.DataStore
 import com.edu.alterjuicechat.repo.ChatRepo
 import com.edu.alterjuicechat.ui.adapters.items.Message
 

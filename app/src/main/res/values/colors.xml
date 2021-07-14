@@ -3,10 +3,10 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-    <color name="chat_background">#E3F2FD</color>
+    <color name="app_background">#B3E5FC</color>
     <color name="chat_item_background">#90CAF9</color>
     <color name="primaryDark">#1985c1</color>
+    <color name="red">#E53935</color>
 
     <color name="message_item_mine_background_color">#60b4f4</color>
     <color name="message_item_not_mine_background_color">#AED581</color>

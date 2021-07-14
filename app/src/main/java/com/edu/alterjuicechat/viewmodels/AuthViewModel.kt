@@ -3,7 +3,7 @@ package com.edu.alterjuicechat.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.alterjuicechat.data.network.DataStore
+import com.edu.alterjuicechat.repo.DataStore
 import com.edu.alterjuicechat.repo.AuthRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

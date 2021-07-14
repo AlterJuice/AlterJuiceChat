@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.databinding.FragmentChatBinding
 import com.edu.alterjuicechat.ui.adapters.MessagesAdapter
+import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.ChatViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -56,7 +57,7 @@ class ChatFragment : BaseFragment(){
             binding.textInputMessage.text.clear()
         })
         // vm.clearUnreadCounter() // it can be called in onDestroy method. No sense to call it twice
-        binding.inputSendButton.setOnClickListener {
+        binding.buttonSendMessage.setOnClickListener {
             performSendMessage()
         }
     }
@@ -65,8 +66,15 @@ class ChatFragment : BaseFragment(){
         val msgText = binding.textInputMessage.text.toString()
         if (msgText.isNotBlank()) {
             vm.sendMessage(msgText)
+            animateSendButton()
         }
     }
+    private fun animateSendButton(){
+        binding.buttonSendMessage.animate().scaleY(1.1f).scaleX(1.1f).setDuration(200).withEndAction {
+            binding.buttonSendMessage.animate().scaleX(1f).scaleY(1f).start()
+        }
+    }
+
 
     private fun setChatTitle(title: String){
         binding.chatHeaderTitle.text = title

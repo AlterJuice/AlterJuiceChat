@@ -1,11 +1,13 @@
 package com.edu.alterjuicechat.data.network
 
+import android.util.Log
 import com.edu.alterjuicechat.Consts
-import com.edu.alterjuicechat.data.network.model.dto.BaseDto
+import com.edu.alterjuicechat.data.network.dto.GeneratorDto
+import com.edu.alterjuicechat.data.network.dto.ParserDto
+import com.edu.alterjuicechat.data.network.dto.model.BaseDto
+import com.edu.alterjuicechat.repo.DataStore
 import com.google.gson.Gson
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
@@ -21,26 +23,23 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     private val parser = ParserDto(gson)
 
     private var receivingJob: Job? = null
-    private var eventCollectorJob: Job? = null
     private var pingPongJob: Job? = null
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(job + Dispatchers.Default)
-    private val eventFlow = MutableSharedFlow<String>()
 
 
     suspend fun connectWithTcp(){
         val tcpIp: String = getTcpIP()
         var attempts = 0
-        while (true){  // was while sessionID == null
+        while (true){
             println("Trying to connect with TCP to ${tcpIp}:${Consts.TCP_PORT}; Sleep ${Consts.TCP_CONNECTING_DELAY/1000}s; Attempt #${++attempts}")
             try {
                 clientSocket = Socket(tcpIp, Consts.TCP_PORT).apply { soTimeout = Consts.TCP_TIMEOUT }
                 writer = PrintWriter(clientSocket.getOutputStream(), true)
                 reader = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
-                launchEventCollector()
                 runUpdatesReceiver()
-                return
+                break
             }catch (e: SocketTimeoutException){
                 delay(Consts.TCP_CONNECTING_DELAY)
             }catch (e: Exception){
@@ -53,11 +52,7 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     private suspend fun launchPingPong(sessionID: String){
         pingPongJob = scope.launch(Dispatchers.IO) {
             while (true){
-                try {
-                    sendToServer(generator.generatePing(sessionID))
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
+                sendToServer(generator.generatePing(sessionID))
                 delay(Consts.PING_DELAY)
             }
         }
@@ -67,7 +62,7 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
         receivingJob = scope.launch(Dispatchers.IO) {
             while(true) {
                 val line = reader.readLine()
-                eventFlow.emit(line)
+                processUpdates(line)
             }
         }
     }
@@ -75,6 +70,7 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     private fun getSessionID(): String{
         return dataStore.mutableSessionID.value as String
     }
+
     private fun getUsername(): String{
         return dataStore.mutableUsername.value as String
     }
@@ -84,31 +80,24 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     }
 
 
-    suspend fun launchEventCollector(){
-        eventCollectorJob = scope.launch(Dispatchers.IO) {
-            eventFlow.collect{
-                val baseDto = parser.parseBaseDto(it)
-                println("EventListener: Action ${baseDto.action}; Payload: ${baseDto.payload}")
-                when (baseDto.action) {
-                    BaseDto.Action.USERS_RECEIVED -> {
-                        dataStore.processRawUsers(parser.parseUsersList(baseDto.payload))
-                    }
-                    BaseDto.Action.PONG -> {}
-                    BaseDto.Action.CONNECTED -> {
-                        val sessionID = parser.parseConnected(baseDto.payload).id
-                        withContext(Dispatchers.Main) {
-                            dataStore.mutableSessionID.value = sessionID
-                            println("TCP Connected! SessionID: ${getSessionID()};")
-                        }
-                        launchPingPong(sessionID)
-                        connect(sessionID, getUsername())
-                    }
-                    BaseDto.Action.NEW_MESSAGE -> {
-                        withContext(Dispatchers.Main) {
-                            dataStore.processNewMessage(parser.parseMessage(baseDto.payload))
-                        }
-                    }
-                    // BaseDto.Action.DISCONNECT -> TODO()
+    private suspend fun processUpdates(stringUpdate: String){
+        val baseDto = parser.parseBaseDto(stringUpdate)
+        Log.i("EventListener", "Action ${baseDto.action}; Payload: ${baseDto.payload}")
+        when (baseDto.action) {
+            BaseDto.Action.USERS_RECEIVED -> { dataStore.processRawUsers(parser.parseUsersList(baseDto.payload)) }
+            BaseDto.Action.PONG -> {}
+            BaseDto.Action.CONNECTED -> {
+                val sessionID = parser.parseConnected(baseDto.payload).id
+                withContext(Dispatchers.Main) {
+                    dataStore.mutableSessionID.value = sessionID
+                    println("TCP Connected! SessionID: ${getSessionID()};")
+                }
+                connect(sessionID, getUsername())
+                launchPingPong(sessionID)
+            }
+            BaseDto.Action.NEW_MESSAGE -> {
+                withContext(Dispatchers.Main) {
+                    dataStore.processNewMessage(parser.parseMessage(baseDto.payload))
                 }
             }
         }
@@ -116,7 +105,6 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
 
     fun stopAll(){
         receivingJob?.cancel()
-        eventCollectorJob?.cancel()
         pingPongJob?.cancel()
         reader.close()
         writer.close()
@@ -132,6 +120,7 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
         val name = getUsername()
         connect(sessionID, name)
     }
+
     private suspend fun connect(sessionID: String, username: String){
         val action = generator.generateConnect(sessionID, username)
         sendToServer(action)
@@ -150,6 +139,10 @@ class TCPWorker(private val gson: Gson, private val dataStore: DataStore) {
     }
 
     private suspend fun sendToServer(action: BaseDto){
-        writer.println(action.toJson(gson))
+        try {
+            writer.println(action.toJson(gson))
+        }catch (e: java.lang.Exception){
+            e.printStackTrace()
+        }
     }
 }

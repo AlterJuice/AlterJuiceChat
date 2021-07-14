@@ -1,4 +1,4 @@
-package com.edu.alterjuicechat.ui
+package com.edu.alterjuicechat.ui.base
 
 import androidx.fragment.app.Fragment
 

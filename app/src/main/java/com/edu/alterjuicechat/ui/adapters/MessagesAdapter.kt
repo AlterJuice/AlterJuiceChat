@@ -27,12 +27,10 @@ class MessagesAdapter(private val mySessionID: String) : ListAdapter<Message, Me
 
 
     override fun getItemViewType(position: Int): Int {
-        // (collection[position].from.id == mySessionID).compareTo(true)
         if (getItem(position).fromID == mySessionID)
             return VIEW_TYPE_MESSAGE_IS_MINE
         return VIEW_TYPE_MESSAGE_IS_NOT_MINE
     }
-
 
     override fun onBindViewHolder(holder: BaseMessageViewHolder<ViewBinding>, position: Int) {
         holder.bind(getItem(position))
@@ -52,7 +50,6 @@ class MessagesAdapter(private val mySessionID: String) : ListAdapter<Message, Me
     abstract class BaseMessageViewHolder<VB: ViewBinding>(protected val binding: VB) : RecyclerView.ViewHolder(binding.root){
         abstract fun bind(message: Message)
     }
-
 
     class MineMessagesHolder(binding: MessageItemMineBinding) : BaseMessageViewHolder<MessageItemMineBinding>(binding) {
         override fun bind(message: Message) {

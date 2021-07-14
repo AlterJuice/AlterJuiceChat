@@ -1,4 +1,4 @@
-package com.edu.alterjuicechat.data.network.model.dto
+package com.edu.alterjuicechat.data.network.dto.model
 
 import com.google.gson.Gson
 

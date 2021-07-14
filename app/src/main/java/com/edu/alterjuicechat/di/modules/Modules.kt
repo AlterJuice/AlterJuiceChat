@@ -3,7 +3,7 @@
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.edu.alterjuicechat.Consts
-import com.edu.alterjuicechat.data.network.DataStore
+import com.edu.alterjuicechat.repo.DataStore
 import com.edu.alterjuicechat.data.network.TCPWorker
 import com.edu.alterjuicechat.data.network.UDPWorker
 import com.edu.alterjuicechat.repo.AuthRepo
@@ -28,19 +28,12 @@ import org.koin.dsl.module
 const val NAME_AUTH_REPO_LOCAL = "AuthRepoLocal"
 const val NAME_AUTH_REPO_REMOTE = "AuthRepoRemote"
 const val NAME_AUTH_REPO_DECORATOR = "AuthRepoDecorator"
-
-// const val NAME_CHAT_REPO_LOCAL = "ChatRepoLocal"
-// const val NAME_CHAT_REPO_REMOTE = "ChatRepoRemote"
 const val NAME_CHAT_REPO_DECORATOR = "ChatRepoDecorator"
-
-// const val NAME_CHAT_LIST_REPO_LOCAL = "ChatListRepoLocal"
-// const val NAME_CHAT_LIST_REPO_REMOTE = "ChatListRepoRemote"
 const val NAME_CHAT_LIST_REPO_DECORATOR = "ChatListRepoDecorator"
 
 object Modules {
 
     private val thingsModule = module{
-        // get context via androidApplication() or just get() extension function
         factory { androidContext().getSharedPreferences(Consts.PROFILE_PREFERENCES, MODE_PRIVATE) }
         single { Gson() }
         single { DataStore() }

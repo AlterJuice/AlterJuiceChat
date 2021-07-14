@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.edu.alterjuicechat.data.network.model.dto.UserDto
+import com.edu.alterjuicechat.data.network.dto.model.UserDto
 import com.edu.alterjuicechat.databinding.ChatsListItemBinding
 import com.edu.alterjuicechat.ui.adapters.items.Chat
 

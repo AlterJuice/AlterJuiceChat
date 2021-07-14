@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/chat_item_height"
+    android:background="@color/chat_item_background"
+    android:foreground="?android:attr/selectableItemBackground"
     android:paddingHorizontal="10dp"
     android:paddingTop="5dp"
     android:paddingBottom="10dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:background="@color/chat_item_background"
     tools:context=".ui.ChatListFragment">
 
     <TextView
@@ -33,13 +33,13 @@
 
     <TextView
         android:id="@+id/chatCountUnreadMessages"
-        android:layout_above="@id/chatLastMessageDate"
-        android:textStyle="bold"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:gravity="center"
+        android:layout_above="@id/chatLastMessageDate"
         android:layout_alignParentEnd="true"
         android:background="@drawable/shape_circle"
+        android:gravity="center"
+        android:textStyle="bold"
         tools:text="12" />
 
     <TextView

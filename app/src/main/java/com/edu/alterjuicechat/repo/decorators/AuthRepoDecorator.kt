@@ -1,6 +1,6 @@
 package com.edu.alterjuicechat.repo.decorators
 
-import com.edu.alterjuicechat.data.network.DataStore
+import com.edu.alterjuicechat.repo.DataStore
 import com.edu.alterjuicechat.repo.AuthRepo
 
 class AuthRepoDecorator(

@@ -4,11 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.alterjuicechat.Consts
-import com.edu.alterjuicechat.data.network.DataStore
+import com.edu.alterjuicechat.repo.DataStore
 import com.edu.alterjuicechat.repo.ChatListRepo
 import com.edu.alterjuicechat.ui.adapters.items.Chat
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

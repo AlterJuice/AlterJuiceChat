@@ -1,8 +1,8 @@
-package com.edu.alterjuicechat.data.network
+package com.edu.alterjuicechat.repo
 
 import androidx.lifecycle.MutableLiveData
-import com.edu.alterjuicechat.data.network.model.dto.MessageDto
-import com.edu.alterjuicechat.data.network.model.dto.UserDto
+import com.edu.alterjuicechat.data.network.dto.model.MessageDto
+import com.edu.alterjuicechat.data.network.dto.model.UserDto
 import com.edu.alterjuicechat.ui.adapters.items.Chat
 import com.edu.alterjuicechat.ui.adapters.items.Message
 import java.util.*

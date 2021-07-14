@@ -2,6 +2,8 @@ package com.edu.alterjuicechat.data.network
 
 import android.util.Log
 import com.edu.alterjuicechat.Consts
+import com.edu.alterjuicechat.data.network.dto.ParserDto
+import com.edu.alterjuicechat.repo.DataStore
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import java.net.DatagramPacket
@@ -14,8 +16,6 @@ class UDPWorker(private val gson: Gson, private val dataStore: DataStore) {
 
 
     suspend fun requestTcpIP(){
-        // 10.0.2.2 for emulator
-        // 255.255.255.255 for device
         var attempts = 0
         val messageToSend = "Send ip'des (${Date()})".toByteArray()
         var resultTcpIp: String? = null

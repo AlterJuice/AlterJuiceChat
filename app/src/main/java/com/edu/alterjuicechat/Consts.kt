@@ -23,7 +23,7 @@ object Consts {
 
     // Why emulators are not receiving packets over udp: use another ip
     // https://stackoverflow.com/a/41981731
-
+    const val SIMPLE_MESSAGE_DATE_FORMAT = "k:mm"
     const val UDP_ADDRESS_FOR_EMULATOR = "10.0.2.2"
     const val UDP_ADDRESS_FOR_DEVICES = "255.255.255.255"
     val UDP_ADDRESS_BOTH = listOf(UDP_ADDRESS_FOR_EMULATOR, UDP_ADDRESS_FOR_DEVICES)

@@ -1,6 +1,6 @@
 package com.edu.alterjuicechat.ui.adapters.items
 
-import com.edu.alterjuicechat.data.network.model.dto.UserDto
+import com.edu.alterjuicechat.data.network.dto.model.UserDto
 
 class Chat(
     val username: String,

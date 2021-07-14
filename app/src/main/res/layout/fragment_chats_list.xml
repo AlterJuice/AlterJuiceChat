@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/chat_background"
-    android:layout_height="match_parent">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/chatListAppBar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background">
+
+    <FrameLayout
+        style="@style/AppBarStyle"
+        android:id="@+id/fragmentAppBar"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="50dp"
-        android:elevation="10dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/app_name" />
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_gravity="start"
-                android:paddingHorizontal="16dp"
-                android:text="@string/app_name" />
+        <ImageView
+            android:id="@+id/imageUpdateChats"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="6dp"
+            android:src="@drawable/ic_round_sync_24" />
 
-            <ImageView
-                android:foreground="?android:attr/selectableItemBackground"
-                android:id="@+id/buttonUpdateChats"
-                android:layout_gravity="end"
-                android:padding="6dp"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_round_sync_24"
-                />
-        </FrameLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatsList"
-        android:layout_below="@id/chatListAppBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/chat_background"
+        android:layout_below="@id/fragmentAppBar"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chatListAppBar"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentAppBar"
         tools:context=".ui.ChatListFragment"
+        tools:itemCount="2"
         tools:listitem="@layout/chats_list_item" />
 
 

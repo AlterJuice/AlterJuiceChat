@@ -2,4 +2,7 @@
 <resources>
     <dimen name="chat_item_height">80dp</dimen>
     <dimen name="cornerRadius">12dp</dimen>
+    <dimen name="cornerHalfTop">6dp</dimen>
+    <dimen name="progress_bar_auth_size">25dp</dimen>
+    <dimen name="app_bar_size">50dp</dimen>
 </resources>
