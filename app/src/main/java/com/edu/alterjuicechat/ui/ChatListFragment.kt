@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.R
-import com.edu.alterjuicechat.data.network.dto.model.UserDto
 import com.edu.alterjuicechat.databinding.FragmentChatsListBinding
+import com.edu.alterjuicechat.domain.Consts
+import com.edu.alterjuicechat.socket.UserInfo
 import com.edu.alterjuicechat.ui.adapters.ChatAdapter
-import com.edu.alterjuicechat.ui.adapters.items.Chat
-import com.edu.alterjuicechat.ui.adapters.items.Message
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.ChatListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -47,12 +45,12 @@ class ChatListFragment : BaseFragment() {
             Toast.makeText(context, R.string.toast_users_updated, Toast.LENGTH_SHORT).show()
         }
         vm.users.observe(viewLifecycleOwner, {
-            chatsAdapter.submitList(it + Chat("TestChat", "CustomID", Message("CustomID")))
+            chatsAdapter.submitList(it + UserInfo("CustomID", "TestChatName"))
         })
     }
 
-    private fun onChatClick(userDto: UserDto){
-        replaceFragment(ChatFragment.newInstance(sessionID, userDto.id, userDto.name), Consts.FRAGMENT_TAG_PRIVATE_CHAT, true)
+    private fun onChatClick(userInfo: UserInfo){
+        replaceFragment(ChatFragment.newInstance(sessionID, userInfo.chatID, userInfo.chatName), Consts.FRAGMENT_TAG_PRIVATE_CHAT, true)
     }
 
     companion object {

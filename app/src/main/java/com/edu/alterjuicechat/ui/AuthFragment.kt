@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.databinding.FragmentAuthBinding
+import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -102,8 +102,7 @@ class AuthFragment : BaseFragment() {
     private fun onLogInClick() {
         val inputUsernameText = binding.textInputUsername.text.toString()
         if (inputUsernameText.isBlank()) {
-            Toast.makeText(context, getString(R.string.toast_create_username), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(context, getString(R.string.toast_create_username), Toast.LENGTH_SHORT).show()
             return
         }
         setUIViewsEnabled(false)

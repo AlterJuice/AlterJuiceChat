@@ -6,12 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.edu.alterjuicechat.data.network.dto.model.UserDto
 import com.edu.alterjuicechat.databinding.ChatsListItemBinding
-import com.edu.alterjuicechat.ui.adapters.items.Chat
+import com.edu.alterjuicechat.domain.Consts
+import com.edu.alterjuicechat.socket.UserInfo
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ChatAdapter(private val onChatClick: (UserDto) -> Unit) :
-    ListAdapter<Chat, ChatAdapter.ChatHolder>(UserDifferenceCallback()) {
+fun getFormattedDate(milliseconds: Long): String{
+    return SimpleDateFormat(Consts.SIMPLE_MESSAGE_DATE_FORMAT).format(Date(milliseconds))
+}
+
+class ChatAdapter(private val onChatClick: (UserInfo) -> Unit) :
+    ListAdapter<UserInfo, ChatAdapter.ChatHolder>(UserDifferenceCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatHolder {
         val binding: ChatsListItemBinding = ChatsListItemBinding.inflate(
@@ -24,33 +30,33 @@ class ChatAdapter(private val onChatClick: (UserDto) -> Unit) :
         holder.bind(onChatClick, getItem(position))
     }
 
-
     class ChatHolder(private val binding: ChatsListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(onClick: (UserDto) -> Unit, chatItem: Chat) {
-            binding.root.setOnClickListener { onClick(chatItem.generateUserDto()) }
-            binding.chatTitle.text = chatItem.username
-            binding.chatLastMessageText.text = chatItem.lastMessage.text
+
+        fun bind(onClick: (UserInfo) -> Unit, chatItem: UserInfo) {
+            binding.root.setOnClickListener { onClick(chatItem) }
+            binding.chatTitle.text = chatItem.chatName
+            binding.chatLastMessageText.text = if (chatItem.lastMessage.isEmpty()) "History is empty" else chatItem.lastMessage
             // Show last message date. if date.seconds is 0 -> set view as invisible
-            if (chatItem.lastMessage.date.time != 0L) {
+            if (chatItem.lastMessageDateMilliseconds != 0L) {
                 binding.chatLastMessageDate.visibility = View.VISIBLE
-                binding.chatLastMessageDate.text = chatItem.getFormattedDate()
+                binding.chatLastMessageDate.text = getFormattedDate(chatItem.lastMessageDateMilliseconds)
             } else {
                 binding.chatLastMessageDate.visibility = View.INVISIBLE
             }
 
             // Show counter of unread messages. if 0 -> set view as invisible
-            if (chatItem.countUnreadMessages == 0) {
+            if (chatItem.unreadMessagesCount == 0) {
                 binding.chatCountUnreadMessages.visibility = View.INVISIBLE
             } else {
                 binding.chatCountUnreadMessages.visibility = View.VISIBLE
-                binding.chatCountUnreadMessages.text = chatItem.countUnreadMessages.toString()
+                binding.chatCountUnreadMessages.text = chatItem.unreadMessagesCount.toString()
             }
         }
     }
 
-    class UserDifferenceCallback : DiffUtil.ItemCallback<Chat>() {
-        override fun areContentsTheSame(oldItem: Chat, newItem: Chat): Boolean {
+    class UserDifferenceCallback : DiffUtil.ItemCallback<UserInfo>() {
+        override fun areContentsTheSame(oldItem: UserInfo, newItem: UserInfo): Boolean {
             return false
             // return oldItem.lastMessage == newItem.lastMessage
             //         && oldItem.countUnreadMessages == newItem.countUnreadMessages
@@ -58,8 +64,8 @@ class ChatAdapter(private val onChatClick: (UserDto) -> Unit) :
             //         && oldItem.userID == newItem.userID
         }
 
-        override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean {
-            return oldItem.userID == newItem.userID
+        override fun areItemsTheSame(oldItem: UserInfo, newItem: UserInfo): Boolean {
+            return oldItem.chatID == newItem.chatID
         }
     }
 }

@@ -3,10 +3,10 @@ package com.edu.alterjuicechat.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.alterjuicechat.Consts
-import com.edu.alterjuicechat.repo.DataStore
-import com.edu.alterjuicechat.repo.ChatListRepo
-import com.edu.alterjuicechat.ui.adapters.items.Chat
+import com.edu.alterjuicechat.domain.Consts
+import com.edu.alterjuicechat.domain.repo.ChatListRepo
+import com.edu.alterjuicechat.socket.DataStore
+import com.edu.alterjuicechat.socket.UserInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ class ChatListViewModel(
     private val chatListRepoDecorator: ChatListRepo,
     dataStore: DataStore
 ) : ViewModel() {
-    val users: LiveData<List<Chat>> = dataStore.mutableUsers
+    val users: LiveData<List<UserInfo>> = dataStore.getMutableUsers()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

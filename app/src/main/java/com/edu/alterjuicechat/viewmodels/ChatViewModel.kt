@@ -3,21 +3,20 @@ package com.edu.alterjuicechat.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.alterjuicechat.repo.ChatRepo
-import com.edu.alterjuicechat.ui.adapters.items.Message
+import com.edu.alterjuicechat.data.repo.chat.ChatRepo
+import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ChatViewModel  (
     private val chatRepoDecorator: ChatRepo,
-    private val sessionID: String,
-    private val receiverID: String
+    private val receiverID: String,
 ) : ViewModel() {
-    val messages: LiveData<List<Message>> = chatRepoDecorator.getMessagesByID(receiverID)
+    val messages: LiveData<List<MessageDto>> = chatRepoDecorator.getMessagesByID(receiverID)
 
     fun sendMessage(messageText: String){
         viewModelScope.launch(Dispatchers.IO) {
-            chatRepoDecorator.sendMessage(sessionID, receiverID, messageText)
+            chatRepoDecorator.sendMessage(receiverID, messageText)
         }
     }
 

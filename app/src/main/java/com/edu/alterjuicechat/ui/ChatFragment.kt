@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.edu.alterjuicechat.Consts
 import com.edu.alterjuicechat.databinding.FragmentChatBinding
+import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.ui.adapters.MessagesAdapter
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.ChatViewModel
@@ -17,13 +17,14 @@ import org.koin.core.parameter.parametersOf
 class ChatFragment : BaseFragment(){
 
     private lateinit var binding: FragmentChatBinding
-    private val vm by viewModel<ChatViewModel>(){ parametersOf(
-        arguments?.getString(Consts.FRAGMENT_PARAM_SESSION_ID)?: "",
-        arguments?.getString(Consts.FRAGMENT_PARAM_USER_ID)?: "") }
+    private val vm by viewModel<ChatViewModel>(){ parametersOf(receiverID) }
 
 
     private val sessionID by lazy {
         arguments?.getString(Consts.FRAGMENT_PARAM_SESSION_ID)?:""
+    }
+    private val receiverID by lazy{
+        arguments?.getString(Consts.FRAGMENT_PARAM_USER_ID)?: ""
     }
 
     private val messagesAdapter by lazy{ MessagesAdapter(sessionID) }

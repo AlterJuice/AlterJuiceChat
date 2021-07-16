@@ -1,2 +1,5 @@
 rootProject.name = "AlterJuiceChat"
 include ':app'
+include ':domain'
+include ':data'
+include ':socket'

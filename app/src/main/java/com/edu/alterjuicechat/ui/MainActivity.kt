@@ -3,7 +3,7 @@ package com.edu.alterjuicechat.ui
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.edu.alterjuicechat.R
-import com.edu.alterjuicechat.data.network.TCPWorker
+import com.edu.alterjuicechat.socket.TCPWorker
 import com.edu.alterjuicechat.ui.base.BaseActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
