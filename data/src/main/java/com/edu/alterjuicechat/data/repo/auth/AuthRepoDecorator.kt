@@ -3,7 +3,7 @@ package com.edu.alterjuicechat.data.repo.auth
 import com.edu.alterjuicechat.domain.repo.AuthRepo
 import com.edu.alterjuicechat.socket.DataStore
 
-class AuthRepoDecorator(
+internal class AuthRepoDecorator(
     private val dataStore: DataStore,
     private val localAuthRepo: AuthRepo,
     private val remoteAuthRepo: AuthRepo

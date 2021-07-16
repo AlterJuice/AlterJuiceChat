@@ -4,7 +4,7 @@ import com.edu.alterjuicechat.domain.repo.AuthRepo
 import com.edu.alterjuicechat.socket.TCPWorker
 import com.edu.alterjuicechat.socket.UDPWorker
 
-class AuthRepoRemote(
+internal class AuthRepoRemote(
     private val tcpWorker: TCPWorker,
     private val udpWorker: UDPWorker
 ) : AuthRepo {

@@ -3,7 +3,7 @@ package com.edu.alterjuicechat.data.repo.chat
 import androidx.lifecycle.MutableLiveData
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 
-class ChatRepoDecorator
+internal class ChatRepoDecorator
     (
     private val localChatRepoDecorator: ChatRepo,
     private val remoteChatRepo: ChatRepo

@@ -43,6 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation library_espresso_core
     implementation library_coroutines_core
+    implementation library_koin
     implementation library_coroutines_android
-    implementation library_gson
 }

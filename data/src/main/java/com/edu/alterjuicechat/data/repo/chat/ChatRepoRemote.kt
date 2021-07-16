@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.edu.alterjuicechat.socket.TCPWorker
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 
-class ChatRepoRemote(private val tcpWorker: TCPWorker) : ChatRepo {
+internal class ChatRepoRemote(private val tcpWorker: TCPWorker) : ChatRepo {
     override suspend fun sendMessage(
         receiverID: String,
         message: String

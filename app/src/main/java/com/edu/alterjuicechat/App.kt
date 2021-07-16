@@ -1,7 +1,7 @@
 package com.edu.alterjuicechat
 
 import android.app.Application
-import com.edu.alterjuicechat.di.modules.Modules
+import com.edu.alterjuicechat.di.Modules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

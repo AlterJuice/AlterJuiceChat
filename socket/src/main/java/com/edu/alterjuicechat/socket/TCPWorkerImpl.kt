@@ -17,13 +17,10 @@ const val TCP_TIMEOUT = 5000
 const val TCP_CONNECTING_DELAY = 1000L
 const val TCP_PING_DELAY = 2000L
 
-class TCPWorkerImpl(private val gson: Gson, private val dataStore: DataStore): TCPWorker {
+internal class TCPWorkerImpl(private val parser: ParserDto, private val generator: GeneratorDto, private val dataStore: DataStore): TCPWorker {
     private lateinit var clientSocket: Socket
     private lateinit var writer: PrintWriter
     private lateinit var reader: BufferedReader
-
-    private val generator = GeneratorDto(gson)
-    private val parser = ParserDto(gson)
 
     private var receivingJob: Job? = null
     private var pingPongJob: Job? = null
@@ -110,7 +107,7 @@ class TCPWorkerImpl(private val gson: Gson, private val dataStore: DataStore): T
 
     override suspend fun sendToServer(action: BaseDto) {
         try {
-            writer.println(action.toJson(gson))
+            writer.println(generator.toJson(action))
         }catch (e: java.lang.Exception){
             e.printStackTrace()
         }

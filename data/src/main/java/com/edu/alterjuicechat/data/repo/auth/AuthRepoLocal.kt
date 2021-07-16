@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.domain.repo.AuthRepo
 
-class AuthRepoLocal(
+internal class AuthRepoLocal(
     private val profilePrefs: SharedPreferences,
 ) : AuthRepo {
 

@@ -17,6 +17,5 @@ interface DataStore  {
     fun handleSendMessage(sessionID: String, chatID: String, message: String)
     fun handleNewUsers(newUsers: List<UserDto>)
     fun clearMessagesCounter(chatID: String)
-    fun getLastMessage(userID: String): String
 
 }

@@ -25,8 +25,14 @@ class GeneratorDto(private val gson: Gson) {
     fun generateGetUsers(id: String): BaseDto {
         return generateAction(BaseDto.Action.GET_USERS, GetUsersDto(id))
     }
+    fun toJson(obj: Payload): String{
+        return gson.toJson(obj)
+    }
+    fun toJson(obj: BaseDto): String{
+        return gson.toJson(obj)
+    }
 
     private fun generateAction(action: BaseDto.Action, payload: Payload): BaseDto {
-        return BaseDto(action, payload.toJson(gson))
+        return BaseDto(action, toJson(payload))
     }
 }

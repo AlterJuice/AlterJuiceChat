@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.edu.alterjuicechat.socket.DataStore
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 
-class ChatRepoLocal(
+internal class ChatRepoLocal(
     private val dataStore: DataStore
 ) : ChatRepo {
     override suspend fun sendMessage(

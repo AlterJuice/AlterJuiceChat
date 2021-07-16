@@ -3,7 +3,7 @@ package com.edu.alterjuicechat.data.repo.chatlist
 import com.edu.alterjuicechat.domain.repo.ChatListRepo
 import com.edu.alterjuicechat.socket.TCPWorker
 
-class ChatListRepoRemote(
+internal class ChatListRepoRemote(
     private val tcpWorker: TCPWorker
 ) : ChatListRepo {
 

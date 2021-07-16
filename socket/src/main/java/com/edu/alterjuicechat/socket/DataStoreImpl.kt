@@ -6,7 +6,7 @@ import com.edu.alterjuicechat.socket.dto.entities.UserDto
 import java.util.*
 import kotlin.collections.HashMap
 
-class DataStoreImpl : DataStore {
+internal class DataStoreImpl : DataStore {
     private val _mutableTcpIP = MutableLiveData<String>()
     private val _mutableSessionID = MutableLiveData<String>()
     private val _mutableUsername = MutableLiveData<String>()
@@ -26,10 +26,6 @@ class DataStoreImpl : DataStore {
     override fun getMutableSessionID() = _mutableSessionID
     override fun getMutableUsername() = _mutableUsername
     override fun getMutableUsers() = _mutableUsersInfo
-
-    override fun getLastMessage(userID: String): String{
-        return usersInfo[userID]?.lastMessage!!
-    }
 
     override fun getMutableMessages(userID: String): MutableLiveData<List<MessageDto>> {
         createMessageFieldIfNotExists(userID)

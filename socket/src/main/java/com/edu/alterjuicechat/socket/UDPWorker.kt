@@ -19,7 +19,7 @@ const val UDP_ADDRESS_FOR_DEVICES = "255.255.255.255"
 const val UDP_ADDRESS = UDP_ADDRESS_FOR_DEVICES
 val UDP_ADDRESS_BOTH = listOf(UDP_ADDRESS_FOR_EMULATOR, UDP_ADDRESS_FOR_DEVICES)
 
-class UDPWorker(private val gson: Gson, private val dataStore: DataStore) {
+class UDPWorker(private val parser: ParserDto, private val dataStore: DataStore) {
 
     suspend fun requestTcpIP(){
         var attempts = 0
@@ -37,7 +37,7 @@ class UDPWorker(private val gson: Gson, private val dataStore: DataStore) {
                 datagramSocket.send(sendPacket)
                 datagramSocket.receive(receivePacket)
                 val udpPayloadStr = String(receivePacket.data, 0, receivePacket.length)
-                resultTcpIp = ParserDto(gson).parseUdp(udpPayloadStr).ip
+                resultTcpIp = parser.parseUdp(udpPayloadStr).ip
                 dataStore.getMutableTcpIp().postValue(resultTcpIp)
                 Log.i("UDPWorker@requestTcpIP","UDP Connected! TCP IP: $resultTcpIp;")
             }catch (timeout: SocketTimeoutException){

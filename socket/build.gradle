@@ -43,5 +43,6 @@ dependencies {
     androidTestImplementation library_espresso_core
     implementation library_gson
     implementation library_coroutines_core
+    implementation library_koin
     implementation library_coroutines_android
 }
