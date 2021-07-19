@@ -51,7 +51,5 @@ object DI {
                 getChatRepoRemote(get())
             )
         }
-
-
     }
 }

@@ -22,6 +22,22 @@ internal class DataStoreImpl : DataStore {
         }
     }
 
+    override fun setSessionID(newSessionID: String) {
+        _mutableSessionID.value = newSessionID
+    }
+
+    override fun setUsername(newUsername: String) {
+        _mutableUsername.value = newUsername
+    }
+
+    override fun setTcpIp(newTcpIp: String) {
+        _mutableTcpIP.value = newTcpIp
+    }
+
+    override fun getTcpIpValue() = _mutableTcpIP.value
+    override fun getSessionIDValue() = _mutableSessionID.value
+    override fun getUsernameValue() = _mutableUsername.value
+
     override fun getMutableTcpIp() = _mutableTcpIP
     override fun getMutableSessionID() = _mutableSessionID
     override fun getMutableUsername() = _mutableUsername
@@ -33,10 +49,8 @@ internal class DataStoreImpl : DataStore {
     }
 
     private fun updateMutableUsers(){
-        // update users after changes
         _mutableUsersInfo.value = usersInfo.values.sortedWith(compareBy { it.lastMessageDateMilliseconds })
     }
-
 
     private fun addMessage(userInfo: UserInfo, message: MessageDto){
         val msgList = getMutableMessages(userInfo.chatID).value

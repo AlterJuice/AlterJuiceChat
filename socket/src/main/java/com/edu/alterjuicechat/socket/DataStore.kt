@@ -2,16 +2,24 @@ package com.edu.alterjuicechat.socket
 
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 import com.edu.alterjuicechat.socket.dto.entities.UserDto
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
 
 interface DataStore  {
 
-    fun getMutableTcpIp(): MutableStateFlow<String>
-    fun getMutableSessionID(): MutableStateFlow<String>
-    fun getMutableUsername(): MutableStateFlow<String>
+    fun setSessionID(newSessionID: String)
+    fun setUsername(newUsername: String)
+    fun setTcpIp(newTcpIp: String)
 
-    fun getMutableUsers(): MutableStateFlow<List<UserInfo>>
-    fun getMutableMessages(userID: String): MutableStateFlow<List<MessageDto>>
+    fun getTcpIpValue(): String
+    fun getSessionIDValue(): String
+    fun getUsernameValue(): String
+
+    fun getMutableTcpIp(): Flow<String>
+    fun getMutableSessionID(): Flow<String>
+    fun getMutableUsername(): Flow<String>
+
+    fun getMutableUsers(): Flow<List<UserInfo>>
+    fun getMutableMessages(userID: String): Flow<List<MessageDto>>
 
     fun handleReceiveMessage(messageDto: MessageDto)
     fun handleSendMessage(sessionID: String, chatID: String, message: String)

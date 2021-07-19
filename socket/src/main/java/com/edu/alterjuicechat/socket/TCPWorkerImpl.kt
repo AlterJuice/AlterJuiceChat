@@ -1,6 +1,5 @@
 package com.edu.alterjuicechat.socket
 
-import android.util.Log
 import com.edu.alterjuicechat.socket.dto.GeneratorDto
 import com.edu.alterjuicechat.socket.dto.ParserDto
 import com.edu.alterjuicechat.socket.dto.entities.BaseDto
@@ -14,7 +13,7 @@ import java.net.SocketTimeoutException
 const val TCP_PORT = 6666
 const val TCP_TIMEOUT = 5000
 const val TCP_CONNECTING_DELAY = 1000L
-const val TCP_PING_DELAY = 2000L
+const val TCP_PING_DELAY = 4000L
 
 internal class TCPWorkerImpl(private val parser: ParserDto, private val generator: GeneratorDto, private val dataStore: DataStore): TCPWorker {
     private lateinit var clientSocket: Socket
@@ -29,15 +28,15 @@ internal class TCPWorkerImpl(private val parser: ParserDto, private val generato
 
 
     private fun getSessionID(): String{
-        return dataStore.getMutableSessionID().value
+        return dataStore.getSessionIDValue()
     }
 
     private fun getUsername(): String{
-        return dataStore.getMutableUsername().value
+        return dataStore.getUsernameValue()
     }
 
     private fun getTcpIP(): String{
-        return dataStore.getMutableTcpIp().value
+        return dataStore.getTcpIpValue()
     }
 
     override suspend fun requestSessionID() {
@@ -118,7 +117,6 @@ internal class TCPWorkerImpl(private val parser: ParserDto, private val generato
 
 
     override suspend fun handleUpdate(baseDto: BaseDto) {
-        Log.i("EventListener", "Action ${baseDto.action}; Payload: ${baseDto.payload}")
 
         when (baseDto.action) {
             // BaseDto.Action.PONG -> {}
@@ -130,7 +128,7 @@ internal class TCPWorkerImpl(private val parser: ParserDto, private val generato
             BaseDto.Action.CONNECTED -> {
                 val sessionID = parser.parseConnected(baseDto.payload).id
                 withContext(Dispatchers.Main) {
-                    dataStore.getMutableSessionID().value = sessionID
+                    dataStore.setSessionID(sessionID)
                     println("TCP Connected! SessionID: ${getSessionID()};")
                 }
                 connect()

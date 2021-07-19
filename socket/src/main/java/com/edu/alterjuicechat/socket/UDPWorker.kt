@@ -1,6 +1,5 @@
 package com.edu.alterjuicechat.socket
 
-import android.util.Log
 import com.edu.alterjuicechat.socket.dto.ParserDto
 import kotlinx.coroutines.delay
 import java.net.DatagramPacket
@@ -30,15 +29,15 @@ class UDPWorker(private val parser: ParserDto, private val dataStore: DataStore)
         var udpAddress: String
         while (resultTcpIp == null){
             udpAddress = UDP_ADDRESS_BOTH[attempts % 2]
-            Log.i("UDPWorker@requestTcpIP","Trying to connect with UDP to ${udpAddress}:${UDP_PORT}; Attempt #${++attempts}")
+            // Log.i("UDPWorker@requestTcpIP","Trying to connect with UDP to ${udpAddress}:${UDP_PORT}; Attempt #${++attempts}")
             try {
                 val sendPacket = DatagramPacket(messageToSend, messageToSend.size, InetAddress.getByName(udpAddress), UDP_PORT)
                 datagramSocket.send(sendPacket)
                 datagramSocket.receive(receivePacket)
                 val udpPayloadStr = String(receivePacket.data, 0, receivePacket.length)
                 resultTcpIp = parser.parseUdp(udpPayloadStr).ip
-                dataStore.getMutableTcpIp().emit(resultTcpIp)
-                Log.i("UDPWorker@requestTcpIP","UDP Connected! TCP IP: $resultTcpIp;")
+                dataStore.setTcpIp(resultTcpIp)
+                // Log.i("UDPWorker@requestTcpIP","UDP Connected! TCP IP: $resultTcpIp;")
             }catch (timeout: SocketTimeoutException){
                 delay(UDP_DELAY)
             }catch (e: Exception){

@@ -10,7 +10,7 @@ internal class AuthRepoDecorator(
 ) : AuthRepo {
     override fun saveUsername(username: String) {
         localAuthRepo.saveUsername(username)
-        dataStore.getMutableUsername().value = username
+        dataStore.setUsername(username)
     }
 
     override fun getSavedUsername(): String {

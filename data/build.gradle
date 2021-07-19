@@ -38,5 +38,5 @@ dependencies {
     implementation library_kotlin_stdlib
     implementation library_ktx_core
     implementation library_coroutines_core
-    implementation library_koin
+    implementation library_koin_core
 }

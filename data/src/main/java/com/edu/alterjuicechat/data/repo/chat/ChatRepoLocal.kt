@@ -2,6 +2,7 @@ package com.edu.alterjuicechat.data.repo.chat
 
 import com.edu.alterjuicechat.socket.DataStore
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ChatRepoLocal(
@@ -14,7 +15,7 @@ internal class ChatRepoLocal(
         throw UnsupportedOperationException("Local Chat repo cannot perform sendMessage request")
     }
 
-    override fun getMessagesByID(userID: String): MutableStateFlow<List<MessageDto>> {
+    override fun getMessagesByID(userID: String): Flow<List<MessageDto>> {
         return dataStore.getMutableMessages(userID)
     }
 
