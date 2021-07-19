@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.edu.alterjuicechat.databinding.FragmentChatBinding
 import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.ui.adapters.MessagesAdapter
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.ChatViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -53,10 +56,12 @@ class ChatFragment : BaseFragment(){
             if (layoutManager == null)
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         }
-        vm.messages.observe(viewLifecycleOwner, {
-            messagesAdapter.submitList(it)
-            binding.textInputMessage.text.clear()
-        })
+        lifecycleScope.launch{
+            vm.messages.collect {
+                messagesAdapter.submitList(it)
+                binding.textInputMessage.text.clear()
+            }
+        }
         // vm.clearUnreadCounter() // it can be called in onDestroy method. No sense to call it twice
         binding.buttonSendMessage.setOnClickListener {
             performSendMessage()

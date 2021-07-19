@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.databinding.FragmentAuthBinding
 import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.AuthViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -37,33 +41,39 @@ class AuthFragment : BaseFragment() {
 
 
         binding.appStartMessaging.setOnClickListener { onStartClick() }
-        vm.liveTcpIP.observe(viewLifecycleOwner, {
+        lifecycleScope.launch(Dispatchers.Main){
             // it is new TCP IP
-            if (it.isNotEmpty()) {
-                showUIProgressIsLoading(false)
-                with(binding.mainAuthForm) {
-                    alpha = 0f
-                    scaleX = 0.7f
-                    scaleY = 0.7f
-                    visibility = View.VISIBLE
-                    animate().setDuration(500).scaleX(1f).scaleY(1f).alpha(1f).start()
+            vm.liveTcpIP.collect {
+                if (it.isNotEmpty()) {
+                    showUIProgressIsLoading(false)
+                    with(binding.mainAuthForm) {
+                        alpha = 0f
+                        scaleX = 0.7f
+                        scaleY = 0.7f
+                        visibility = View.VISIBLE
+                        animate().setDuration(500).scaleX(1f).scaleY(1f).alpha(1f).start()
+                    }
+                    val thisUserName = vm.getSavedUsername()
+                    binding.foundTcpIpText.text = getString(R.string.found_server_on, it)
+                    binding.textInputUsername.setText(thisUserName)
+                    binding.buttonSignIn.setOnClickListener { onLogInClick() }
                 }
-                val thisUserName = vm.getSavedUsername()
-                binding.foundTcpIpText.text = getString(R.string.found_server_on, it)
-                binding.textInputUsername.setText(thisUserName)
-                binding.buttonSignIn.setOnClickListener { onLogInClick() }
             }
-        })
-        vm.liveSessionID.observe(viewLifecycleOwner, {
-            // it is new SessionID
-            if (it.isNotEmpty()) {
-                showUIProgressIsLoading(false)
-                val username = vm.getSavedUsername()
-                openChatListFragment(it, username)
-                vm.connect()
-                setUIViewsEnabled(true)
+        }
+
+        lifecycleScope.launch(Dispatchers.Main){
+            // it is new TCP IP
+            vm.liveSessionID.collect {
+                // it is new SessionID
+                if (it.isNotEmpty()) {
+                    showUIProgressIsLoading(false)
+                    val username = vm.getSavedUsername()
+                    openChatListFragment(it, username)
+                    vm.connect()
+                    setUIViewsEnabled(true)
+                }
             }
-        })
+        }
     }
 
     private fun onStartClick() {

@@ -18,7 +18,7 @@ import com.edu.alterjuicechat.socket.DI as socketDI
 
 object Modules {
 
-    private val thingsModule = module {
+    private val prefsModule = module {
         factory { androidContext().getSharedPreferences(Consts.PROFILE_PREFERENCES, MODE_PRIVATE) }
     }
 
@@ -31,7 +31,7 @@ object Modules {
 
 
     val allModules = listOf(
-        thingsModule,
+        prefsModule,
         socketDI.modules,
         repoDI.modules,
         viewModelsModule

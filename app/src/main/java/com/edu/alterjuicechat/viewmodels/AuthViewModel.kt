@@ -1,19 +1,19 @@
 package com.edu.alterjuicechat.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.alterjuicechat.domain.repo.AuthRepo
 import com.edu.alterjuicechat.socket.DataStore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val authRepoDecorator: AuthRepo,
     dataStore: DataStore
 ) : ViewModel() {
-    val liveTcpIP: LiveData<String> = dataStore.getMutableTcpIp()
-    val liveSessionID: LiveData<String> = dataStore.getMutableSessionID()
+    val liveTcpIP: Flow<String> = dataStore.getMutableTcpIp()
+    val liveSessionID: Flow<String> = dataStore.getMutableSessionID()
 
 
     fun getSavedUsername(): String = authRepoDecorator.getSavedUsername()
@@ -35,5 +35,7 @@ class AuthViewModel(
             authRepoDecorator.requestSessionID()
         }
     }
+
+
 
 }

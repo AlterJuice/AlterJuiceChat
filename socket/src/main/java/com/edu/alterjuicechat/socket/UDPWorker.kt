@@ -2,7 +2,6 @@ package com.edu.alterjuicechat.socket
 
 import android.util.Log
 import com.edu.alterjuicechat.socket.dto.ParserDto
-import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -38,7 +37,7 @@ class UDPWorker(private val parser: ParserDto, private val dataStore: DataStore)
                 datagramSocket.receive(receivePacket)
                 val udpPayloadStr = String(receivePacket.data, 0, receivePacket.length)
                 resultTcpIp = parser.parseUdp(udpPayloadStr).ip
-                dataStore.getMutableTcpIp().postValue(resultTcpIp)
+                dataStore.getMutableTcpIp().emit(resultTcpIp)
                 Log.i("UDPWorker@requestTcpIP","UDP Connected! TCP IP: $resultTcpIp;")
             }catch (timeout: SocketTimeoutException){
                 delay(UDP_DELAY)

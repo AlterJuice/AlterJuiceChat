@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.edu.alterjuicechat.R
@@ -14,6 +15,8 @@ import com.edu.alterjuicechat.socket.UserInfo
 import com.edu.alterjuicechat.ui.adapters.ChatAdapter
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.ChatListViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -44,9 +47,11 @@ class ChatListFragment : BaseFragment() {
             vm.loadUsers()
             Toast.makeText(context, R.string.toast_users_updated, Toast.LENGTH_SHORT).show()
         }
-        vm.users.observe(viewLifecycleOwner, {
-            chatsAdapter.submitList(it + UserInfo("CustomID", "TestChatName"))
-        })
+        lifecycleScope.launch{
+            vm.users.collect {
+                chatsAdapter.submitList(it + UserInfo("CustomID", "TestChatName"))
+            }
+        }
     }
 
     private fun onChatClick(userInfo: UserInfo){

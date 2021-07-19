@@ -4,7 +4,6 @@ import android.util.Log
 import com.edu.alterjuicechat.socket.dto.GeneratorDto
 import com.edu.alterjuicechat.socket.dto.ParserDto
 import com.edu.alterjuicechat.socket.dto.entities.BaseDto
-import com.google.gson.Gson
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -30,15 +29,15 @@ internal class TCPWorkerImpl(private val parser: ParserDto, private val generato
 
 
     private fun getSessionID(): String{
-        return dataStore.getMutableSessionID().value as String
+        return dataStore.getMutableSessionID().value
     }
 
     private fun getUsername(): String{
-        return dataStore.getMutableUsername().value as String
+        return dataStore.getMutableUsername().value
     }
 
     private fun getTcpIP(): String{
-        return dataStore.getMutableTcpIp().value as String
+        return dataStore.getMutableTcpIp().value
     }
 
     override suspend fun requestSessionID() {
@@ -122,12 +121,12 @@ internal class TCPWorkerImpl(private val parser: ParserDto, private val generato
         Log.i("EventListener", "Action ${baseDto.action}; Payload: ${baseDto.payload}")
 
         when (baseDto.action) {
+            // BaseDto.Action.PONG -> {}
             BaseDto.Action.USERS_RECEIVED -> {
                 withContext(Dispatchers.Main){
                     dataStore.handleNewUsers(parser.parseUsersList(baseDto.payload))
                 }
             }
-            // BaseDto.Action.PONG -> {}
             BaseDto.Action.CONNECTED -> {
                 val sessionID = parser.parseConnected(baseDto.payload).id
                 withContext(Dispatchers.Main) {
@@ -141,6 +140,9 @@ internal class TCPWorkerImpl(private val parser: ParserDto, private val generato
                 withContext(Dispatchers.Main) {
                     dataStore.handleReceiveMessage(parser.parseMessage(baseDto.payload))
                 }
+            }
+            else -> {
+                // Other actions are not receivable
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.edu.alterjuicechat.data.repo.chat
 
-import androidx.lifecycle.MutableLiveData
 import com.edu.alterjuicechat.socket.TCPWorker
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
+import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ChatRepoRemote(private val tcpWorker: TCPWorker) : ChatRepo {
     override suspend fun sendMessage(
@@ -12,7 +12,7 @@ internal class ChatRepoRemote(private val tcpWorker: TCPWorker) : ChatRepo {
         return tcpWorker.sendMessage(receiverID, message)
     }
 
-    override fun getMessagesByID(userID: String): MutableLiveData<List<MessageDto>> {
+    override fun getMessagesByID(userID: String): MutableStateFlow<List<MessageDto>> {
         throw UnsupportedOperationException("Remote chat repo cannot perform getMessagesByID request")
     }
 

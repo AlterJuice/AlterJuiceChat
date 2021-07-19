@@ -1,8 +1,8 @@
 package com.edu.alterjuicechat.data.repo.chat
 
-import androidx.lifecycle.MutableLiveData
 import com.edu.alterjuicechat.socket.DataStore
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
+import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ChatRepoLocal(
     private val dataStore: DataStore
@@ -14,7 +14,7 @@ internal class ChatRepoLocal(
         throw UnsupportedOperationException("Local Chat repo cannot perform sendMessage request")
     }
 
-    override fun getMessagesByID(userID: String): MutableLiveData<List<MessageDto>> {
+    override fun getMessagesByID(userID: String): MutableStateFlow<List<MessageDto>> {
         return dataStore.getMutableMessages(userID)
     }
 
