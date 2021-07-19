@@ -29,7 +29,7 @@ class UDPWorker(private val parser: ParserDto, private val dataStore: DataStore)
         var udpAddress: String
         while (resultTcpIp == null){
             udpAddress = UDP_ADDRESS_BOTH[attempts % 2]
-            // Log.i("UDPWorker@requestTcpIP","Trying to connect with UDP to ${udpAddress}:${UDP_PORT}; Attempt #${++attempts}")
+            println("Trying to connect with UDP to ${udpAddress}:${UDP_PORT}; Attempt #${++attempts}")
             try {
                 val sendPacket = DatagramPacket(messageToSend, messageToSend.size, InetAddress.getByName(udpAddress), UDP_PORT)
                 datagramSocket.send(sendPacket)
@@ -37,7 +37,7 @@ class UDPWorker(private val parser: ParserDto, private val dataStore: DataStore)
                 val udpPayloadStr = String(receivePacket.data, 0, receivePacket.length)
                 resultTcpIp = parser.parseUdp(udpPayloadStr).ip
                 dataStore.setTcpIp(resultTcpIp)
-                // Log.i("UDPWorker@requestTcpIP","UDP Connected! TCP IP: $resultTcpIp;")
+                println("UDP Connected! TCP IP: $resultTcpIp;")
             }catch (timeout: SocketTimeoutException){
                 delay(UDP_DELAY)
             }catch (e: Exception){

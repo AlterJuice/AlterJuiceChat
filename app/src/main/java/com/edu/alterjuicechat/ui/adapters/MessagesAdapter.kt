@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.edu.alterjuicechat.databinding.MessageItemMineBinding
 import com.edu.alterjuicechat.databinding.MessageItemNotMineBinding
-import com.edu.alterjuicechat.socket.dto.entities.MessageDto
+import com.edu.alterjuicechat.domain.model.Message
 
 private const val VIEW_TYPE_MESSAGE_IS_MINE = 0
 private const val VIEW_TYPE_MESSAGE_IS_NOT_MINE = 1
 
-class MessagesAdapter(private val mySessionID: String) : ListAdapter<MessageDto, MessagesAdapter.BaseMessageViewHolder<ViewBinding>>(MessageDifferenceCallback()){
+class MessagesAdapter(private val mySessionID: String) : ListAdapter<Message, MessagesAdapter.BaseMessageViewHolder<ViewBinding>>(MessageDifferenceCallback()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMessageViewHolder<ViewBinding> {
 
         return if (viewType == VIEW_TYPE_MESSAGE_IS_MINE){
@@ -27,7 +27,7 @@ class MessagesAdapter(private val mySessionID: String) : ListAdapter<MessageDto,
 
 
     override fun getItemViewType(position: Int): Int {
-        if (getItem(position).from.id == mySessionID)
+        if (getItem(position).senderId == mySessionID)
             return VIEW_TYPE_MESSAGE_IS_MINE
         return VIEW_TYPE_MESSAGE_IS_NOT_MINE
     }
@@ -36,30 +36,30 @@ class MessagesAdapter(private val mySessionID: String) : ListAdapter<MessageDto,
         holder.bind(getItem(position))
     }
 
-    class MessageDifferenceCallback : DiffUtil.ItemCallback<MessageDto>() {
-        override fun areContentsTheSame(oldItem: MessageDto, newItem: MessageDto): Boolean {
-            return oldItem.from.id == newItem.from.id && oldItem.message == newItem.message
+    class MessageDifferenceCallback : DiffUtil.ItemCallback<Message>() {
+        override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
+            return oldItem.senderId == newItem.senderId && oldItem.text == newItem.text
         }
 
-        override fun areItemsTheSame(oldItem: MessageDto, newItem: MessageDto): Boolean {
-            return oldItem.from.id == newItem.from.id && oldItem.message == newItem.message
+        override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
+            return oldItem.senderId == newItem.senderId && oldItem.text == newItem.text
         }
     }
 
 
     abstract class BaseMessageViewHolder<VB: ViewBinding>(protected val binding: VB) : RecyclerView.ViewHolder(binding.root){
-        abstract fun bind(message: MessageDto)
+        abstract fun bind(message: Message)
     }
 
     class MineMessagesHolder(binding: MessageItemMineBinding) : BaseMessageViewHolder<MessageItemMineBinding>(binding) {
-        override fun bind(message: MessageDto) {
-            binding.messageText.text = message.message
+        override fun bind(message: Message) {
+            binding.messageText.text = message.text
         }
     }
 
     class NotMineMessagesHolder(binding: MessageItemNotMineBinding) : BaseMessageViewHolder<MessageItemNotMineBinding>(binding) {
-        override fun bind(message: MessageDto) {
-            binding.messageText.text = message.message
+        override fun bind(message: Message) {
+            binding.messageText.text = message.text
         }
     }
 

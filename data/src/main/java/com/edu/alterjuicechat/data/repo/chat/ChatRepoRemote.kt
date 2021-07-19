@@ -1,5 +1,6 @@
 package com.edu.alterjuicechat.data.repo.chat
 
+import com.edu.alterjuicechat.domain.model.Message
 import com.edu.alterjuicechat.domain.repo.ChatRepo
 import com.edu.alterjuicechat.socket.TCPWorker
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
@@ -13,7 +14,7 @@ internal class ChatRepoRemote(private val tcpWorker: TCPWorker) : ChatRepo {
         return tcpWorker.sendMessage(receiverID, message)
     }
 
-    override fun getMessagesByID(userID: String): Flow<List<MessageDto>> {
+    override fun getMessagesByID(userID: String): Flow<List<Message>> {
         throw UnsupportedOperationException("Remote chat repo cannot perform getMessagesByID request")
     }
 

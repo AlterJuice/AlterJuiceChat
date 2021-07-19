@@ -1,5 +1,6 @@
 package com.edu.alterjuicechat.data.repo.chat
 
+import com.edu.alterjuicechat.domain.model.Message
 import com.edu.alterjuicechat.domain.repo.ChatRepo
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,7 @@ internal class ChatRepoDecorator
         return remoteChatRepo.sendMessage(receiverID, message)
     }
 
-    override fun getMessagesByID(userID: String): Flow<List<MessageDto>> {
+    override fun getMessagesByID(userID: String): Flow<List<Message>> {
         return localChatRepoDecorator.getMessagesByID(userID)
     }
 

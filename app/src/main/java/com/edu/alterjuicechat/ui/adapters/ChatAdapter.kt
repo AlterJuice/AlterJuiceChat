@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.edu.alterjuicechat.databinding.ChatsListItemBinding
 import com.edu.alterjuicechat.domain.Consts
-import com.edu.alterjuicechat.socket.UserInfo
+import com.edu.alterjuicechat.domain.model.User
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,8 +16,8 @@ fun getFormattedDate(milliseconds: Long): String{
     return SimpleDateFormat(Consts.SIMPLE_MESSAGE_DATE_FORMAT).format(Date(milliseconds))
 }
 
-class ChatAdapter(private val onChatClick: (UserInfo) -> Unit) :
-    ListAdapter<UserInfo, ChatAdapter.ChatHolder>(UserDifferenceCallback()) {
+class ChatAdapter(private val onChatClick: (User) -> Unit) :
+    ListAdapter<User, ChatAdapter.ChatHolder>(UserDifferenceCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatHolder {
         val binding: ChatsListItemBinding = ChatsListItemBinding.inflate(
@@ -33,7 +33,7 @@ class ChatAdapter(private val onChatClick: (UserInfo) -> Unit) :
     class ChatHolder(private val binding: ChatsListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(onClick: (UserInfo) -> Unit, chatItem: UserInfo) {
+        fun bind(onClick: (User) -> Unit, chatItem: User) {
             binding.root.setOnClickListener { onClick(chatItem) }
             binding.chatTitle.text = chatItem.chatName
             binding.chatLastMessageText.text = if (chatItem.lastMessage.isEmpty()) "History is empty" else chatItem.lastMessage
@@ -55,8 +55,8 @@ class ChatAdapter(private val onChatClick: (UserInfo) -> Unit) :
         }
     }
 
-    class UserDifferenceCallback : DiffUtil.ItemCallback<UserInfo>() {
-        override fun areContentsTheSame(oldItem: UserInfo, newItem: UserInfo): Boolean {
+    class UserDifferenceCallback : DiffUtil.ItemCallback<User>() {
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return false
             // return oldItem.lastMessage == newItem.lastMessage
             //         && oldItem.countUnreadMessages == newItem.countUnreadMessages
@@ -64,7 +64,7 @@ class ChatAdapter(private val onChatClick: (UserInfo) -> Unit) :
             //         && oldItem.userID == newItem.userID
         }
 
-        override fun areItemsTheSame(oldItem: UserInfo, newItem: UserInfo): Boolean {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.chatID == newItem.chatID
         }
     }

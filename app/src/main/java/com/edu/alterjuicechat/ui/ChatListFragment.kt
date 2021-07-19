@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.databinding.FragmentChatsListBinding
 import com.edu.alterjuicechat.domain.Consts
+import com.edu.alterjuicechat.domain.model.User
 import com.edu.alterjuicechat.socket.UserInfo
 import com.edu.alterjuicechat.ui.adapters.ChatAdapter
 import com.edu.alterjuicechat.ui.base.BaseFragment
@@ -49,12 +50,12 @@ class ChatListFragment : BaseFragment() {
         }
         lifecycleScope.launch{
             vm.users.collect {
-                chatsAdapter.submitList(it + UserInfo("CustomID", "TestChatName"))
+                chatsAdapter.submitList(it + User("CustomID", "TestChatName"))
             }
         }
     }
 
-    private fun onChatClick(userInfo: UserInfo){
+    private fun onChatClick(userInfo: User){
         replaceFragment(ChatFragment.newInstance(sessionID, userInfo.chatID, userInfo.chatName), Consts.FRAGMENT_TAG_PRIVATE_CHAT, true)
     }
 
