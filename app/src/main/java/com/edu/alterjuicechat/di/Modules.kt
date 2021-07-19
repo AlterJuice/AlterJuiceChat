@@ -24,9 +24,9 @@ object Modules {
 
 
     private val viewModelsModule = module {
-        viewModel { ChatListViewModel(get(named(NAME_CHAT_LIST_REPO_DECORATOR)), get()) }
+        viewModel { ChatListViewModel(get(named(NAME_CHAT_LIST_REPO_DECORATOR))) }
         viewModel { (receiverID: String) -> ChatViewModel(get(named(NAME_CHAT_REPO_DECORATOR)), receiverID) }
-        viewModel { AuthViewModel(get(named(NAME_AUTH_REPO_DECORATOR)), get()) }
+        viewModel { AuthViewModel(get(named(NAME_AUTH_REPO_DECORATOR))) }
     }
 
 

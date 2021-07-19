@@ -2,7 +2,7 @@ package com.edu.alterjuicechat.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.alterjuicechat.data.repo.chat.ChatRepo
+import com.edu.alterjuicechat.domain.repo.ChatRepo
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

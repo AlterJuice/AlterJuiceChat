@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.edu.alterjuicechat.data.repo.auth.AuthRepoDecorator
 import com.edu.alterjuicechat.data.repo.auth.AuthRepoLocal
 import com.edu.alterjuicechat.data.repo.auth.AuthRepoRemote
-import com.edu.alterjuicechat.data.repo.chat.ChatRepo
+import com.edu.alterjuicechat.domain.repo.ChatRepo
 import com.edu.alterjuicechat.data.repo.chat.ChatRepoDecorator
 import com.edu.alterjuicechat.data.repo.chat.ChatRepoLocal
 import com.edu.alterjuicechat.data.repo.chat.ChatRepoRemote
@@ -22,11 +22,11 @@ const val NAME_CHAT_REPO_DECORATOR = "ChatRepoDecorator"
 const val NAME_CHAT_LIST_REPO_DECORATOR = "ChatListRepoDecorator"
 
 object DI {
-    private fun getAuthRepoLocal(profilePreferences: SharedPreferences): AuthRepo = AuthRepoLocal(profilePreferences)
+    private fun getAuthRepoLocal(dataStore: DataStore, profilePreferences: SharedPreferences): AuthRepo = AuthRepoLocal(dataStore, profilePreferences)
     private fun getAuthRepoRemote(tcpWorker: TCPWorker, udpWorker: UDPWorker): AuthRepo = AuthRepoRemote(tcpWorker, udpWorker)
-    private fun getAuthRepoDecorator(dataStore: DataStore, localAuthRepo: AuthRepo, remoteAuthRepo: AuthRepo): AuthRepo = AuthRepoDecorator(dataStore, localAuthRepo, remoteAuthRepo)
+    private fun getAuthRepoDecorator(localAuthRepo: AuthRepo, remoteAuthRepo: AuthRepo): AuthRepo = AuthRepoDecorator(localAuthRepo, remoteAuthRepo)
 
-    private fun getChatListRepoRemote(tcpWorker: TCPWorker): ChatListRepo = ChatListRepoRemote(tcpWorker)
+    private fun getChatListRepoRemote(tcpWorker: TCPWorker, dataStore: DataStore): ChatListRepo = ChatListRepoRemote(tcpWorker, dataStore)
 
     private fun getChatRepoLocal(dataStore: DataStore): ChatRepo = ChatRepoLocal(dataStore)
     private fun getChatRepoRemote(tcpWorker: TCPWorker): ChatRepo = ChatRepoRemote(tcpWorker)
@@ -35,14 +35,13 @@ object DI {
     val modules = module {
         single(named(NAME_AUTH_REPO_DECORATOR)) {
             getAuthRepoDecorator(
-                get(),
-                getAuthRepoLocal(get()),
+                getAuthRepoLocal(get(), get()),
                 getAuthRepoRemote(get(), get())
             )
         }
 
         single(named(NAME_CHAT_LIST_REPO_DECORATOR)) {
-            getChatListRepoRemote(get())
+            getChatListRepoRemote(get(), get())
         }
 
         single(named(NAME_CHAT_REPO_DECORATOR)) {

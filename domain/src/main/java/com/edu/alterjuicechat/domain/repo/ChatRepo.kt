@@ -1,7 +1,8 @@
-package com.edu.alterjuicechat.data.repo.chat
+package com.edu.alterjuicechat.domain.repo
 
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 import kotlinx.coroutines.flow.Flow
+
 
 interface ChatRepo {
     suspend fun sendMessage(receiverID: String, message: String)
@@ -9,3 +10,5 @@ interface ChatRepo {
     fun clearUnreadCounter(userID: String)
 
 }
+
+

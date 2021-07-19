@@ -9,11 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    private val authRepoDecorator: AuthRepo,
-    dataStore: DataStore
+    private val authRepoDecorator: AuthRepo
 ) : ViewModel() {
-    val liveTcpIP: Flow<String> = dataStore.getMutableTcpIp()
-    val liveSessionID: Flow<String> = dataStore.getMutableSessionID()
+    val liveTcpIP: Flow<String> = authRepoDecorator.getMutableTcpIP()
+    val liveSessionID: Flow<String> = authRepoDecorator.getMutableSessionID()
 
 
     fun getSavedUsername(): String = authRepoDecorator.getSavedUsername()

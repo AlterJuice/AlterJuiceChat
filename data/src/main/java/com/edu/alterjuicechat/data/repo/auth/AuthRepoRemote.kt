@@ -3,6 +3,7 @@ package com.edu.alterjuicechat.data.repo.auth
 import com.edu.alterjuicechat.domain.repo.AuthRepo
 import com.edu.alterjuicechat.socket.TCPWorker
 import com.edu.alterjuicechat.socket.UDPWorker
+import kotlinx.coroutines.flow.Flow
 
 internal class AuthRepoRemote(
     private val tcpWorker: TCPWorker,
@@ -15,6 +16,18 @@ internal class AuthRepoRemote(
 
     override fun getSavedUsername(): String {
         throw UnsupportedOperationException("Remote auth repo cannot perform getUsername request")
+    }
+
+    override fun getMutableUsername(): Flow<String> {
+        throw UnsupportedOperationException("Remote auth repo cannot perform getMutableUsername request")
+    }
+
+    override fun getMutableTcpIP(): Flow<String> {
+        throw UnsupportedOperationException("Remote auth repo cannot perform getMutableTcpIP request")
+    }
+
+    override fun getMutableSessionID(): Flow<String> {
+        throw UnsupportedOperationException("Remote auth repo cannot perform getMutableSessionID request")
     }
 
     override suspend fun connect() {

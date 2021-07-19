@@ -9,5 +9,7 @@ java {
 }
 
 dependencies {
+    implementation project(path: ':socket')
     implementation library_kotlin_stdlib
+    implementation library_coroutines_core
 }

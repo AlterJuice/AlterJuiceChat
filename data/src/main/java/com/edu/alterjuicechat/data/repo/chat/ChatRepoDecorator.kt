@@ -1,8 +1,8 @@
 package com.edu.alterjuicechat.data.repo.chat
 
+import com.edu.alterjuicechat.domain.repo.ChatRepo
 import com.edu.alterjuicechat.socket.dto.entities.MessageDto
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ChatRepoDecorator
     (
