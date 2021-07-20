@@ -49,7 +49,7 @@ internal class DataStoreImpl : DataStore {
     }
 
     private fun updateMutableUsers(){
-        _mutableUsersInfo.value = usersInfo.values.sortedWith(compareBy { it.lastMessageDateMilliseconds })
+        _mutableUsersInfo.value = usersInfo.values.sortedWith(compareBy { it.lastMessageDateMilliseconds }).reversed()
     }
 
     private fun addMessage(userInfo: UserInfo, message: MessageDto){

@@ -71,8 +71,14 @@ internal class TCPWorkerImpl(private val parser: ParserDto, private val generato
     private suspend fun runUpdatesReceiver(){
         receivingJob = scope.launch(Dispatchers.IO) {
             while(true) {
-                val line = reader.readLine()
-                handleUpdate(convertUpdateToBaseDto(line))
+                try {
+                    val line = reader.readLine()
+                    handleUpdate(convertUpdateToBaseDto(line))
+                }catch (e: SocketTimeoutException){
+                    e.printStackTrace()
+                    delay(3000)
+                }
+
             }
         }
     }

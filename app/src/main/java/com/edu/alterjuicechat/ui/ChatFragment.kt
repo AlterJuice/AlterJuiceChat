@@ -62,7 +62,6 @@ class ChatFragment : BaseFragment(){
                 binding.textInputMessage.text.clear()
             }
         }
-        // vm.clearUnreadCounter() // it can be called in onDestroy method. No sense to call it twice
         binding.buttonSendMessage.setOnClickListener {
             performSendMessage()
         }
