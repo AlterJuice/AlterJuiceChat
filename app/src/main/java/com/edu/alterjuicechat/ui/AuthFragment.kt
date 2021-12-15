@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
@@ -19,10 +18,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
@@ -31,9 +34,7 @@ import com.edu.alterjuicechat.databinding.FragmentAuthBinding
 import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.AuthViewModel
-import com.edu.mynewcompose.ui.theme.Shapes
-import com.edu.mynewcompose.ui.theme.app_background
-import com.edu.mynewcompose.ui.theme.from
+import com.edu.mynewcompose.ui.theme.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -54,27 +55,36 @@ class AuthFragment : BaseFragment() {
         // return binding.root
         return ComposeView(requireContext()).apply {
            setContent {
-
-               Surface(modifier = Modifier.background(Color.Cyan, Shapes.large), color = app_background) {
-                   Row(horizontalArrangement = Arrangement.Start) {
-                       CircularProgressIndicator(modifier = Modifier.padding(10.dp))
-                   }
-                   ShowCenterButton()
-
-               }
+               InitContent()
            }
         }
     }
 
     @Composable
+    fun InitContent(){
+
+            Surface(Modifier.width(400.dp).height(600.dp)) {
+                //Image(painter = painterResource(id = R.drawable.animated_background_gradient), contentDescription = "Background")
+                Row(horizontalArrangement = Arrangement.Start) {
+                    CircularProgressIndicator(modifier = Modifier.padding(10.dp))
+                }
+                ShowCenterButton()
+            }
+
+        // Surface(modifier = Modifier.background(Color.Cyan, Shapes.large), color = app_background) {
+        //     Row(horizontalArrangement = Arrangement.Start) {
+        //         CircularProgressIndicator(modifier = Modifier.padding(10.dp))
+        //     }
+        //     ShowCenterButton()
+        // }
+    }
+
+    @Composable
     fun ShowCenterButton(){
         var countClicks by remember { mutableStateOf(0) }
-
-        Column(horizontalAlignment=Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Text(text="AlterJuice Chat", color=Color.from("#015798"), fontSize=35.sp, modifier=Modifier.wrapContentSize(Alignment.Center).padding(10.dp))
+        Button(onClick = { countClicks++ }, shape = CircleShape, modifier = Modifier.width(120.dp).height(120.dp)) {
             Text(text="AlterJuice Chat $countClicks", color=Color.from("#015798"), fontSize=35.sp)
-            Button(onClick = { countClicks++ }) {
-                Text(text="AlterJuice Chat $countClicks", color=Color.from("#015798"), fontSize=35.sp)
-            }
         }
     }
 
@@ -168,5 +178,13 @@ class AuthFragment : BaseFragment() {
         showUIProgressIsLoading(true)
         vm.saveUsername(inputUsernameText)
         vm.requestSessionIDFromTCP()
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+        TestComposableTheme {
+            InitContent()
+        }
     }
 }
