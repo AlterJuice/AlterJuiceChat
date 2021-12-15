@@ -6,12 +6,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.databinding.FragmentAuthBinding
 import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.AuthViewModel
+import com.edu.mynewcompose.ui.theme.Shapes
+import com.edu.mynewcompose.ui.theme.app_background
+import com.edu.mynewcompose.ui.theme.from
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,8 +50,35 @@ class AuthFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAuthBinding.inflate(inflater, container, false)
-        return binding.root
+
+        // return binding.root
+        return ComposeView(requireContext()).apply {
+           setContent {
+
+               Surface(modifier = Modifier.background(Color.Cyan, Shapes.large), color = app_background) {
+                   Row(horizontalArrangement = Arrangement.Start) {
+                       CircularProgressIndicator(modifier = Modifier.padding(10.dp))
+                   }
+                   ShowCenterButton()
+
+               }
+           }
+        }
     }
+
+    @Composable
+    fun ShowCenterButton(){
+        var countClicks by remember { mutableStateOf(0) }
+
+        Column(horizontalAlignment=Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            Text(text="AlterJuice Chat $countClicks", color=Color.from("#015798"), fontSize=35.sp)
+            Button(onClick = { countClicks++ }) {
+                Text(text="AlterJuice Chat $countClicks", color=Color.from("#015798"), fontSize=35.sp)
+            }
+        }
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
