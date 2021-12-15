@@ -8,6 +8,7 @@ buildscript {
     ext.android_material_version = "1.4.0"
     ext.app_compat_version = "1.3.0"
     ext.espresso_core_version = "3.4.0"
+    ext.compose_version = '1.0.1'
 
     ext.library_kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     ext.library_gson = "com.squareup.retrofit2:converter-gson:$gson_version"
