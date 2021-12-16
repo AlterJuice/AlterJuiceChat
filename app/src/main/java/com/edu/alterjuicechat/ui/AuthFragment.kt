@@ -1,30 +1,34 @@
 package com.edu.alterjuicechat.ui
 
+import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.foundation.Image
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color as ComposeColor
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,10 +44,36 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class StateHolder(){
+    val formIsVisible: MutableState<Boolean> = mutableStateOf(false)
+}
+
+class MyAppState(
+    val scaffoldState: ScaffoldState,
+    private val resources: Resources,
+) {
+    val authFormVisibility = mutableStateOf(false)
+    val progressVisibility = mutableStateOf(false)
+    val username = mutableStateOf("")
+    fun onStartMessagingClick(){
+        authFormVisibility.value = true
+        progressVisibility.value = true
+    }
+}
+
+@Composable
+fun rememberMyAppState(scaffoldState: ScaffoldState = rememberScaffoldState(), resources: Resources = LocalContext.current.resources) : MyAppState{
+    return remember(scaffoldState, resources, /* ... */) {
+        MyAppState(scaffoldState, resources, /* ... */)
+    }
+}
+
+
 
 class AuthFragment : BaseFragment() {
     private lateinit var binding: FragmentAuthBinding
     private val vm by viewModel<AuthViewModel>()
+    private val stateHolder = StateHolder()
 
 
     override fun onCreateView(
@@ -59,16 +89,46 @@ class AuthFragment : BaseFragment() {
            }
         }
     }
+    
 
     @Composable
     fun InitContent(){
-
-            Surface(Modifier.width(400.dp).height(600.dp)) {
+            
+            Surface() {
+                val appState = rememberMyAppState()
                 //Image(painter = painterResource(id = R.drawable.animated_background_gradient), contentDescription = "Background")
-                Row(horizontalArrangement = Arrangement.Start) {
-                    CircularProgressIndicator(modifier = Modifier.padding(10.dp))
+                Box(modifier= Modifier
+                    .background(Brush.linearGradient(listOf(chat_item_background, white)))
+                    .padding(10.dp)
+                    .fillMaxSize()) {
+                    if (appState.progressVisibility.value){
+                        CircularProgressIndicator(modifier = Modifier.size(25.dp), color=primaryColor)
+                    }
+                    Column(modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.Center)) {
+
+                        Text(text = "AlterJuice Chat", color = ComposeColor.from("#01579B"), fontSize = 35.sp,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .align(Alignment.CenterHorizontally))
+                        if (!appState.authFormVisibility.value){
+                            Button(onClick = { appState.onStartMessagingClick() },
+                                shape = CircleShape,
+                                colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor, contentColor = white),
+                                modifier = Modifier
+                                    .size(120.dp)
+                                    .align(Alignment.CenterHorizontally)) {
+                                Text(text = "Start Messaging",
+                                    fontSize = 15.sp,
+                                    textAlign = TextAlign.Center,
+                                    style = TextStyle(fontStyle = FontStyle.Italic))
+                            }
+                        }
+                        showAuthForm(appState)
+                    }
+
                 }
-                ShowCenterButton()
             }
 
         // Surface(modifier = Modifier.background(Color.Cyan, Shapes.large), color = app_background) {
@@ -79,15 +139,34 @@ class AuthFragment : BaseFragment() {
         // }
     }
 
+
+    @OptIn(ExperimentalAnimationApi::class)
     @Composable
-    fun ShowCenterButton(){
-        var countClicks by remember { mutableStateOf(0) }
-        Text(text="AlterJuice Chat", color=Color.from("#015798"), fontSize=35.sp, modifier=Modifier.wrapContentSize(Alignment.Center).padding(10.dp))
-        Button(onClick = { countClicks++ }, shape = CircleShape, modifier = Modifier.width(120.dp).height(120.dp)) {
-            Text(text="AlterJuice Chat $countClicks", color=Color.from("#015798"), fontSize=35.sp)
+    fun showAuthForm(appState: MyAppState){
+        AnimatedVisibility(
+            visible = appState.authFormVisibility.value,
+            enter = fadeIn(initialAlpha = 0.4f),
+            exit = fadeOut(animationSpec = tween(durationMillis = 250))
+        ) {
+            Column(modifier= Modifier.padding(10.dp).shadow(10.dp).background(ComposeColor.White, AbsoluteRoundedCornerShape(10.dp)).padding(10.dp)) {
+                Text(text = stringResource(id = R.string.found_server_on), modifier= Modifier
+                    .fillMaxWidth().padding(5.dp), fontSize = 22.sp, textAlign = TextAlign.Center)
+                Row(verticalAlignment = Alignment.Bottom) {
+                    TextField(value = appState.username.value,
+                        onValueChange = { appState.username.value = it },
+                        placeholder = { stringResource(id = R.string.your_username)},
+                        colors = TextFieldDefaults.textFieldColors(backgroundColor = ComposeColor.Transparent),
+                    modifier= Modifier.padding(10.dp).fillMaxWidth(0.7f))
+                    Button(onClick = {
+                        Toast.makeText(context, "Username: ${appState.username.value}", Toast.LENGTH_LONG).show()
+                    }, modifier = Modifier.align(Alignment.Bottom),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor, contentColor = white)) {
+                        Text(text=stringResource(id = R.string.sign_in))
+                    }
+                }
+            }
         }
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
