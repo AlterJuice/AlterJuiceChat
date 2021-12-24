@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color as ComposeColor
 val Purple200 = ComposeColor(0xFFBB86FC)
 val Purple500 = ComposeColor(0xFF6200EE)
 val Purple700 = ComposeColor(0xFF3700B3)
-val Teal200 = ComposeColor(0xFF03DAC5)
+val grey = ComposeColor(0xFF6C6F6E)
 
 fun ComposeColor.Companion.from(color: String) = ComposeColor(androidColor.parseColor(color))
 

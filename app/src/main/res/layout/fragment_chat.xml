@@ -9,8 +9,8 @@
 
 
     <FrameLayout
-        style="@style/AppBarStyle"
         android:id="@+id/chatAppBar"
+        style="@style/AppBarStyle"
         android:layout_width="match_parent"
         android:background="@drawable/shape_rounded_half_bottom">
 

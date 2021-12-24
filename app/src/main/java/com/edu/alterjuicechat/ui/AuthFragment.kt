@@ -149,7 +149,7 @@ class AuthFragment : BaseFragment() {
             exit = fadeOut(animationSpec = tween(durationMillis = 250))
         ) {
             Column(modifier= Modifier.padding(10.dp).shadow(10.dp).background(ComposeColor.White, AbsoluteRoundedCornerShape(10.dp)).padding(10.dp)) {
-                Text(text = stringResource(id = R.string.found_server_on), modifier= Modifier
+                Text(text = stringResource(R.string.found_server_on), modifier= Modifier
                     .fillMaxWidth().padding(5.dp), fontSize = 22.sp, textAlign = TextAlign.Center)
                 Row(verticalAlignment = Alignment.Bottom) {
                     TextField(value = appState.username.value,

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,13 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,13 +34,11 @@ import com.edu.alterjuicechat.R
 import com.edu.alterjuicechat.databinding.FragmentChatsListBinding
 import com.edu.alterjuicechat.domain.Consts
 import com.edu.alterjuicechat.domain.model.User
-import com.edu.alterjuicechat.socket.UserInfo
 import com.edu.alterjuicechat.ui.adapters.ChatAdapter
 import com.edu.alterjuicechat.ui.adapters.getFormattedDate
 import com.edu.alterjuicechat.ui.base.BaseFragment
 import com.edu.alterjuicechat.viewmodels.ChatListViewModel
-import com.edu.mynewcompose.ui.theme.TestComposableTheme
-import com.edu.mynewcompose.ui.theme.chat_item_background
+import com.edu.mynewcompose.ui.theme.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -70,47 +67,51 @@ class ChatListFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(context)
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
-        binding.imageUpdateChats.setOnClickListener {
-            vm.loadUsers()
-            Toast.makeText(context, R.string.toast_users_updated, Toast.LENGTH_SHORT).show()
-        }
+        binding.imageUpdateChats.setOnClickListener { onUpdateChatsButtonClick() }
         lifecycleScope.launch{
             vm.users.collect {
                 chatsAdapter.submitList(it + User("CustomID", "TestChatName"))
             }
         }
     }
-
+    private fun onUpdateChatsButtonClick(){
+        vm.loadUsers()
+        Toast.makeText(context, R.string.toast_users_updated, Toast.LENGTH_SHORT).show()
+    }
     private fun onChatClick(userInfo: User){
         replaceFragment(ChatFragment.newInstance(sessionID, userInfo.chatID, userInfo.chatName), Consts.FRAGMENT_TAG_PRIVATE_CHAT, true)
     }
 
     @Composable
     fun InitContent(){
-        Surface {
-            Row(modifier= Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()) {
-                Column(modifier=Modifier.fillMaxWidth()) {
-                    Text(stringResource(id = R.string.app_name),
-                        modifier = Modifier.align(Alignment.Start).padding(16.dp, 0.dp))
+        Surface(modifier = Modifier.background(primaryVariantColor)) {
+            Column(modifier = Modifier.background(primaryVariantColor)){
+                GetAppBarBoxWithTitle {
+                    Image(painterResource(id = R.drawable.ic_round_sync_24), contentDescription = "",
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clickable { onUpdateChatsButtonClick() }
+                            .padding(6.dp)
+                            .align(Alignment.CenterEnd),
+                        colorFilter= ColorFilter.tint(grey))
                 }
-                Column {
-                    Image(painterResource(id = R.drawable.ic_round_sync_24),
-                        modifier = Modifier.padding(6.dp).align(Alignment.End),
-                        contentDescription = "")
-                }
+                CreateChatsList(getTestUsers())
             }
-            val users = listOf(
-                User("CustomID", "TestChatName", "LAST MESSAGE", 10000),
-                User("CustomID", "TestChatName", "LAST MESSAGE", 10000),
-                User("CustomID", "TestChatName", "LAST MESSAGE", 10000),
-                User("CustomID", "TestChatName", "LAST MESSAGE", 10000),
-                User("CustomID", "TestChatName", "LAST MESSAGE", 10000),
-                User("CustomID", "TestChatName", "LAST MESSAGE", 10000)
-            )
-            CreateChatsList(users)
         }
+    }
+
+    fun getTestUsers(): List<User> {
+        return listOf(
+            User("CustomID1 CustomID1 CustomID1 CustomID1 CustomID1 CustomID1 CustomID1 CustomID1",
+                "TestChatNameTestChatNameTestChatNameTestChatNameTestChatName",
+                "LAST MESSAGE LAST MESSAGE LAST MESSAGE LAST MESSAGE LAST MESSAGE LAST MESSAGE LAST MESSAGE LAST MESSAGE LAST MESSAGE ",
+                10000),
+            User("CustomID2", "TestChatName", "LAST MESSAGE", 10000),
+            User("CustomID3", "TestChatName", "LAST MESSAGE", 10000),
+            User("CustomID4", "TestChatName", "LAST MESSAGE", 10000),
+            User("CustomID5", "TestChatName", "LAST MESSAGE", 10000),
+            User("CustomID6", "TestChatName", "LAST MESSAGE", 10000)
+        )
     }
 
     companion object {
@@ -124,32 +125,43 @@ class ChatListFragment : BaseFragment() {
             }
     }
 
+
     @Composable
-    fun CreateRowChatItem(title: String, lastMessageText: String, countUnreadMessages: Int, lastMessageDateMls: Long){
+    fun CreateRowChatItem(userChat: User){
         LazyRow(modifier = Modifier
-            .height(80.dp)
+            .height(120.dp)
+            .fillMaxWidth()
             .background(chat_item_background)
-            .padding(10.dp, 5.dp, 10.dp, 10.dp)){
-                item {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally){
-                        Text(text = title, fontSize = 20.sp, fontStyle = FontStyle.Italic)
-                        Text(text = lastMessageText)
-                    }
-                    Column(horizontalAlignment = Alignment.End) {
-                        Text(text = getFormattedDate(lastMessageDateMls))
-                        Text(text = countUnreadMessages.toString(),
-                            Modifier.size(30.dp).background(Color.White, CircleShape),
-                            textAlign = TextAlign.Center)
-                    }
+            .clickable { onChatClick(userChat) }
+            .padding(horizontal = 10.dp, vertical = 5.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly){
+            item {
+                Column(modifier= Modifier
+                    .fillMaxHeight()
+                    .fillParentMaxWidth(0.9f)){
+                    Text(text = userChat.chatID, fontSize = 20.sp, fontStyle = FontStyle.Italic, modifier=Modifier.align(Alignment.Start), maxLines = 1)
+                    Text(text = userChat.lastMessage, modifier=Modifier.align(Alignment.Start), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                }
+                Box(modifier = Modifier
+                    .fillParentMaxHeight()
+                    .fillMaxWidth()){
+                    Text(userChat.unreadMessagesCount.toString(), modifier = Modifier
+                        .size(30.dp)
+                        .background(Color.White, CircleShape)
+                        .align(Alignment.Center)
+                        .paddingFromBaseline(21.dp), textAlign = TextAlign.Center)
+                    Text(text = getFormattedDate(userChat.lastMessageDateMilliseconds),
+                        modifier=Modifier.align(Alignment.BottomCenter))
+                }
             }
         }
     }
 
     @Composable
     fun CreateChatsList(chatList: List<User>){
-        LazyColumn(){
+        LazyColumn(modifier=Modifier.fillMaxSize()){
             items(chatList) {
-                CreateRowChatItem(it.chatID, it.lastMessage, it.unreadMessagesCount, it.lastMessageDateMilliseconds)
+                CreateRowChatItem(it)
             }
         }
     }

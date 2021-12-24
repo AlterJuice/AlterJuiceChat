@@ -3,7 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/3QHDD/Codes/Projects of beauty/__Projects/AlterJuiceChat/app/src/main/res/layout/fragment_auth.xml" value="0.2796296296296296" />
+        <entry key="../../../../layout/compose-model-1639586181532.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1639662201658.xml" value="0.3314814814814815" />
+        <entry key="../../../../layout/compose-model-1639740110519.xml" value="0.3388888888888889" />
+        <entry key="../../../../layout/compose-model-1639984128438.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1639995631593.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1639996313083.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1640259503516.xml" value="0.4467905405405405" />
+        <entry key="../../../../layout/compose-model-1640334031023.xml" value="0.3425925925925926" />
+        <entry key="../../../../layout/compose-model-1640334491515.xml" value="0.3425925925925926" />
+        <entry key="../../../../layout/compose-model-1640349601242.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1640350319624.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1640353082655.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1640353137460.xml" value="0.287962962962963" />
+        <entry key="../../../../layout/compose-model-1640353156301.xml" value="0.287962962962963" />
+        <entry key="../../../../layout/compose-model-1640358493878.xml" value="0.33" />
+        <entry key="app/src/main/res/drawable/gradient_start.xml" value="0.2814814814814815" />
+        <entry key="app/src/main/res/drawable/ic_round_sync_24.xml" value="0.1388888888888889" />
+        <entry key="app/src/main/res/drawable/shape_rounded.xml" value="0.512962962962963" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/chats_list_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_auth.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_chats_list.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/message_item_mine.xml" value="0.1" />
       </map>
     </option>
   </component>
